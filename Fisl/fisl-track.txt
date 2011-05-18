@@ -1,0 +1,40 @@
+Título
+AppRecommender em detalhes: entenda como as sugestões são compostas
+
+Resumo
+O AppRecommender é um recomendador de aplicativos GNU/Linux que pretende
+aproximar os usuários daquilo que buscam para compor seu ambinete de trabalho.
+Nesta palestra serão apresentadas em detalhes as heurísticas e estratégias
+computacionais utilizadas no cálculo das recomendações. Este projeto está sendo
+desenvolvido no âmbito da distribuição Debian, mas buscamos novos colaboradores
+interessados em adaptar o recomendador para outros ambientes.
+
+Proposta
+O desenvolvimento de um recomendador de aplicativos foi motivado pela crescente
+oferta de programas de código aberto na Internet, que expõe potenciais usuários
+a inúmeras possibilidades de escolha. Neste contexto, sugestões automáticas
+poderiam auxiliar os indivíduos na tomada de decisões, especialmente quando
+estes não possuem experiência pessoal para tal. Por outro lado, os
+desenvolvedores também seriam beneficiados pelo consequente aumento na
+utilização de seus programas que, pelo fato de serem experimentados por mais
+usuários, tendem a receber mais relatórios de erros, sugestões e contribuições
+diversas.
+
+As recomendação são compostas por meio de técnicas de recuperação da
+informação, inteligência artificial e mineração de dados, tendo como fontes
+principais de dados o apt-xapian-index [1], popcon [2] e UDD [3]. Todo o
+desenvolvimento está sendo realizado de forma aberta [4] e em consonância com a
+equipe internacional do projeto Debian.
+
+O AppRecommender é fruto de um trabalho de mestrado em curso na Universidade de
+São Paulo [5]. Paralelamente a esta proposta, foi submetido um artigo ao WSL
+com um viés mais acadêmico. Nesta palestra pretende-se apresentar o trabalho de
+forma pragmática, com uma abordagem mais prática e demonstrativa, abrindo
+espaço para reflexão sobre os métodos adotados e eventualmente atraindo novos
+colaboradores para o projeto.
+
+[1] http://www.enricozini.org/sw/apt-xapian-index/
+[2] http://popcon.debian.org/
+[3] http://udd.debian.org/
+[4] http://github.com/tassia/AppRecommender
+[5] http://www.ime.usp.br/~tassia/apprec.html
