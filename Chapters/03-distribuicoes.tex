@@ -1,0 +1,262 @@
+\newpage
+\section{Distribuições GNU/Linux} \label{sec:distribuicoes}
+
+Em 1983 Richard Stallman criou o projeto GNU\footnote{\url{hhtp://www.gnu.org}}
+com o objetivo principal de desenvolver um sistema operacional livre em
+alternativa ao UNIX\footnote{\url{http://www.unix.org/}} -- solução comercial
+amplamente difundida na indústria -- e que fosse compatível com os padrões
+POSIX\footnote{Acrônimo para \textit{Portable Operating System Interface}, é uma
+família de normas definidas pelo IEEE com foco na portabilidade entre sistemas
+operacionais. Disponível em \url{http://standards.ieee.org/develop/wg/POSIX.html}}.
+Nos anos 90 o projeto GNU já havia atraído muitos colaboradores, que num curto
+espaço de tempo haviam desenvolvido inúmeros aplicativos para compor o sistema
+operacional. No entanto, o desenvolvimento do núcleo do sistema (\textit{GNU
+Hurd}) não acompanhou o ritmo dos demais aplicativos.
+
+Em outubro de 1991 o estudante finlandês Linus Torvalds publicou a versão
+0.02 do Freax, o núcleo de um sistema operacional (\textit{kernel}, em inglês)
+desenvolvido por ele na universidade. Nem o próprio Linus imaginava que aquele
+projeto, desenvolvido sem grandes pretensões, teria a dimensão do que hoje
+conhecemos como Linux \cite{Linus:01}.
+
+Com o anúncio de Torvalds, Stallman vislumbrou a possibilidade de acelerar o
+lançamento do sistema operacional livre, se os aplicativos GNU que já estavam
+prontos fossem combinados com o núcleo recém-lançado -- de fato, a primeira
+versão estável do GNU Hurd foi lançada apenas em 2001. Em 1992 o Linux foi
+licenciado sob a GNU GPL\footnote{Acrônimo para \textit{General Public
+License}, é um suporte legal para a distribuição livre de softwares.} e as
+equipes dos dois projetos começaram a trabalhar na adaptação do kernel Linux
+para o ambiente GNU. Este esforço conjunto desencadeou o surgimento das
+distribuições GNU/Linux, que são variações do sistema operacional composto por
+milhares de aplicativos majoritariamente desenvolvidos pelo projeto GNU e pelo
+kernel Linux.
+
+Distribuições GNU/Linux, como Debian, Fedora, Mandriva e Ubuntu, oferecem
+diferentes ``sabores'' do sistema operacional, constituídos por aplicativos
+selecionados por seus desenvolvedores. As distribuições reduzem a
+complexidade de instalação e atualização do sistema para usuários finais
+\cite{Cosmo:08}. Os mantenedores da distribuição atuam como intermediários
+entre os usuários e os autores dos softwares (chamados de \textit{upstreams}),
+através do encapsulamento de componentes de software em abstrações denominadas
+\textit{pacotes}.
+
+O processo de desenvolvimento e manutenção de uma distribuição varia bastante
+de uma para outra e está diretamente ligado à constituição do projeto. Quando
+são criadas por empresas, costumam receber colaboração dos usuários de
+forma limitada, visto que as decisões-chave são tomadas dentro da organização.
+Este é o modelo de desenvolvimento descrito por \cite{Raymond:99} como catedral.
+Por outro lado, os projetos criados independentemente, formam ao longo do tempo
+uma comunidade de desenvolvedores interessados em colaborar, sendo estes os
+únicos responsáveis pelo sucesso ou fracasso do projeto. Neste modelo,
+denominado bazar, o código-fonte está disponível durante todo o processo
+de desenvolvimento, não apenas nos lançamentos, permitindo que a contribuição
+seja mais efetiva. Nesses casos observa-se com mais clareza o fenômeno do
+consumidor produtor descrito anteriormente. Segundo o autor, este modelo é
+mais favorável ao sucesso, pois um bom trabalho de desenvolvimento de software
+é motivado por uma necessidade pessoal do desenvolvedor (ou seja, o
+desenvolvedor é também usuário).
+
+A seleção e configuração dos aplicativos básicos de uma distribuição ficam
+sob a responsabilidade da equipe que a desenvolve, com diferentes níveis de
+interferência da comunidade, como descrito acima. Este é um ponto crucial do
+desenvolvimento, visto que é um dos fatores que mais influenciam a escolha dos
+usuários pela distribuição. O impacto que tal seleção tem para a comunidade de
+usuários resulta em frequentes polêmicas em torno do tema, como a gerada pelo
+anúncio de que o projeto \textit{Ubuntu} abandonaria o \textit{Gnome} como
+interface padrão de usuário \cite{Paul:10}.
+
+Softwares adicionais para atender a demandas específicas dos usuários
+devem ser instalados pelos mesmos, após a configuração do sistema operacional.
+A infraestrutura de instalação de softwares provida pela distribuição,
+geralmente baseada em pacotes, facilita este processo \cite{Cosmo:08}. Ainda
+assim, a seleção dos programas é de responsabilidade do usuário do sistema.
+
+\subsection{Escolha da plataforma}
+
+A distribuição escolhida como base para o desenvolvimento deste trabalho
+foi o Debian GNU/Linux. No entanto, a codificação será realizada com o maior
+grau possível de independência de plataforma, com o intuito de que os
+resultados sejam facilmente adaptáveis para outros contextos. As seguir estão
+descritos os critérios que pautaram esta escolha.
+
+\begin{enumerate}
+
+\item \textbf{Esquema consistente de distribuição de aplicativos.} O
+  gerenciamento de pacotes em sistemas Debian GNU/Linux é realizado através do
+  \textit{APT (Advanced Packaging
+  Tool)}\footnote{\url{http://wiki.debian.org/Apt}}. Ações como a busca,
+  obtenção, instalação, atualização e remoção de pacotes são disparadas pelo
+  \textit{APT}, que num nível mais baixo faz uso do \textit{dpkg}, ferramenta
+  que de fato realiza instalações e remoções de softwares. O \textit{APT}
+  também gerencia de maneira eficiente as relações de conflito e dependência
+  entre pacotes. Ao receber um pedido de modificação da configuração do sistema
+  -- por exemplo, instalação de um novo componente -- o \textit{APT} tenta
+  satisfazer a requisição a partir do conhecimento de como obter os componentes
+  (endereço dos repositórios de pacotes) e das relações de dependência entre os
+  mesmos. Desta forma, o gerenciador promove a instalação de todas as
+  dependências de um pacote antes de instalá-lo, ao passo que não permite a
+  instalação de pacotes que conflitem com outros já instalados no sistema.
+
+\vspace{0.3cm}
+\item \textbf{Disponibilidade de dados estatísticos.} O \textit{Popcon
+  (Popularity Contest)}\footnote{\url{http://popcon.debian.org}} é a concurso
+  de popularidade entre pacotes. Os usuários que aceitam participar do concurso
+  enviam periodicamente a sua lista de pacotes instalados no sistema, que são
+  armazenados no servidor do Popcon. Diariamente as listas recebidas são
+  processadas e dados estatísticos acerca do uso dos pacotes são gerados e
+  disponibilizados no website do projeto.
+
+\vspace{0.3cm}
+\item \textbf{Possibilidade de integração dos resultados do trabalho.} Segundo
+  o \textit{contrato social
+  Debian}\footnote{\url{http://www.debian.org/social_contract.pt.html}},
+  o desenvolvimento do projeto é guiado pelas necessidades dos usuários e da
+  comunidade. Portanto, as iniciativas de colaboradores individuais, sejam eles
+  desenvolvedores oficiais ou não, serão igualmente consideradas e passarão a
+  fazer parte da distribuição se seguirem os princípios do projeto e forem
+  considerados úteis para a comunidade.
+
+\vspace{0.3cm}
+\item \textbf{Popularidade.} O Debian é um projeto de destaque no ecossistema
+  do software livre. Desde o lançamento da primeira versão de sua distribuição,
+  em 1993, o projeto cresceu bastante em termos de componentes de software
+  (atualmente provê mais de 25.000 pacotes), colaboradores e usuários. A
+  \textit{Distrowatch}, que tem 323 distribuições ativas em sua base de
+  dados\footnote{Consulta realizada em 24 de janeiro de 2011.}, classifica o
+  Debian GNU/Linux entre as 10 distribuições mais
+  populares\footnote{\url{http://distrowatch.com/dwres.php?resource=major}}.
+  O Debian aparece na quinta posição em suas estatísticas de páginas
+  visitadas\footnote{\url{http://distrowatch.com/stats.php?section=popularity}}.
+  Já o \textit{Linux Counter\footnote{\url{http://counter.li.org/reports/machines.php}}} apresenta o Debian como a segunda distribuição mais popular entre as
+  máquinas cadastradas que rodam o kernel Linux ($16\%$), ficando atrás apenas
+  do Ubuntu\footnote{\url{http://www.ubuntu.com/community/ubuntu-and-debian}}
+  ($24\%$), que é uma distribuição derivada do Debian. Nas pesquisas da
+  \textit{W$^{\textrm{3}}$Techs} sobre tecnologias para serviços
+  web\footnote{\url{http://w3techs.com/technologies/history_details/os-linux}},
+  o Debian aparece em segundo lugar, estando presente em $27\%$ dos servidores.
+  Na primeira posição está o CentOS com $31\%$.
+
+\end{enumerate}
+
+De maneira geral, quando o projeto Debian é mencionado trata-se não somente do
+sistema operacional, mas de toda a infra-estrutura de desenvolvimento e
+coordenação que dá suporte ao trabalho de cerca de 900 desenvolvedores
+oficiais\footnote{\url{http://www.perrier.eu.org/weblog/2010/08/07\#devel-countries-2010}},
+além de outros milhares de colaboradores ao redor do globo. O trabalho é
+realizado de forma colaborativa, afinado pelo objetivo comum de produzir e
+disponibilizar livremente um sistema operacional de qualidade para seus
+usuários \cite{Jackson:98}. A interação entre os desenvolvedores acontece
+majoritariamente através da Internet, por meio de canais IRC e listas de
+discussão públicas. Não existe uma entidade formal ou qualquer tipo de
+organização que concentre, coordene ou defina as atividades do projeto. O que
+observa-se é um modelo de governança consolidado que emergiu naturalmente ao
+longo de sua história \cite{Ferraro:07}.
+
+\section{Recomendação nas distribuições} \label{sec:rec_distro}
+
+Grande parte das distribuições GNU/Linux têm investido no desenvolvimento de
+interfaces para facilitar o gerenciamento de aplicativos e a forma como se obtém
+informações sobre os mesmos. Entre os dias 18 e 21 de janeiro 2011 aconteceu a
+primeira reunião sobre a temática com a presença de desenvolvedores de
+distribuições variadas (\textit{Cross-distribution Meeting on Application
+Installer}). O encontro teve como principais objetivos a definição de padrões
+entre os diferentes projetos no que diz respeito a: procedimentos de instalação
+de aplicações; metadados associados aos pacotes; o modo como tais informações
+devem ser geradas e armazenadas; protocolo para manutenção de metadados
+dinâmicos; e a definição de quais metadados devem ser compartilhados entre as
+distribuições, em detrimento de outros considerados específicos de cada projeto
+\cite{Freedesktop:11}.
+
+O projeto Debian tem se destacado no universo das distribuições por suas
+iniciativas pioneiras no campo de gerenciamento de aplicações \cite{Zini:11}.
+Diante da complexa e crescente estrutura do projeto, observa-se um esforço por
+parte dos desenvolvedores, principalmente da equipe responsável pelo controle
+de qualidade\footnote{\url{http://qa.debian.org}}, de reunir, organizar e
+disponibilizar as informações ou meta-dados concernentes a esta estrutura
+\cite{Nussbaum:10}.
+
+A tabela \ref{tab:recDebian} relaciona algumas destas iniciativas que estão
+diretamente ligadas ao gerenciamento de pacotes. Vale ressaltar que a maioria
+destas soluções foi inicialmente desenvolvida num contexto extra-oficial e
+ao passo que se mostraram úteis e eficientes foram absorvidas pela comunidade
+de usuários e desenvolvedores.
+
+\begin{sidewaystable}
+  \centering
+  \caption{Recomendadores no Debian}
+  \label{tab:recDebian}
+  \small
+  \newcommand\T{\rule{0pt}{3.0ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabularx}{25cm}{| c | X | c |}
+    \hline
+    \normalsize \textbf{\textit{Solução}}\T\B & \normalsize \textbf{\textit{Descrição}} & \normalsize \textbf{\textit{Estratégia de recomendação}}\\
+    \hline BTS \T & \multirow{3}{13cm}{Sistema de acompanhamento de \textit{bugs}, alimentado pelos usuários e desenvolvedores da distribuição. Reúne todo o histórico referente ao relatório e correção de erros em pacotes.} & \multirow{10}{*}{Reputação}\\
+    \textit{Bug Tracking System}& & \\
+    \scriptsize{\url{http://bugs.debian.org}} & & \\
+    & & \\
+    \cline{1-2}
+    Popcon \T & \multirow{3}{13cm}{Concurso de popularidade entre pacotes realizado diariamente, disponibiliza estatísticas de uso dos pacotes do repositório. Provê gráficos específicos por pacote, por arquitetura, por desenvolvedor etc.} & \\
+    \textit{Popularity Contest}& & \\
+    \scriptsize{\url{http://popcon.debian.org}} & & \\
+    & & \\
+    \cline{1-2}
+    PTS \T & \multirow{3}{13cm}{Sistema de acompanhamento de pacotes, reúne informações relativas à manutenção dos pacotes: versão, mantenedor, \textit{upstream}, \textit{bugs} abertos por tipo, últimas atualizações no repositório etc.} & \\
+    \textit{Package Tracking System}& & \\
+    \scriptsize{\url{http://packages.qa.debian.org}} & & \\
+    & & \\
+    \cline{1-2}
+    UDD \T & \multirow{3}{13cm}{{Iniciativa recente do time de qualidade criada com o intuito de reunir informações de diversos aspectos do Debian numa base de dados única. Usuários avançados podem consultar esta base para tomar decisões acerca de que pacotes utilizar.}} & \\
+    \textit{Ultimate Debian Database}& & \\
+    \scriptsize{\url{http://udd.debian.org}}& & \\
+    & & \\
+    \hline
+    Debtags \T & \multirow{2}{13.5cm}{Caracterização dos pacotes por múltiplos atributos, realizada manualmente por usuários e desenvolvedores, que auxilia a navegação e busca no repositório de pacotes.} & \multirow{2}{*}{Baseada em conteúdo}\\
+    Classificação de pacotes & & \\
+    \cline{2-3}
+    \scriptsize{\url{http://debtags.alioth.debian.org}} & \multirow{2}{*}{Novas \textit{tags} (atributos) são sugeridas a partir das \textit{tags} já associadas ao pacote.} & \multirow{2}{*}{Associação}\\
+    & & \\
+    \hline
+  \end{tabularx}
+\end{sidewaystable}
+
+Dois esforços anteriores de desenvolvimento de recomendadores de pacotes Debian
+foram identificados, porém ambos descontinuados. A primeira foi o
+\textit{PopSuggest}\footnote{http://www.enricozini.org/2007/debtags/popcon-play/},
+que oferecia recomendações a partir de dados do \textit{Popcon} como uma
+ilustração das possibilidades de uso dos dados coletados. A outra foi o
+\textit{Debommender}\footnote{http://ostatic.com/debommender}, desenvolvido
+como prova de conceito no âmbito de um trabalho de graduação, não sendo porém
+integrado aos serviços da distribuição.
+
+%FIXME [Descrever o software-center e outras solucoes]
+% http://distributions.freedesktop.org/wiki/Meetings/AppInstaller2011
+%Software Center: UI focused on applications
+%app-install: UI focused on applications + code to generate metadata
+%screenshots.debian.net: web service providing app screenshot
+%Open Collaboration Services: specification that can help provide social features (rating, comments, etc.)
+%http://launchpad.net/rnr-server: django based server for ratings&reviews webservice (not following the open-collaboration-spec yet, but there is interesst about this from the devs)
+%mageia-app-db: Mageia's application database (work in progress, there's a link to a nightly updated instance on the wiki)
+%Sophie: Search and analyze rpms from various distribution.
+%openSUSE Software Portal: a web app focused on applications
+
+%[Pacotes Debian, Relação entre pacotes, O Repositório de Pacotes]
+
+%\subsection{Pacotes Debian}
+%. Binários e fontes\\
+%. upstream, maintainer, uploader\\
+%. Prioridade: required, important, standard, optional, extra\\
+%. Base system = required or important (muitos são marcados como essenciais)\\
+%. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado\\
+%
+%\subsection{Relação entre pacotes}
+%. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
+%. Anti-dependência: Breaks, Conflicts, Replaces\\
+%. Pacotes virtuais: Provides\\
+%. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
+%
+%\subsection{O Repositório de Pacotes}
+%. The Debian Archive,\\
+%. Áreas: main, contrib, non-free\\
+%. Seções\\
+

@@ -1,0 +1,58 @@
+\documentclass{thesis}
+
+%\title{AppRecommender:\\um Recomendador de\\aplicativos GNU/Linux}
+\title{Aplicação de Estratégias de \\
+       Recomendação ao Domínio de \\
+       Componentes de Software}
+
+\author{Tássia Camões Araújo \inst{1} }
+
+\address{Instituto de Matemática e Estatística \\
+Universidade de São Paulo (USP)}
+
+\begin{document}
+
+\maketitle
+\vspace{1mm}
+\begin{center}
+DISSERTAÇÃO DE MESTRADO\\
+Programa: Ciência da Computação\\
+Orientador: Prof. Dr. Arnaldo Mandel
+\end{center}
+
+\begin{resumo}
+  A crescente expansão na oferta de serviços na rede mundial de computadores
+  vem expondo cada vez mais seus usuários a inúmeras possibilidades de escolha.
+  Esta visível pluralidade, somada à infinidade de interesses dos indivíduos
+  envolvidos, acaba por demandar uma organização das informações de forma que
+  seja possível aproximar destes usuários aquilo que supõe-se ser o que
+  verdadeiramente necessitam. Tal suposição é auxiliada por sistemas
+  computacionais de recomendação, que em geral utilizam o próprio comportamento
+  do usuário como componente fundamental para decidir o que lhe deve ser
+  apresentado como opções mais suscetíveis a aceitação. O presente trabalho
+  propõe o desenvolvimento de um sistema que auxilia a recomendação de
+  componentes de software. Vê-se em especial no universo dos softwares de
+  código aberto uma enorme diversidade de opções que, pelo seu caráter
+  majoritariamente não comercial, são apresentadas de forma menos ostensiva aos
+  seus potenciais usuários. A distribuição Debian GNU/Linux reúne
+  milhares de componentes de software nestas circunstâncias sob uma sólida
+  infraestrutura, oferendo assim a este trabalho uma série de benefícios
+  técnicos para os experimentos. Esta distribuição será portanto utilizada,
+  onde propõe-se a implementação e posterior análise comparativa das técnicas
+  abordadas de recomendação, que por fim será objeto de uma consulta pública
+  aos usuários acerca da sua eficácia, a ser também compilada e comentada na
+  finalização do trabalho.
+\end{resumo}
+
+\newpage
+
+\input{Chapters/01-introducao}
+\input{Chapters/02-recomendacao}
+\input{Chapters/03-distribuicoes}
+\input{Chapters/04-metodologia}
+\input{Chapters/05-conclusao}
+
+\bibliographystyle{sbc}
+\bibliography{thesis-tassia}
+
+\end{document}

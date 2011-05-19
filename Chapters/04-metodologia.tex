@@ -1,0 +1,323 @@
+\section{Desenvolvimento do trabalho} \label{sec:metodologia}
+
+Esta seção apresenta as fases de desenvolvimento deste trabalho, de acordo com
+seu planejamento até a presente data.
+
+\subsection{Caracterização do problema}
+
+Este trabalho tem como proposta principal o desenvolvimento de soluções para o
+problema da recomendação no contexto de componentes de software, em especial no
+âmbito de distribuições GNU/Linux. Neste cenário, os aplicativos são modelados
+como itens e os usuários da distribuição como clientes do recomendador.
+
+Embora já faça parte da pauta de discussões entre desenvolvedores um esquema de
+pontuação de pacotes como medida de avaliação pessoal e comentários dos
+usuários, não há previsão para tal solução de fato ser implementada
+\cite{Freedesktop:11}. No entanto, a presença de um componente no sistema do
+usuário pode ser considerado como indicativo de relevância. A pontuação neste
+caso é binária -- um item pode ser relevante ou irrelevante -- e o processo de
+recomendação é caracterizado da seguinte maneira: dada a lista de pacotes
+instalados no sistema de determinado usuário (como representação de sua
+identidade), o recomendador deve retornar uma lista de pacotes sugeridos, que
+representam aplicativos de potencial interesse para tal usuário. Desta forma, a
+ação principal do sistema será \textit{encontrar itens relevantes} (ver seção
+\ref{sec:acoes}).
+
+As recomendações devem ser produzidas a partir do comportamento do usuário.
+Neste trabalho não serão consideradas por exemplo informações registradas no
+BTS, PTS ou em listas de discussão. A computação será principalmente realizada
+com base em dados do \textit{Popcon} (listas de pacotes de milhares de sistemas
+em produção), e do \textit{Debtags} e \textit{UDD} como fonte de metadados
+sobre os pacotes (atributos). A utilização de dados demográficos também está
+sendo considerada. Por exemplo, a declaração explícita por parte do usuário de
+que não tem interesse por determinado nicho de aplicativos eliminaria de
+antemão uma série de pacotes que a princípio seriam considerados. De certa
+forma, o uso de perfis pode possibilitar a realização de uma seleção de
+atributos específica para cada usuário.
+
+\subsubsection{Considerações acerca da dependência entre pacotes}
+%FIXME [Investigar a utilidade do Debtags pra selecao de atributos]
+
+Uma característica peculiar da recomendação neste contexto é que,
+diferentemente de outros domínios nos quais os itens não se relacionam entre
+si, os componentes de software objeto desta pesquisa podem declarar requisitos
+em seu conteúdo (dependência, sugestão, recomendação, conflito, substituição,
+quebra etc). Requisitos positivos representam relações de dependência,
+enquanto os negativos caracterizam relações de conflito entre os pacotes
+ \cite{Cosmo:09}. Por exemplo, se um componente $a$ depende de $b$, significa
+que $b$ deve ser instalado no sistema para que $a$ funcione como previsto. Por
+outro lado, se $a$ conflita com $c$, a instalação de ambos os aplicativos pode
+provocar um comportamento anômalo ou até comprometer o funcionamento de todo o
+sistema.
+
+As relações entre componentes também devem ser consideradas pelo recomendador
+de pacotes. Intuitivamente, numa mesma recomendação não faz sentido sugerir
+pacotes dependentes, visto que ao aceitar a recomendação de um determinado
+componente e prosseguir com a instalação do mesmo, o usuário já está
+implicitamente aceitando a recomendação de todas as suas dependências. No
+entanto, um recomendação que contenha por exemplo os pacotes $a$ e $b$, dado
+que $a$ depende de $b$, se $a$ obtiver uma alta estimativa de relevância em
+virtude de seus atributos (por estratégias baseadas em conteúdo), esta
+recomendação não deve ser descartada. No caso de pacotes ``guarda-chuva'',
+que possuem muitas dependências, é comum que o usuário se interesse apenas
+por uma de suas dependências.
+
+No que diz respeito à mineração de conhecimento a partir de uma base de dados,
+um ponto importante a considerar é que o fato de pacotes com alguma relação de
+dependência estarem presentes concomitantemente em grande parte dos sistemas
+não é uma coincidência, e sim uma consequência direta da dependência. Por outro
+lado, teriam grande valor as associações que relacionassem componentes que por
+definição não apresentam relação alguma. Neste cenário, novos graus de
+relacionamento poderiam ser estabelecidos, baseados não na dependência mas na
+colaboração entre os componentes.
+
+\subsubsection{Considerações acerca da necessidade dos usuários}
+
+Um sistema de recomendação de pacotes tem como principal função sugerir novos
+pacotes a partir de escolhas anteriores do usuário, assumindo que os
+recomendados são os que melhor satisfazem às suas necessidades. Todavia, o
+conceito de \textit{pacote} já é uma abstração, e nem sempre a necessidade de um
+usuário pode ser mapeada diretamente na instalação de pacotes específicos.
+
+A necessidade do usuário diz respeito às funcionalidades que os aplicativos
+oferecem. Visto que aplicativos diferentes podem executar a mesma função,
+(resguardadas as devidas peculiaridades), o mais apropriado seria representar
+a necessidade ou desejo do usuário (analogamente, sua identidade) como um
+conjunto de funcionalidades, ao invés de um conjunto de pacotes específicos.
+
+Algumas funcionalidades de pacotes podem ser extraídas a partir da lista de
+pacotes virtuais\footnote{http://www.debian.org/doc/packaging-manuals/virtual-package-names-list.txt}. Este conceito foi criado especialmente para situações
+em que diversos pacotes diferentes oferecem um conjunto de funcionalidades
+semelhantes. Pacotes virtuais não existem fisicamente no repositório, são
+apenas mencionados no campo \textit{Provides} da definição de outros pacotes
+(``concretos''). Desta forma, quando uma dependência se refere a um pacote
+virtual, ela pode ser satisfeita com a instalação de qualquer pacote que provê
+o mesmo.
+
+No entanto, a lista de pacotes virtuais é controlada e relativamente pequena.
+Acredita-se porém que uma análise detalhada da base do \textit{Debtags} pode
+revelar novas funcionalidades como abstrações de conjuntos de \textit{tags},
+que poderão eventualmente ser utilizadas para refinar o cálculo das
+recomendações.
+
+\subsection{Metodologia}
+
+A primeira fase deste trabalho foi dedicada ao estudo dos métodos comumente
+utilizados para a produção de recomendação em diversos domínios de aplicação.
+Nesta seção serão apresentados quais estratégias e técnicas foram selecionadas
+e estabelecidas como meta de desenvolvimento da presente proposta.
+
+\subsubsection{Coleta de dados}
+
+Os dados estatísticos disponíveis publicamente no site do \textit{Popcon} não
+preservam os relacionamentos usuário-item, essenciais para a utilização de
+estratégias colaborativas. Por questões relativas à
+privacidade\footnote{\url{http://popcon.debian.org/FAQ}}, as listas de pacotes
+originais submetidas pelos usuários não são publicadas, apenas as estatísticas
+geradas e um resumo de todas as submissões são disponibilizados diariamente.
+No entanto, este trabalho é desenvolvido com o apoio de desenvolvedores
+oficiais Debian, o que possibilitará o acesso aos dados necessários.
+
+No entanto, as bases de dados do \textit{UDD} e do \textit{Debtags} são
+públicas, não havendo impedimento algum para acessá-las. Por fim, perfis de
+usuários podem ser formados com base no preenchimento facultativo de um
+formulário antes da utilização do recomendador.
+
+\subsubsection{Seleção de atributos}
+
+A seleção de atributos geralmente proporciona ganhos na eficiência e qualidade
+das recomendações, na medida em que diminui o ruído e o montante de dados a
+ser considerado. Além da aplicação de métodos clássicos de seleção,
+apresentados na seção \ref{sec:selecao_atributos}, existem peculiaridades do
+domínio de componentes de software que podem ampliar tais benefícios se
+consideradas.
+
+Seja qual for o sistema operacional ou distribuição GNU/Linux, existe um
+conjunto de componentes que fazem parte da instalação padrão, selecionados
+pela equipe de desenvolvimento. Considerando que os usuários do recomendador
+utilizam um sistema funcional, existem dois casos a considerar: (1) todo o
+conjunto de componentes da instalação padrão está instalado no sistema e (2)
+alguns componentes não estão presentes porque foram propositalmente removidos
+pelo usuário. Em ambos os casos a recomendação de tais pacotes certamente não
+interessaria ao usuário, portanto acredita-se que todos eles possam ser
+desconsiderados sem prejuízo para a recomendação.
+
+Os dados coletados pelo \textit{Popcon} também possuem informações temporais.
+A data de instalação do pacote no sistema é obtida através do atributo
+\textit{ctime} do arquivo, que indica a data de sua criação no sistema de
+arquivos, enquanto a data de última utilização é indicada pelo \textit{atime},
+com a data do último acesso. Apesar destes dados não serem seguramente
+confiáveis\footnote{\url{http://popcon.debian.org/README}}, a possibilidade
+de uso dos mesmo será investigada. Seria interessante, por exemplo, atribuir
+pesos diferentes para pacotes que são usados com muita frequência pelo usuário
+em detrimento de outros que foram acessados pela última vez logo após serem
+instalados.
+
+\subsubsection{Estratégias de recomendação}
+
+\begin{enumerate}[(a)]
+  \item \textbf{Baseada em conteúdo}
+
+Pretende-se implementar as técnicas \textit{BM25} e \textit{Bayes ingênuo} para
+recomendações de pacotes com base na descrição dos pacotes já instalados
+pelo usuário.
+
+\hspace{1cm}A caracterização dos pacotes através de \textit{Debtags} é essencial
+para a implementação de estratégias baseadas em conteúdo. Fazendo um paralelo
+com uma coleção de documentos de texto compostos por palavras-chave, o cenário
+neste contexto é de uma coleção de descrições de pacotes compostas por
+\textit{tags}. O modelo de espaço vetorial neste caso é representado por uma
+matriz de pacotes por \textit{tags}.
+
+\vspace{0.3cm}
+  \item \textbf{Colaborativa}
+
+Através de estratégias colaborativas, pretende-se implementar recomendadores
+que analisem as escolhas de pacotes de outros usuários para compor a sua lista
+de sugestões, com base na técnica \textit{K-NN}.
+
+\hspace{1cm}O \textit{Popcon} é a fonte de dados disponível atualmente para
+soluções colaborativas de recomendação. Neste contexto, listas de pacotes
+representam a identidade do usuário, que receberá recomendações com base
+no que outros usuários com interesses semelhantes aos dele têm instalado
+em seus sistemas e ele não tem.
+
+\vspace{0.3cm}
+  \item \textbf{Híbrida}
+
+No sentido de refinar as recomendações produzidas através das estratégias
+colaborativa e baseada em conteúdo, algumas implementações híbridas serão
+experimentadas. Além das listas de pacotes provenientes do \textit{Popcon} e
+informações do \textit{Debtags}, outros fatores podem ser considerados para
+composição das sugestões, alguns dos quais são descritos abaixo.
+
+\begin{itemize}
+  \item \textbf{Áreas de interesse do usuário:} a composição de um perfil de
+    usuário que indique suas áreas de interesse poderia refinar as sugestões e
+    diminuir a ocorrência de anomalias como, por exemplo, a indicação de
+    bibliotecas de desenvolvimento de software para um usuário que não é
+    programador;
+  \item \textbf{Popularidade dos pacotes:} aplicativos que figuram entre os mais
+    populares no \textit{Popcon} poderiam receber maior pontuação nos cálculos
+    de relevância, ainda que como critério de desempate;
+  \item \textbf{Bugs:} muitos relatórios de erro abertos para uma pacote são um
+    indicativo de problema, principalmente se forem \textit{bugs} graves.
+    Devido ao número reduzido de pacotes em cada recomendação, deve-se dar
+    prioridade à incluir aqueles que recebem atenção constante de seu
+    mantenedor.
+\end{itemize}
+
+\hspace{1cm}A consideração de um perfil de usuário caracteriza a estratégia com
+base em dados demográficos, enquanto que popularidade e \textit{bugs} abertos
+podem ser entendidos como uma modelagem de reputação dos itens. Ambas as
+estratégias podem ser utilizadas para refinar os resultados obtidos com os
+recomendadores básicos, caracterizando uma hibridização em \textit{cascata}
+(ver seção \ref{sec:estrategias_hibrida}).
+
+\hspace{1cm}Neste contexto é possível também produzir recomendações de forma
+colaborativa com base em conteúdo, o que caracteriza um sistema híbrido
+\textit{meta-nível}. Ao invés de a identidade dos usuários ser representada
+por uma lista de itens, seria representada pela caracterização destes itens. No caso dos pacotes, a estratégia colaborativa seria realizada a partir das
+\textit{tags} dos pacotes e não das listas de pacotes originais.
+
+\hspace{1cm}Outra possibilidade seria a elaboração de estratégias para
+\textit{revezamento} entre os sistemas básicos, de acordo com o resultado do
+processo de seleção de atributos. O recomendador híbrido neste caso analisaria
+as características dos dados que seriam a entrada do algoritmo de recomendação
+e escolheria a técnica que melhor se adequaria a esta entrada.
+
+\hspace{1cm}Por fim, a hibridização por \textit{combinação} teria implementação
+trivial dado que os recomendadores básicos já existissem, pois consiste
+basicamente na apresentação em conjunto dos resultados de múltiplos
+recomendadores. De certa forma, a combinação vai acontecer na apresentação do
+\textit{survey} para o usuário.
+
+\end{enumerate}
+
+\subsection{Codificação}
+
+O desenvolvimento de software será majoritariamente realizado na linguagem de
+programação \textit{Python}\footnote{\url{http://www.python.org/}},
+principalmente pela facilidade de integração com outras ferramentas do Debian
+também desenvolvidas nesta linguagem. Ademais, a vasta documentação e grande
+variedade de bibliotecas de utilidade para o trabalho, a exemplo da
+\textit{NLTK}\footnote{\url{http://www.nltk.org/}}
+e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
+contribuíram para esta escolha.
+
+\subsection{Avaliação}
+
+Uma avaliação preliminar das diferentes estratégias de recomendação, diferentes
+abordagens de seleção de atributos, bem como o ajuste de parâmetros dos
+algoritmos será realizada através de rodadas de validação cruzada. Dado que o
+conjunto de pacotes instalados em um sistema é sabidamente relevante para o
+mesmo, pode-se selecionar aleatoriamente um conjunto de pacotes de teste e
+utilizar o conjunto restante para treinamento dos algoritmos. As métricas de
+avaliação são então aplicadas a partir dos resultados obtidos para uma série de
+testes.
+
+As soluções que apresentarem melhores resultados nos testes preliminares serão
+avaliados por meio de uma consulta pública. Diante da inexistência de dados que
+possibilitassem a análise \textit{offline} da acurácia de recomendações
+(avaliação real), optou-se pela realização de experimentos diretamente com
+usuários por meio de um \textit{survey} eletrônico. Algumas ferramentas estão
+sendo avaliadas para a construção do \textit{survey}, entre elas, o
+\textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}.
+
+A consulta será guiada através dos seguintes passos:
+\begin{enumerate}
+  \item O usuário envia uma lista de pacotes, como representação de sua
+    identidade. Se desejar, fornece informações adicionais para composição de
+    um perfil baseado em seus interesses pessoais, além de indicar a quantidade
+    de pacotes que deseja receber como sugestão;
+  \item O sistema realiza a computação necessária para gerar recomendações
+    utilizando diferentes estratégias;
+  \item As recomendações são apresentadas ao usuário, juntamente com
+    informações detalhadas de cada item e explicação acerca dos procedimentos
+    realizados;
+  \item O usuário avalia as recomendações apresentadas;
+  \item A análise desta recomendação é realizada com base na aplicação de
+    algumas métricas apresentadas na seção \ref{sec:metricas}.
+\end{enumerate}
+
+Ao término do período de aplicação do \textit{survey}, os dados de avaliações
+individuais serão compilados numa análise de esfera global. Os gráficos
+e considerações resultantes serão apresentados na versão final deste trabalho.
+
+\subsection{Plano de execução}
+
+O desenvolvimento deste trabalho está previsto para acontecer entre os meses
+de janeiro e julho de 2011. Foram estabelecidas metas intermediárias para
+cumprimento da proposta, as quais são apresentadas na tabela \ref{tab:plano}.
+
+Vale ressaltar que este planejamento considera as datas de realização do
+\textit{Fórum Internacional de Software Livre (FISL)}, como um momento oportuno
+para apresentação do trabalho e divulgação do \textit{survey}, que deve estar
+em fase de aplicação. O evento acontecerá entre os dias 29 de junho e 02 de
+julho de 2011. Sua última edição contou com a participação de mais de $7.500$,
+entre estudantes, profissionais, empresários e gestores
+públicos vindos de 16 países\footnote{\url{http://softwarelivre.org/fisl11/noticias/fisl11-recebeu-mais-de-7.500-pessoas-do-brasil-e-do-exterior}}.
+
+\begin{table}[h!]
+  \centering
+  \caption{Plano de execução}
+  \label{tab:plano}
+  %\small
+  \newcommand\T{\rule{0pt}{2.6ex}}
+  \newcommand\B{\rule[-1.5ex]{0pt}{0pt}}
+  \begin{tabularx}{\textwidth}{| X | c | c | c | c | c | c | c |}
+    \hline
+    \T\B \textbf{\textit{Atividade}} & \textbf{\textit{Janeiro}} & \textbf{\textit{Fevereiro}} & \textbf{\textit{Março}} & \textbf{\textit{Abril}} & \textbf{\textit{Maio}} & \textbf{\textit{Junho}} & \textbf{\textit{Julho}}\\
+    \hline \small \T
+    Preparação e realiza-ção da qualificação & \multirow{2}{*}{X} & \multirow{2}{*}{X} & & & & & \\
+    \hline \small \T
+    Implementação de diferentes estratégias e técnicas & \multirow{3}{*}{X} & \multirow{3}{*}{X} & \multirow{3}{*}{X} & \multirow{3}{*}{X} & & & \\
+    \hline \small \T
+    Testes e ajustes na implementação & & & & \multirow{2}{*}{X} & \multirow{2}{*}{X} & & \\
+    \hline \small \T
+    Preparação e aplicação do \textit{survey} & & & & & \multirow{2}{*}{X} & \multirow{2}{*}{X} & \\
+    \hline \small \T
+    Escrita da dissertação & & & & & X & X & X \\
+    \hline
+  \end{tabularx}
+\end{table}
