@@ -1,80 +1,37 @@
-\section{Introdução} \label{sec:intro}
+\section{Introdução} \label{chapter:introducao}
 
-A popularização de recursos computacionais e do acesso à Internet nas
-últimas décadas proporcionou um aumento expressivo na diversidade de serviços e
-conteúdo à disposição dos usuários. Um dos fatores para este aumento é que
-os usuários, que anteriormente eram considerados meros consumidores,
-apresentam-se atualmente como produtores de conteúdo. \cite{Castells:06} analisa
-este fenômeno e afirma que a maioria da população acredita que pode influenciar
-outras pessoas atuando no mundo através da sua força de vontade e
-utilizando seus próprios meios. Isto pode ser observado no surgimento e
-proliferação de serviços criados e mantidos pelos usuários: blogs, enciclopédias
-colaborativas, como a Wikipedia\footnote{\url{http://wikipedia.org}},
-repositórios para compartilhamento de fotografia e vídeo, como Flickr
-\footnote{\url{http://flickr.com}} e Youtube\footnote{\url{http://youtube.com}},
-entre outros. Considerando a produção em termos de software, observa-se o
-exemplo das comunidades de software livre e/ou de código aberto
-(FOSS\footnote{Termo consolidado no idioma inglês, acrônimo para
-\textit{Free/Open-Source Software}, que diz respeito aos programas licenciados
-livremente para garantir aos usuários o direito de uso, estudo e modificação,
-por meio da disponibilidade do seu código-fonte.}), que propiciam a construção
-coletiva de uma ampla gama de softwares de qualidade em constante atualização
-e evolução, organizados na forma de um rossio \cite{Simon:08}.
+O universo de programas livres e de código aberto oferece aos usuários uma
+grande amplitude e diversidade de opções no que diz respeito a aplicativos
+para complementar seus sistemas. No entanto, muitas dessas alternativas
+permanecem em relativa obscuridade, pois o caráter majoritariamente não
+comercial desses sistemas se reflete na ausência de propaganda e outras formas
+de divulgação ostensiva. Desta forma, a descoberta de programas úteis para um
+determinado usuário por vezes empaca no excesso de informações disponíveis e
+organização inadequada. É costume referir-se a esse fenômeno (p. ex.,
+\cite{Iyengar:10}) como ``mais é menos'', no sentido de que o aumento da
+disponibilidade de escolhas pode confundir o usuário e diminuir sua satisfação.
 
-A grande diversidade de opções disponíveis nestes ambientes, apesar de positiva,
-representa uma sobrecarga de informações que pode confundir o usuário final.
-\cite{Yyengar:10} afirma que ``mais é menos'', no sentindo de que quanto maior
-for a disponibilidade de escolhas, menor será a satisfação do usuário. O fato é
-que comumente o indivíduo possui pouca ou nenhuma experiência pessoal para
-realizar escolhas em determinado contexto \cite{Cazella:10}. Sendo assim,
-recomendações de outras pessoas são de grande utilidade, pois reduzem as
-dúvidas e auxiliam o processo de escolha dentre as muitas alternativas
-apresentadas. No entanto, diante do número de usuários e do volume de conteúdo
-que usualmente deve ser considerado, recomendações no estilo ``boca a boca''
-tornam-se ineficientes, pois exigem a comunicação direta entre os pares. A
-tecnologia assume então papel fundamental neste processo \cite{Shardanand:95}.
+Neste contexto de muitas possibilidades onde poucas são de fato atrativas, um
+sistema capaz de recomendar aplicativos que presumidamente são objeto de
+interesse de usuários exerceria um papel importante. Desenvolvedores se
+beneficiariam por meio de um consequente aumento na utilização de seus
+programas que, por serem experimentados por mais usuários, certamente
+receberiam mais relatórios de erro (\textit{bug reports}), sugestões e
+contribuições diversas. Para os usuários o benefício seria alcançado de forma
+mais direta, dado que poupariam tempo e recursos outrora dedicados a buscas
+e filtragens manuais para encontrar os aplicativos mais adequados a seu
+ambiente de trabalho.
 
-Sistemas de recomendação emergiram como uma área de pesquisa independente na
-década de 90, tendo como fonte de estratégias para a automatização de
-recomendações soluções nas áreas de ciência cognitiva, teoria da aproximação,
-recuperação da informação, teorias de predição, administração e marketing
-\cite{Adomavicius:05}. O tema ganhou destaque com o crescimento do comércio
-eletrônico, onde apresentar o que o usuário tem interesse pode significar
-conquistar o cliente.
+Tais benefícios motivaram a concepção do \textit{AppRecommender}, um
+recomendador de aplicativos GNU/Linux desenvolvido no âmbito de um trabalho de
+mestrado, cujo objetivo principal é a experimentação de diferentes estratégias
+para recomendação no contexto de componentes de software.
 
-Os sistemas recomendadores fazem a associação entre objetos de interesse e
-pessoas neles interessadas, filtrando as informações de forma a apresentar
-somente aquilo que seja relevante para o usuário. Além da agilidade para
-encontrar o que se deseja, tais sistemas possibilitam a personalização de
-serviços e conteúdos, que são apresentados de maneira individualizada a partir
-da identificação de interesses pessoais.
-
-Este trabalho se insere no contexto de desenvolvimento de componentes de
-software, no qual os usuários são modelados como clientes e os componentes
-desenvolvidos como itens pelos quais os usuários têm interesse ou não.
-Assume-se que cada usuário tem um sistema operacional instalado e deve escolher
-quais aplicativos extras deseja obter para suprir suas necessidades pessoais.
-Diante da enorme quantidade de programas disponíveis nas mais diversas áreas de
-aplicação, configura-se um cenário onde um sistema de recomendação traria
-benefícios imediatos ao usuário, por auxiliá-lo a tomar decisões acerca da
-configuração do seu ambiente de trabalho.
-
-O objetivo principal deste trabalho é a experimentação de diferentes técnicas e
-estratégias para a construção de sistemas recomendadores no domínio de
-componentes de software, utilizando como ambiente de desenvolvimento a
-distribuição Debian GNU/Linux. Ao final deste estudo pretende-se integrar a
-estratégia que obtiver resultados mais satisfatórios à infraestrutura existente
-desta distribuição, aproximando os serviços atualmente disponíveis ao estado da
-arte em sistemas de recomendação.
-
-O presente texto está organizado como segue: a seção \ref{sec:recomendacao}
-traz uma introdução sobre sistemas de recomendação, seus desafios,
-as principais técnicas e estratégias utilizadas em seu desenvolvimento, além de
-métodos de avaliação destes sistemas; a seção \ref{sec:distribuicoes} descreve
-o ambiente de desenvolvimento deste estudo, distribuições GNU/Linux, seguida
-pela exibição de soluções existentes para a recomendação neste domínio (seção
-\ref{sec:rec_distro}); na seção \ref{sec:metodologia} é apresentada a
-metodologia de realização deste trabalho e, por fim, a seção
-\ref{sec:conclusao} traz a conclusão preliminar deste projeto, até a presente
-etapa de execução.
-
+O presente trabalho está organizado da seguinte forma: os capítulos
+\ref{chapter:distribuicoes} e \ref{chapter:recomendacao} trazem uma breve
+introdução sobre distribuições GNU/Linux e sistemas de recomendação. O capítulo
+\ref{chapter:app_recommender} apresenta o AppRecommender como solução em
+desenvolvimento para o problema exposto. Em seguida, no capítulo
+\ref{chapter:trabalhos_correlatos} trabalhos correlatos são apresentados e, por
+fim, o capítulo \ref{chapter:conclusao} traz considerações finais sobre o
+trabalho até a atual etapa de execução.
