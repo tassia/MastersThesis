@@ -1,10 +1,9 @@
 \ProvidesClass{thesis}
 
-\LoadClass[12pt]{article}
-\RequirePackage{sbc-template}
+\LoadClass[11pt,oneside,openright]{memoir}
 \RequirePackage{graphicx,url,fancybox,wrapfig}
 \RequirePackage{multirow,tabularx}
-\RequirePackage[portuguese,brazil]{babel}
+\RequirePackage[english,portuguese,brazil]{babel}
 \RequirePackage[latin1]{inputenc}
 \RequirePackage{hyperref}
 \RequirePackage{amsmath}
@@ -15,8 +14,68 @@
 \RequirePackage{slashbox}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{cancel}
+\pagestyle{empty}
+\sloppy
 
-\pagestyle{plain}
+% Definição da capa da dissertação com base em:
+% http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
+% (comentários em francês preservados)
+
+\makeatletter
+% Une commande sembleble à \rlap ou \llap, mais centrant son argument
+\def\clap#1{\hbox to 0pt{\hss #1\hss}}
+% Une commande centrant son contenu (à utiliser en mode vertical)
+\def\ligne#1{
+  \hbox to \hsize{
+    \vbox{\centering #1}}}
+% Une comande qui met son premier argument à gauche, le second au
+% milieu et le dernier à droite, la première ligne ce chacune de ces
+% trois boites coïncidant
+\def\haut#1#2#3{
+  \hbox to \hsize{
+    \rlap{\vtop{\raggedright #1}}
+    \hss
+    \clap{\vtop{\centering #2}}
+    \hss
+    \llap{\vtop{\raggedleft #3}}}}
+% Idem, mais cette fois-ci, c'est la dernière ligne
+\def\bas#1#2#3{
+  \hbox to \hsize{
+    \rlap{\vbox{\raggedright #1}}
+    \hss
+    \clap{\vbox{\centering #2}}
+    \hss
+    \llap{\vbox{\raggedleft #3}}}}
+% La commande \maketitle
+\def\maketitle{
+  \thispagestyle{empty}\vbox to \vsize{
+    \haut{}{\@blurb}{}
+    \vfill
+    \ligne{\LARGE \@title}
+    \vspace{5mm}
+    \ligne{\Large \@author}
+    \vspace{1mm}\ligne{\texttt{<\@email>}}
+    \vspace{1cm}
+    \vfill
+    \vfill
+    \bas{}{\@location, \@date}{}
+    }
+  \cleardoublepage
+  }
+% Les commandes permettant de définir la date, le lieu, etc.
+\def\date#1{\def\@date{#1}}
+\def\author#1{\def\@author{#1}}
+\def\title#1{\def\@title{#1}}
+\def\location#1{\def\@location{#1}}
+\def\blurb#1{\def\@blurb{#1}}
+\def\email#1{\def\@email{#1}}
+\makeatother
+
+% Redefinição de estilo para resumo
+\renewenvironment{abstract}
+{\cleardoublepage \null \vfill
+ \begin{center} \bfseries \abstractname \end{center}}
+{\vfill\null}
 
 % Espaçamento ao redor de captions
 \setlength{\abovecaptionskip}{6pt}   % 0.5cm as an example
@@ -38,4 +97,3 @@
 % Definição do hífen para modo matemático
 \mathchardef\mhyphen="2D
 
-\sloppy

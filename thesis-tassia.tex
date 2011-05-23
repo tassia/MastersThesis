@@ -1,22 +1,35 @@
 \documentclass{thesis}
 
-\title{AppRecommender:\\um Recomendador de\\aplicativos GNU/Linux}
-
-\author{Tássia Camões Araújo \inst{1} }
-
-\address{Instituto de Matemática e Estatística \\
-Universidade de São Paulo (USP)}
+\title{AppRecommender: um recomendador \\de aplicativos GNU/Linux}
+\author{Tássia Camões Araújo}
+\email{tassia@gmail.com}
+\date{\today}
+\location{São Paulo}
+\blurb{
+  Instituto de Matemática e Estatística \\
+  Universidade de São Paulo \\[1em]
+  Dissertação apresentada ao Programa de Pós-graduação \\
+  em Ciência da Computação para obtenção do \\
+  título de mestre em ciências \\[1em]
+  Orientador: Prof. Dr. Arnaldo Mandel
+}
 
 \begin{document}
-
 \maketitle
-\vspace{1mm}
-\begin{center}
-DISSERTAÇÃO DE MESTRADO\\
-Programa: Ciência da Computação\\
-Orientador: Prof. Dr. Arnaldo Mandel
-\end{center}
-
+\begin{abstract}
+  A crescente oferta de programas de código aberto na rede mundial de
+  computadores expõe potenciais usuários a inúmeras possibilidades de escolha.
+  Em face da pluralidade de interesses destes indivíduos, mecanismos eficientes
+  que os aproximem daquilo que buscam trazem benefícios para eles próprios,
+  assim como para os desenvolvedores dos programas. O \emph{AppRecommender} é
+  um recomendador de aplicativos GNU/Linux que realiza uma filtragem no
+  conjunto de programas disponíveis e oferece sugestões individualizadas para
+  os usuários. Tal feito é alcançado por meio da análise de perfis e descoberta
+  de padrões de comportamento na população estudada, de sorte que apenas os
+  aplicativos considerados mais suscetíveis a aceitação sejam oferecidos aos
+  usuários.
+\end{abstract}
+\selectlanguage{english}
 \begin{abstract}
   The increasing availability of open source software on the World Wide Web
   exposes potential users to a wide range of choices. Given the individuals
@@ -30,21 +43,12 @@ Orientador: Prof. Dr. Arnaldo Mandel
   users.
 \end{abstract}
 
-\begin{resumo}
-  A crescente oferta de programas de código aberto na rede mundial de
-  computadores expõe potenciais usuários a inúmeras possibilidades de escolha.
-  Em face da pluralidade de interesses destes indivíduos, mecanismos eficientes
-  que os aproximem daquilo que buscam trazem benefícios para eles próprios,
-  assim como para os desenvolvedores dos programas. O \emph{AppRecommender} é
-  um recomendador de aplicativos GNU/Linux que realiza uma filtragem no
-  conjunto de programas disponíveis e oferece sugestões individualizadas para
-  os usuários. Tal feito é alcançado por meio da análise de perfis e descoberta
-  de padrões de comportamento na população estudada, de sorte que apenas os
-  aplicativos considerados mais suscetíveis a aceitação sejam oferecidos aos
-  usuários.
-\end{resumo}
-
-\newpage
+\selectlanguage{portuguese}
+\pagestyle{plain}
+\cleardoublepage
+\tableofcontents
+\listoffigures
+\listoftables
 
 \input{Chapters/01-introducao}
 \input{Chapters/02-recomendacao}
