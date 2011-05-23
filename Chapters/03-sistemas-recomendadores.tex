@@ -1,4 +1,25 @@
-\section{Sistemas de recomendação}\label{sec:recomendacao}
+\chapter{Sistemas Recomendadores} \label{chapter:recomendadores}
+
+%A popularização de recursos computacionais e do acesso à Internet nas
+%últimas décadas proporcionou um aumento expressivo na diversidade de serviços e
+%conteúdo à disposição dos usuários. Um dos fatores para este aumento é que
+%os usuários, que anteriormente eram considerados meros consumidores,
+%apresentam-se atualmente como produtores de conteúdo. \cite{Castells:06} analisa
+%este fenômeno e afirma que a maioria da população acredita que pode influenciar
+%outras pessoas atuando no mundo através da sua força de vontade e
+%utilizando seus próprios meios. Isto pode ser observado no surgimento e
+%proliferação de serviços criados e mantidos pelos usuários: blogs, enciclopédias
+%colaborativas, como a Wikipedia\footnote{\url{http://wikipedia.org}},
+%repositórios para compartilhamento de fotografia e vídeo, como Flickr
+%\footnote{\url{http://flickr.com}} e Youtube\footnote{\url{http://youtube.com}},
+%entre outros. Considerando a produção em termos de software, observa-se o
+%exemplo das comunidades de software livre e/ou de código aberto
+%(FOSS\footnote{Termo consolidado no idioma inglês, acrônimo para
+%\textit{Free/Open-Source Software}, que diz respeito aos programas licenciados
+%livremente para garantir aos usuários o direito de uso, estudo e modificação,
+%por meio da disponibilidade do seu código-fonte.}), que propiciam a construção
+%coletiva de uma ampla gama de softwares de qualidade em constante atualização
+%e evolução, organizados na forma de um rossio \cite{Simon:08}.
 
 Segundo \cite{Resnick:97}, os sistemas de recomendação aumentam a capacidade e
 eficácia de um processo de indicação bastante popular nas relações sociais.
@@ -24,7 +45,7 @@ fatores que a determinam. Portanto, com a ressalva de que estas medidas não
 representam necessariamente a realidade, as pontuações são usadas como
 aproximações, pois têm como base as avaliações registradas pelos próprios usuários.
 
-\subsection{Ações} \label{sec:acoes}
+\section{Ações} \label{sec:acoes}
 
 Sistemas de recomendação são implementados nos mais diversos contextos
 e podem ser projetados com finalidades distintas. Abaixo estão descritas
@@ -70,7 +91,7 @@ algumas ações relacionadas a estes sistemas identificadas por
 
 \end{description}
 
-\subsection{Desafios}
+\section{Desafios}
 
 O desenvolvimento de sistemas recomendadores têm como desafios questões
 inerentes ao problema de recomendação e sua representação computacional. As
@@ -290,7 +311,7 @@ considerados outros previamente escolhidos. Apesar disto, algoritmos não
 gulosos são raramente utilizados devido a seu custo computacional
 \cite{Manning:09}.
 
-\subsubsection{Classificador bayesiano}
+\subsection{Classificador bayesiano}
 
 \textit{Bayes ingênuo} é uma solução para classificação que figura entre os
 algoritmos de aprendizado de máquina supervisionados. O classificador apoia-se
@@ -459,7 +480,7 @@ vocabulário.
 %\label{fig:colecao_spam}
 %\end{figure}
 
-\subsubsection{Medida $\boldsymbol{\tfidf}$}
+\subsection{Medida $\boldsymbol{\tfidf}$}
 
 Acrônimo para \textit{term frequency - inverse document frequency}, $\tfidf$ é
 uma medida de peso clássica utilizada em ferramentas de busca em texto para
@@ -935,7 +956,7 @@ similares a determinada \textit{query} são os mais relevantes para a mesma
 %  \end{tabular}
 %\end{table}
 
-\subsubsection{Okapi BM25}
+\subsection{Okapi BM25}
 
 \textit{Okapi BM25} é o modelo probabilístico considerado estado da arte em
 recuperação da informação \cite{Perez:09}. É amplamente utilizado no
@@ -1302,7 +1323,7 @@ anteriormente, como indica a equação \ref{eq:bm25}.
 
 % ver http://en.wikipedia.org/wiki/Neighbourhood_components_analysis
 
-\subsubsection{Apriori} \label{sec:apriori}
+\subsection{Apriori} \label{sec:apriori}
 
 A mineração de Dados, também referenciada como descoberta de conhecimento em
 bases de dados, é a área da ciência da computação destinada à descoberta de
@@ -1409,7 +1430,7 @@ extraídas da base de dados numa única passagem, evitando desta forma repetidos
 acessos à mesma. Árvores de prefixos, árvores lexicográficas e matrizes
 binárias são algumas dessas estruturas \cite{Kotsiantis:06}.
 
-\subsection{Estratégias de recomendação} \label{sec:estrategias}
+\section{Estratégias de recomendação} \label{sec:estrategias}
 
 Neste trabalho considera-se uma classificação mista dos seguintes autores.
 \cite{Burke:02} distingue as diferentes estratégias de recomendação a partir
@@ -1419,7 +1440,7 @@ abrangente, considerando por exemplo a recomendação por reputação dos itens,
 que por não oferecer grandes desafios computacionais é omitida por algumas
 taxonomias.
 
-\subsubsection{Reputação dos itens}
+\subsection{Reputação dos itens}
 
 Popular entre serviços de venda como livrarias, sites de leilão e
 lojas de modo geral, esta estratégia consiste no armazenamento de avaliações
@@ -1443,7 +1464,7 @@ apresentado na figura \ref{fig:imdb}.
 \label{fig:imdb}
 \end{figure}
 
-\subsubsection{Recomendação baseada em conteúdo}
+\subsection{Recomendação baseada em conteúdo}
 
 Esta abordagem parte do princípio de que os usuários tendem a se interessar por
 itens semelhantes aos que eles já se interessaram no passado
@@ -1469,7 +1490,7 @@ identificados de forma automatizada. A superespecialização é outro problema
 indicado por \cite{Adomavicius:05}, que diz respeito à abrangência das
 recomendações estar limitada a itens similares aos já escolhidos pelos usuários.
 
-\subsubsection{Recomendação colaborativa}
+\subsection{Recomendação colaborativa}
 
 Esta estratégia não exige o reconhecimento semântico do conteúdo dos itens,
 pois é fundamentado na troca de experiências entre indivíduos que possuem
@@ -1498,7 +1519,7 @@ itens totalmente inesperados. Outra contribuição é a possibilidade de formação
 de comunidades de usuários pela identificação de interesses semelhantes
 \cite{Cazella:10}.
 
-\subsubsection{Baseada em conhecimento}
+\subsection{Baseada em conhecimento}
 
 Esta estratégia tem como princípio a descoberta de conhecimento a partir da
 análise de uma base de dados de transações, que registra a escolha dos usuários
@@ -1538,7 +1559,7 @@ associação é encontrado na loja virtual da empresa \textit{Amazon}\footnote{\url
 \label{fig:amazon}
 \end{figure}
 
-\subsubsection{Baseada em dados demográficos}
+\subsection{Baseada em dados demográficos}
 
 A estratégia demográfica fundamenta-se na composição de perfis de usuários e
 identificação de nichos demográficos para produção de recomendações. Os dados
@@ -1548,7 +1569,7 @@ interesse. Dados demográficos, no entanto, geralmente são utilizados em
 combinação com outras fontes de dados e técnicas diversas, como parte de uma
 estratégia de recomendação híbrida.
 
-\subsubsection{Estratégia híbrida} \label{sec:estrategias_hibrida}
+\subsection{Estratégia híbrida} \label{sec:estrategias_hibrida}
 
 Sistemas de recomendação híbridos combinam duas ou mais estratégias, com o
 intuito de obter melhor performance do que a que as estratégias oferecem
@@ -1587,7 +1608,7 @@ Meta-nível & O modelo que um recomendador ``aprendeu'' é usado como entrada
 \end{tabularx}
 \end{table}
 
-\subsection{Avaliação de sistemas de recomendação} \label{sec:avaliacao}
+\section{Avaliação de sistemas de recomendação} \label{sec:avaliacao}
 
 A avaliação de sistemas de recomendação não é uma tarefa trivial,
 principalmente porque não há consenso sobre quais atributos devem ser
@@ -1601,7 +1622,7 @@ Recomenda-se então que o processo de avaliação tenha início com a compreensão
 das ações para as quais o sistema foi projetado (ver seção \ref{sec:acoes}),
 como guia para as decisões metodológicas ao longo dos experimentos.
 
-\subsubsection{Seleção dos dados}
+\subsection{Seleção dos dados}
 
 A escolha do conjunto de dados adequado é fator chave para uma investigação
 consistente. Neste aspecto, as avaliações de recomendadores podem ser
@@ -1637,7 +1658,7 @@ em fases preliminares de testes, porém, tecer conclusões comparativas é
 arriscado visto que os dados produzidos podem se ajustar melhor para uma
 estratégia do que para outras \cite{Herlocker:04}.
 
-\subsection{Métricas} \label{sec:metricas}
+\section{Métricas} \label{sec:metricas}
 
 A tabela \ref{tab:metricas} apresenta métricas utilizadas para avaliação de
 sistemas de recomendação.

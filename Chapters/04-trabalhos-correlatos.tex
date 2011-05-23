@@ -1,0 +1,108 @@
+\chapter{Trabalhos correlatos} \label{chapter:trab-correlatos}
+
+Grande parte das distribuições GNU/Linux têm investido no desenvolvimento de
+interfaces para facilitar o gerenciamento de aplicativos e a forma como se obtém
+informações sobre os mesmos. Entre os dias 18 e 21 de janeiro 2011 aconteceu a
+primeira reunião sobre a temática com a presença de desenvolvedores de
+distribuições variadas (\textit{Cross-distribution Meeting on Application
+Installer}). O encontro teve como principais objetivos a definição de padrões
+entre os diferentes projetos no que diz respeito a: procedimentos de instalação
+de aplicações; metadados associados aos pacotes; o modo como tais informações
+devem ser geradas e armazenadas; protocolo para manutenção de metadados
+dinâmicos; e a definição de quais metadados devem ser compartilhados entre as
+distribuições, em detrimento de outros considerados específicos de cada projeto
+\cite{Freedesktop:11}.
+
+O projeto Debian tem se destacado no universo das distribuições por suas
+iniciativas pioneiras no campo de gerenciamento de aplicações \cite{Zini:11}.
+Diante da complexa e crescente estrutura do projeto, observa-se um esforço por
+parte dos desenvolvedores, principalmente da equipe responsável pelo controle
+de qualidade\footnote{\url{http://qa.debian.org}}, de reunir, organizar e
+disponibilizar as informações ou meta-dados concernentes a esta estrutura
+\cite{Nussbaum:10}.
+
+A tabela \ref{tab:recDebian} relaciona algumas destas iniciativas que estão
+diretamente ligadas ao gerenciamento de pacotes. Vale ressaltar que a maioria
+destas soluções foi inicialmente desenvolvida num contexto extra-oficial e
+ao passo que se mostraram úteis e eficientes foram absorvidas pela comunidade
+de usuários e desenvolvedores.
+
+\begin{sidewaystable}
+  \centering
+  \caption{Recomendadores no Debian}
+  \label{tab:recDebian}
+  \small
+  \newcommand\T{\rule{0pt}{3.0ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabularx}{25cm}{| c | X | c |}
+    \hline
+    \normalsize \textbf{\textit{Solução}}\T\B & \normalsize \textbf{\textit{Descrição}} & \normalsize \textbf{\textit{Estratégia de recomendação}}\\
+    \hline BTS \T & \multirow{3}{13cm}{Sistema de acompanhamento de \textit{bugs}, alimentado pelos usuários e desenvolvedores da distribuição. Reúne todo o histórico referente ao relatório e correção de erros em pacotes.} & \multirow{10}{*}{Reputação}\\
+    \textit{Bug Tracking System}& & \\
+    \scriptsize{\url{http://bugs.debian.org}} & & \\
+    & & \\
+    \cline{1-2}
+    Popcon \T & \multirow{3}{13cm}{Concurso de popularidade entre pacotes realizado diariamente, disponibiliza estatísticas de uso dos pacotes do repositório. Provê gráficos específicos por pacote, por arquitetura, por desenvolvedor etc.} & \\
+    \textit{Popularity Contest}& & \\
+    \scriptsize{\url{http://popcon.debian.org}} & & \\
+    & & \\
+    \cline{1-2}
+    PTS \T & \multirow{3}{13cm}{Sistema de acompanhamento de pacotes, reúne informações relativas à manutenção dos pacotes: versão, mantenedor, \textit{upstream}, \textit{bugs} abertos por tipo, últimas atualizações no repositório etc.} & \\
+    \textit{Package Tracking System}& & \\
+    \scriptsize{\url{http://packages.qa.debian.org}} & & \\
+    & & \\
+    \cline{1-2}
+    UDD \T & \multirow{3}{13cm}{{Iniciativa recente do time de qualidade criada com o intuito de reunir informações de diversos aspectos do Debian numa base de dados única. Usuários avançados podem consultar esta base para tomar decisões acerca de que pacotes utilizar.}} & \\
+    \textit{Ultimate Debian Database}& & \\
+    \scriptsize{\url{http://udd.debian.org}}& & \\
+    & & \\
+    \hline
+    Debtags \T & \multirow{2}{13.5cm}{Caracterização dos pacotes por múltiplos atributos, realizada manualmente por usuários e desenvolvedores, que auxilia a navegação e busca no repositório de pacotes.} & \multirow{2}{*}{Baseada em conteúdo}\\
+    Classificação de pacotes & & \\
+    \cline{2-3}
+    \scriptsize{\url{http://debtags.alioth.debian.org}} & \multirow{2}{*}{Novas \textit{tags} (atributos) são sugeridas a partir das \textit{tags} já associadas ao pacote.} & \multirow{2}{*}{Associação}\\
+    & & \\
+    \hline
+  \end{tabularx}
+\end{sidewaystable}
+
+Dois esforços anteriores de desenvolvimento de recomendadores de pacotes Debian
+foram identificados, porém ambos descontinuados. A primeira foi o
+\textit{PopSuggest}\footnote{http://www.enricozini.org/2007/debtags/popcon-play/},
+que oferecia recomendações a partir de dados do \textit{Popcon} como uma
+ilustração das possibilidades de uso dos dados coletados. A outra foi o
+\textit{Debommender}\footnote{http://ostatic.com/debommender}, desenvolvido
+como prova de conceito no âmbito de um trabalho de graduação, não sendo porém
+integrado aos serviços da distribuição.
+
+%FIXME [Descrever o software-center e outras solucoes]
+% http://distributions.freedesktop.org/wiki/Meetings/AppInstaller2011
+%Software Center: UI focused on applications
+%app-install: UI focused on applications + code to generate metadata
+%screenshots.debian.net: web service providing app screenshot
+%Open Collaboration Services: specification that can help provide social features (rating, comments, etc.)
+%http://launchpad.net/rnr-server: django based server for ratings&reviews webservice (not following the open-collaboration-spec yet, but there is interesst about this from the devs)
+%mageia-app-db: Mageia's application database (work in progress, there's a link to a nightly updated instance on the wiki)
+%Sophie: Search and analyze rpms from various distribution.
+%openSUSE Software Portal: a web app focused on applications
+
+%[Pacotes Debian, Relação entre pacotes, O Repositório de Pacotes]
+
+%\subsection{Pacotes Debian}
+%. Binários e fontes\\
+%. upstream, maintainer, uploader\\
+%. Prioridade: required, important, standard, optional, extra\\
+%. Base system = required or important (muitos são marcados como essenciais)\\
+%. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado\\
+%
+%\subsection{Relação entre pacotes}
+%. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
+%. Anti-dependência: Breaks, Conflicts, Replaces\\
+%. Pacotes virtuais: Provides\\
+%. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
+%
+%\subsection{O Repositório de Pacotes}
+%. The Debian Archive,\\
+%. Áreas: main, contrib, non-free\\
+%. Seções\\
+
