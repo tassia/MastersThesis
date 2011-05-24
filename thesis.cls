@@ -1,9 +1,12 @@
 \ProvidesClass{thesis}
 
-\LoadClass[11pt,oneside,openright]{memoir}
+\LoadClass[11pt,a4paper,twoside,openright]{memoir}
 \RequirePackage{graphicx,url,fancybox,wrapfig}
 \RequirePackage{multirow,tabularx}
-\RequirePackage[english,portuguese,brazil]{babel}
+\RequirePackage[english,brazil]{babel}
+\newcommand{\keywordsname}{""}
+\addto\captionsenglish{\renewcommand{\keywordsname}{Keywords}}
+\addto\captionsbrazil{\renewcommand{\keywordsname}{Palavras-chave}}
 \RequirePackage[latin1]{inputenc}
 \RequirePackage{hyperref}
 \RequirePackage{amsmath}
@@ -15,7 +18,9 @@
 \RequirePackage[normalem]{ulem}
 \RequirePackage{cancel}
 \pagestyle{empty}
+\chapterstyle{bianchi}
 \sloppy
+\RequirePackage[a4paper,inner=3.0cm,outer=2.5cm,top=2.5cm,bottom=2.5cm,pdftex]{geometry}
 
 % Definição da capa da dissertação com base em:
 % http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
@@ -52,7 +57,7 @@
     \haut{}{\@blurb}{}
     \vfill
     \ligne{\LARGE \@title}
-    \vspace{5mm}
+    \vspace{15mm}
     \ligne{\Large \@author}
     \vspace{1mm}\ligne{\texttt{<\@email>}}
     \vspace{1cm}
@@ -69,13 +74,16 @@
 \def\location#1{\def\@location{#1}}
 \def\blurb#1{\def\@blurb{#1}}
 \def\email#1{\def\@email{#1}}
-\makeatother
 
 % Redefinição de estilo para resumo
 \renewenvironment{abstract}
 {\cleardoublepage \null \vfill
  \begin{center} \bfseries \abstractname \end{center}}
 {\vfill\null}
+\def\keywords{\par \vspace{0.2cm}\hspace{-0.75cm} {\bfseries \keywordsname :} }
+\def\endkeywords{\par}
+
+\makeatother
 
 % Espaçamento ao redor de captions
 \setlength{\abovecaptionskip}{6pt}   % 0.5cm as an example
