@@ -3,7 +3,109 @@
 Esta seção apresenta as fases de desenvolvimento deste trabalho, de acordo com
 seu planejamento até a presente data.
 
-\subsection{Caracterização do problema}
+\section{Escolha da plataforma}
+
+A distribuição escolhida como base para o desenvolvimento deste trabalho
+foi o Debian GNU/Linux. No entanto, a codificação será realizada com o maior
+grau possível de independência de plataforma, com o intuito de que os
+resultados sejam facilmente adaptáveis para outros contextos. As seguir estão
+descritos os critérios que pautaram esta escolha.
+
+\begin{enumerate}
+
+\item \textbf{Esquema consistente de distribuição de aplicativos.} O
+  gerenciamento de pacotes em sistemas Debian GNU/Linux é realizado através do
+  \textit{APT (Advanced Packaging
+  Tool)}\footnote{\url{http://wiki.debian.org/Apt}}. Ações como a busca,
+  obtenção, instalação, atualização e remoção de pacotes são disparadas pelo
+  \textit{APT}, que num nível mais baixo faz uso do \textit{dpkg}, ferramenta
+  que de fato realiza instalações e remoções de softwares. O \textit{APT}
+  também gerencia de maneira eficiente as relações de conflito e dependência
+  entre pacotes. Ao receber um pedido de modificação da configuração do sistema
+  -- por exemplo, instalação de um novo componente -- o \textit{APT} tenta
+  satisfazer a requisição a partir do conhecimento de como obter os componentes
+  (endereço dos repositórios de pacotes) e das relações de dependência entre os
+  mesmos. Desta forma, o gerenciador promove a instalação de todas as
+  dependências de um pacote antes de instalá-lo, ao passo que não permite a
+  instalação de pacotes que conflitem com outros já instalados no sistema.
+
+\vspace{0.3cm}
+\item \textbf{Disponibilidade de dados estatísticos.} O \textit{Popcon
+  (Popularity Contest)}\footnote{\url{http://popcon.debian.org}} é a concurso
+  de popularidade entre pacotes. Os usuários que aceitam participar do concurso
+  enviam periodicamente a sua lista de pacotes instalados no sistema, que são
+  armazenados no servidor do Popcon. Diariamente as listas recebidas são
+  processadas e dados estatísticos acerca do uso dos pacotes são gerados e
+  disponibilizados no website do projeto.
+
+\vspace{0.3cm}
+\item \textbf{Possibilidade de integração dos resultados do trabalho.} Segundo
+  o \textit{contrato social
+  Debian}\footnote{\url{http://www.debian.org/social_contract.pt.html}},
+  o desenvolvimento do projeto é guiado pelas necessidades dos usuários e da
+  comunidade. Portanto, as iniciativas de colaboradores individuais, sejam eles
+  desenvolvedores oficiais ou não, serão igualmente consideradas e passarão a
+  fazer parte da distribuição se seguirem os princípios do projeto e forem
+  considerados úteis para a comunidade.
+
+\vspace{0.3cm}
+\item \textbf{Popularidade.} O Debian é um projeto de destaque no ecossistema
+  do software livre. Desde o lançamento da primeira versão de sua distribuição,
+  em 1993, o projeto cresceu bastante em termos de componentes de software
+  (atualmente provê mais de 25.000 pacotes), colaboradores e usuários. A
+  \textit{Distrowatch}, que tem 323 distribuições ativas em sua base de
+  dados\footnote{Consulta realizada em 24 de janeiro de 2011.}, classifica o
+  Debian GNU/Linux entre as 10 distribuições mais
+  populares\footnote{\url{http://distrowatch.com/dwres.php?resource=major}}.
+  O Debian aparece na quinta posição em suas estatísticas de páginas
+  visitadas\footnote{\url{http://distrowatch.com/stats.php?section=popularity}}.
+  Já o \textit{Linux Counter\footnote{\url{http://counter.li.org/reports/machines.php}}} apresenta o Debian como a segunda distribuição mais popular entre as
+  máquinas cadastradas que rodam o kernel Linux ($16\%$), ficando atrás apenas
+  do Ubuntu\footnote{\url{http://www.ubuntu.com/community/ubuntu-and-debian}}
+  ($24\%$), que é uma distribuição derivada do Debian. Nas pesquisas da
+  \textit{W$^{\textrm{3}}$Techs} sobre tecnologias para serviços
+  web\footnote{\url{http://w3techs.com/technologies/history_details/os-linux}},
+  o Debian aparece em segundo lugar, estando presente em $27\%$ dos servidores.
+  Na primeira posição está o CentOS com $31\%$.
+
+\end{enumerate}
+
+De maneira geral, quando o projeto Debian é mencionado trata-se não somente do
+sistema operacional, mas de toda a infra-estrutura de desenvolvimento e
+coordenação que dá suporte ao trabalho de cerca de 900 desenvolvedores
+oficiais\footnote{\url{http://www.perrier.eu.org/weblog/2010/08/07\#devel-countries-2010}},
+além de outros milhares de colaboradores ao redor do globo. O trabalho é
+realizado de forma colaborativa, afinado pelo objetivo comum de produzir e
+disponibilizar livremente um sistema operacional de qualidade para seus
+usuários \cite{Jackson:98}. A interação entre os desenvolvedores acontece
+majoritariamente através da Internet, por meio de canais IRC e listas de
+discussão públicas. Não existe uma entidade formal ou qualquer tipo de
+organização que concentre, coordene ou defina as atividades do projeto. O que
+observa-se é um modelo de governança consolidado que emergiu naturalmente ao
+longo de sua história \cite{Ferraro:07}.
+
+\section{Pacotes Debian}
+%[Pacotes Debian, Relação entre pacotes, O Repositório de Pacotes]
+
+%\subsection{Pacotes Debian}
+%. Binários e fontes\\
+%. upstream, maintainer, uploader\\
+%. Prioridade: required, important, standard, optional, extra\\
+%. Base system = required or important (muitos são marcados como essenciais)\\
+%. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado\\
+%
+%\subsection{Relação entre pacotes}
+%. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
+%. Anti-dependência: Breaks, Conflicts, Replaces\\
+%. Pacotes virtuais: Provides\\
+%. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
+%
+%\subsection{O Repositório de Pacotes}
+%. The Debian Archive,\\
+%. Áreas: main, contrib, non-free\\
+%. Seções\\
+
+\section{Caracterização do problema}
 
 Este trabalho tem como proposta principal o desenvolvimento de soluções para o
 problema da recomendação no contexto de componentes de software, em especial no
@@ -35,7 +137,7 @@ antemão uma série de pacotes que a princípio seriam considerados. De certa
 forma, o uso de perfis pode possibilitar a realização de uma seleção de
 atributos específica para cada usuário.
 
-\subsubsection{Considerações acerca da dependência entre pacotes}
+\subsection{Considerações acerca da dependência entre pacotes}
 %FIXME [Investigar a utilidade do Debtags pra selecao de atributos]
 
 Uma característica peculiar da recomendação neste contexto é que,
@@ -71,7 +173,7 @@ definição não apresentam relação alguma. Neste cenário, novos graus de
 relacionamento poderiam ser estabelecidos, baseados não na dependência mas na
 colaboração entre os componentes.
 
-\subsubsection{Considerações acerca da necessidade dos usuários}
+\subsection{Considerações acerca da necessidade dos usuários}
 
 Um sistema de recomendação de pacotes tem como principal função sugerir novos
 pacotes a partir de escolhas anteriores do usuário, assumindo que os
@@ -100,60 +202,7 @@ revelar novas funcionalidades como abstrações de conjuntos de \textit{tags},
 que poderão eventualmente ser utilizadas para refinar o cálculo das
 recomendações.
 
-\subsection{Metodologia}
-
-A primeira fase deste trabalho foi dedicada ao estudo dos métodos comumente
-utilizados para a produção de recomendação em diversos domínios de aplicação.
-Nesta seção serão apresentados quais estratégias e técnicas foram selecionadas
-e estabelecidas como meta de desenvolvimento da presente proposta.
-
-\subsubsection{Coleta de dados}
-
-Os dados estatísticos disponíveis publicamente no site do \textit{Popcon} não
-preservam os relacionamentos usuário-item, essenciais para a utilização de
-estratégias colaborativas. Por questões relativas à
-privacidade\footnote{\url{http://popcon.debian.org/FAQ}}, as listas de pacotes
-originais submetidas pelos usuários não são publicadas, apenas as estatísticas
-geradas e um resumo de todas as submissões são disponibilizados diariamente.
-No entanto, este trabalho é desenvolvido com o apoio de desenvolvedores
-oficiais Debian, o que possibilitará o acesso aos dados necessários.
-
-No entanto, as bases de dados do \textit{UDD} e do \textit{Debtags} são
-públicas, não havendo impedimento algum para acessá-las. Por fim, perfis de
-usuários podem ser formados com base no preenchimento facultativo de um
-formulário antes da utilização do recomendador.
-
-\subsubsection{Seleção de atributos}
-
-A seleção de atributos geralmente proporciona ganhos na eficiência e qualidade
-das recomendações, na medida em que diminui o ruído e o montante de dados a
-ser considerado. Além da aplicação de métodos clássicos de seleção,
-apresentados na seção \ref{sec:selecao_atributos}, existem peculiaridades do
-domínio de componentes de software que podem ampliar tais benefícios se
-consideradas.
-
-Seja qual for o sistema operacional ou distribuição GNU/Linux, existe um
-conjunto de componentes que fazem parte da instalação padrão, selecionados
-pela equipe de desenvolvimento. Considerando que os usuários do recomendador
-utilizam um sistema funcional, existem dois casos a considerar: (1) todo o
-conjunto de componentes da instalação padrão está instalado no sistema e (2)
-alguns componentes não estão presentes porque foram propositalmente removidos
-pelo usuário. Em ambos os casos a recomendação de tais pacotes certamente não
-interessaria ao usuário, portanto acredita-se que todos eles possam ser
-desconsiderados sem prejuízo para a recomendação.
-
-Os dados coletados pelo \textit{Popcon} também possuem informações temporais.
-A data de instalação do pacote no sistema é obtida através do atributo
-\textit{ctime} do arquivo, que indica a data de sua criação no sistema de
-arquivos, enquanto a data de última utilização é indicada pelo \textit{atime},
-com a data do último acesso. Apesar destes dados não serem seguramente
-confiáveis\footnote{\url{http://popcon.debian.org/README}}, a possibilidade
-de uso dos mesmo será investigada. Seria interessante, por exemplo, atribuir
-pesos diferentes para pacotes que são usados com muita frequência pelo usuário
-em detrimento de outros que foram acessados pela última vez logo após serem
-instalados.
-
-\subsubsection{Estratégias de recomendação}
+\section{Estratégias de recomendação}
 
 \begin{enumerate}[(a)]
   \item \textbf{Baseada em conteúdo}
@@ -234,7 +283,7 @@ recomendadores. De certa forma, a combinação vai acontecer na apresentação do
 
 \end{enumerate}
 
-\subsection{Codificação}
+\section{Codificação}
 
 O desenvolvimento de software será majoritariamente realizado na linguagem de
 programação \textit{Python}\footnote{\url{http://www.python.org/}},
@@ -245,79 +294,3 @@ variedade de bibliotecas de utilidade para o trabalho, a exemplo da
 e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
 contribuíram para esta escolha.
 
-\subsection{Avaliação}
-
-Uma avaliação preliminar das diferentes estratégias de recomendação, diferentes
-abordagens de seleção de atributos, bem como o ajuste de parâmetros dos
-algoritmos será realizada através de rodadas de validação cruzada. Dado que o
-conjunto de pacotes instalados em um sistema é sabidamente relevante para o
-mesmo, pode-se selecionar aleatoriamente um conjunto de pacotes de teste e
-utilizar o conjunto restante para treinamento dos algoritmos. As métricas de
-avaliação são então aplicadas a partir dos resultados obtidos para uma série de
-testes.
-
-As soluções que apresentarem melhores resultados nos testes preliminares serão
-avaliados por meio de uma consulta pública. Diante da inexistência de dados que
-possibilitassem a análise \textit{offline} da acurácia de recomendações
-(avaliação real), optou-se pela realização de experimentos diretamente com
-usuários por meio de um \textit{survey} eletrônico. Algumas ferramentas estão
-sendo avaliadas para a construção do \textit{survey}, entre elas, o
-\textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}.
-
-A consulta será guiada através dos seguintes passos:
-\begin{enumerate}
-  \item O usuário envia uma lista de pacotes, como representação de sua
-    identidade. Se desejar, fornece informações adicionais para composição de
-    um perfil baseado em seus interesses pessoais, além de indicar a quantidade
-    de pacotes que deseja receber como sugestão;
-  \item O sistema realiza a computação necessária para gerar recomendações
-    utilizando diferentes estratégias;
-  \item As recomendações são apresentadas ao usuário, juntamente com
-    informações detalhadas de cada item e explicação acerca dos procedimentos
-    realizados;
-  \item O usuário avalia as recomendações apresentadas;
-  \item A análise desta recomendação é realizada com base na aplicação de
-    algumas métricas apresentadas na seção \ref{sec:metricas}.
-\end{enumerate}
-
-Ao término do período de aplicação do \textit{survey}, os dados de avaliações
-individuais serão compilados numa análise de esfera global. Os gráficos
-e considerações resultantes serão apresentados na versão final deste trabalho.
-
-\subsection{Plano de execução}
-
-O desenvolvimento deste trabalho está previsto para acontecer entre os meses
-de janeiro e julho de 2011. Foram estabelecidas metas intermediárias para
-cumprimento da proposta, as quais são apresentadas na tabela \ref{tab:plano}.
-
-Vale ressaltar que este planejamento considera as datas de realização do
-\textit{Fórum Internacional de Software Livre (FISL)}, como um momento oportuno
-para apresentação do trabalho e divulgação do \textit{survey}, que deve estar
-em fase de aplicação. O evento acontecerá entre os dias 29 de junho e 02 de
-julho de 2011. Sua última edição contou com a participação de mais de $7.500$,
-entre estudantes, profissionais, empresários e gestores
-públicos vindos de 16 países\footnote{\url{http://softwarelivre.org/fisl11/noticias/fisl11-recebeu-mais-de-7.500-pessoas-do-brasil-e-do-exterior}}.
-
-\begin{table}[h!]
-  \centering
-  \caption{Plano de execução}
-  \label{tab:plano}
-  %\small
-  \newcommand\T{\rule{0pt}{2.6ex}}
-  \newcommand\B{\rule[-1.5ex]{0pt}{0pt}}
-  \begin{tabularx}{\textwidth}{| X | c | c | c | c | c | c | c |}
-    \hline
-    \T\B \textbf{\textit{Atividade}} & \textbf{\textit{Janeiro}} & \textbf{\textit{Fevereiro}} & \textbf{\textit{Março}} & \textbf{\textit{Abril}} & \textbf{\textit{Maio}} & \textbf{\textit{Junho}} & \textbf{\textit{Julho}}\\
-    \hline \small \T
-    Preparação e realiza-ção da qualificação & \multirow{2}{*}{X} & \multirow{2}{*}{X} & & & & & \\
-    \hline \small \T
-    Implementação de diferentes estratégias e técnicas & \multirow{3}{*}{X} & \multirow{3}{*}{X} & \multirow{3}{*}{X} & \multirow{3}{*}{X} & & & \\
-    \hline \small \T
-    Testes e ajustes na implementação & & & & \multirow{2}{*}{X} & \multirow{2}{*}{X} & & \\
-    \hline \small \T
-    Preparação e aplicação do \textit{survey} & & & & & \multirow{2}{*}{X} & \multirow{2}{*}{X} & \\
-    \hline \small \T
-    Escrita da dissertação & & & & & X & X & X \\
-    \hline
-  \end{tabularx}
-\end{table}

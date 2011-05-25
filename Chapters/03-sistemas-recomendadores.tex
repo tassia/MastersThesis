@@ -45,7 +45,7 @@ fatores que a determinam. Portanto, com a ressalva de que estas medidas não
 representam necessariamente a realidade, as pontuações são usadas como
 aproximações, pois têm como base as avaliações registradas pelos próprios usuários.
 
-\section{Ações} \label{sec:acoes}
+\section{Ações e desafios} \label{sec:acoes}
 
 Sistemas de recomendação são implementados nos mais diversos contextos
 e podem ser projetados com finalidades distintas. Abaixo estão descritas
@@ -91,7 +91,7 @@ algumas ações relacionadas a estes sistemas identificadas por
 
 \end{description}
 
-\section{Desafios}
+%\section{Desafios}
 
 O desenvolvimento de sistemas recomendadores têm como desafios questões
 inerentes ao problema de recomendação e sua representação computacional. As
@@ -147,7 +147,7 @@ por \cite{Vozalis:03} e são citadas a seguir.
 
 %FIXME [Analisar complexidade de cada tecnica]
 %FIXME [Produzir figuras ilustrativas do naive bayes]
-\subsection{Técnicas} \label{sec:tecnicas}
+\section{Técnicas} \label{sec:tecnicas}
 
 O desenvolvimento de sistemas de recomendação tem suas raízes em áreas
 distintas e o problema computacional a ser tratado está fortemente relacionado
@@ -205,7 +205,7 @@ A seguir são apresentadas algumas técnicas para tratamento destes problemas
 que também são utilizadas na construção de sistemas de recomendação, dando
 suporte às estratégias apresentadas na seção \ref{sec:estrategias}.
 
-\subsubsection{K-NN} \label{sec:knn}
+\subsection{K-NN} \label{sec:knn}
 
 \textit{K-nearest neighbors (k-NN)}, em português \textit{k vizinhos mais
 próximos}, é mais um algoritmo de aprendizado supervisionado para
@@ -267,10 +267,7 @@ Após a definição de vizinhança, a classe mais frequente entre seus $k$ vizinhos
 entendida como grau de influência entre os objetos. Os objetos mais semelhantes
 a um novo objeto terão maior influência no cálculo de sua classificação.
 
-\newpage
-%\vspace{0.3cm}
-\hspace{-1.4cm}
-\textbf{Seleção de atributos} \label{sec:selecao_atributos}
+\subsubsection{Seleção de atributos} \label{sec:selecao_atributos}
 
 Uma grande quantidade de atributos a ser considerada resulta em alta
 complexidade computacional, além de geralmente mascarar a presença de ruídos
@@ -287,21 +284,17 @@ seguida pela combinação dos diversos conjuntos. Abaixo são apresentados alguns
 métodos de escolha.
 
 \begin{description}
-
   \item[Informação mútua.] Análise de quanto a presença ou ausência de um
     atributo contribui para a tomada de decisão correta por uma determinada
     classe. Informação mútua máxima significa que o atributo é um indicador
     perfeito para pertencimento a uma classe. Isto acontece quando um objeto
-    apresenta o atributo se e somente se o objeto pertence à classe;
-
+    apresenta o atributo se e somente se o objeto pertence à classe.
   \item[Independência de eventos.] Aplicação do teste estatístico $\chi^2$ para
     avaliar a independência de dois eventos -- neste caso, um atributo e uma
     classe. Se os dois eventos são dependentes, então a ocorrência do atributo
     torna a ocorrência da classe mais provável.
-
   \item[Baseado em frequência.] Seleção dos atributos mais comuns para uma
     classe.
-
 \end{description}
 
 Os métodos apresentados acima são ``gulosos'', ou seja, assumem escolhas ótimas
@@ -420,8 +413,7 @@ distribuídas ao longo das classes. Segundo o autor, desde que as dependências
 estejam distribuídas igualmente nas classes, não há problema em haver
 dependência forte entre dois atributos.
 
-\vspace{0.3cm} \hspace{-1.4cm}
-\textbf{Variantes do modelo Bayes ingênuo}
+\subsubsection{Variantes do modelo Bayes ingênuo} \label{sec:variantes_bayes}
 
 As duas principais variantes de implementação do classificador bayesiano,
 denominadas de modelo \textit{multinomial} e de \textit{Bernoulli}, diferem
@@ -798,10 +790,7 @@ Outras abordagens alternativas utilizam normalizações por diversas medidas:
 comprimento do documento, comprimento médio dos documentos da coleção, $\tf$
 máximo ou médio entre os $\tf$s de todos os termos do documento, entre outros.
 
-\newpage
-%\vspace{0.3cm}
-\hspace{-1.4cm}
-\textbf{Modelo de espaço vetorial}
+\subsubsection{Modelo de espaço vetorial} \label{sec:modelo_esp_vet}
 
 Uma coleção de documentos pode ser representada por um conjunto de vetores,
 sendo cada documento descrito como um vetor de termos do dicionário e os
@@ -849,10 +838,7 @@ representada no modelo de espaço vetorial pela matriz da tabela
   \end{tabular}
 \end{table}
 
-%\newpage
-\vspace{0.3cm}
-\hspace{-1.4cm}
-\textbf{Similaridade de cosseno}
+\subsubsection{Similaridade de cosseno} \label{sec:similaridade_cosseno}
 
 Medir a similaridade entre dois documentos pode ser útil, por exemplo, para
 disponibilizar o recurso ``mais do mesmo'', onde o usuário pede indicações
@@ -998,10 +984,7 @@ documentos para apresentação ao usuário. Portanto, qualquer transformação
 desta probabilidade pode ser usada, desde que preserve a ordenação pela
 relevância \cite{Jones:00}.
 
-%\newpage
-\vspace{0.3cm}
-\hspace{-1.4cm}
-\textbf{Modelo formal}
+\subsubsection{Modelo formal} \label{sec:modelo_formal_BM25}
 
 Dado um documento descrito por $D$ e uma \textit{query} $Q$, o modelo considera
 a ocorrência de dois eventos: $L = \{D \text{  é relevante para  } Q\}$ e
@@ -1112,8 +1095,8 @@ A seguir será apresentada a interpretação do modelo formal a partir de
 informações disponíveis sobre a coleção de documentos, com o intuito de
 definir funções de peso eficazes para a ordenação por relevância.
 
-\vspace{0.3cm} \hspace{-1.4cm}
-\textbf{Incidência dos termos e atestação de relevância}
+\subsubsection{Incidência dos termos e atestação de relevância}
+\label{sec:incidencia_termos}
 
 A incidência dos termos nos documentos da coleção é uma informação que pode ser
 facilmente coletada e pode ser utilizada como parâmetro no cálculo da
@@ -1186,8 +1169,8 @@ $\rW$ a partir do estabelecimento de que $R=r=0$
   \rW = \log \frac{N-n+0.5}{n+0.5}
 \end{equation}
 
-\vspace{0.3cm} \hspace{-1.4cm}
-\textbf{Distribuição dos termos nos documentos}
+\subsubsection{Distribuição dos termos nos documentos}
+\label{sec:distribuicao_termos}
 
 A incidência dos termos na coleção distingue os documentos com relação aos
 termos da \textit{query} no que diz respeito apenas à ocorrência ou ausência
@@ -1287,8 +1270,7 @@ este efeito, e se $b=0$ o comprimento do documento não afeta a pontuação final,
                          {k_1((1-b)+b\frac{l_d}{l_{\mathid{avg}}})+\tf_{t,D}}
 \end{equation}
 
-\vspace{0.3cm} \hspace{-1.4cm}
-\textbf{Consultas longas}
+\subsubsection{Consultas longas} \label{sec:consultas_longas}
 
 Em situações onde as consultas podem ser descritas por \textit{queries}
 longas, por exemplo, o caso em que um documento pode ser utilizado como
@@ -1306,10 +1288,7 @@ desconsiderado.
   \rQ = \frac{(k_3+1)\mathid{qtf}_{t,Q}}{k_3+\mathid{qtf}_{t,Q}}
 \end{equation}
 
-\newpage
-%\vspace{0.3cm}
-\hspace{-1.4cm}
-\textbf{Estimativa de relevância}
+\subsubsection{Estimativa de relevância} \label{sec:estimativa_relevancia}
 
 Finalmente, a relevância de um documento $D$ para uma consulta $Q$ pode ser
 obtida pelo somatório dos pesos dos termos da \textit{query} com relação a $D$.
@@ -1430,7 +1409,7 @@ extraídas da base de dados numa única passagem, evitando desta forma repetidos
 acessos à mesma. Árvores de prefixos, árvores lexicográficas e matrizes
 binárias são algumas dessas estruturas \cite{Kotsiantis:06}.
 
-\section{Estratégias de recomendação} \label{sec:estrategias}
+\section{Composição de recomendações} \label{sec:composicao_recomendacoes}
 
 Neste trabalho considera-se uma classificação mista dos seguintes autores.
 \cite{Burke:02} distingue as diferentes estratégias de recomendação a partir
@@ -1608,7 +1587,7 @@ Meta-nível & O modelo que um recomendador ``aprendeu'' é usado como entrada
 \end{tabularx}
 \end{table}
 
-\section{Avaliação de sistemas de recomendação} \label{sec:avaliacao}
+\section{Avaliação} \label{sec:avaliacao}
 
 A avaliação de sistemas de recomendação não é uma tarefa trivial,
 principalmente porque não há consenso sobre quais atributos devem ser
@@ -1658,7 +1637,7 @@ em fases preliminares de testes, porém, tecer conclusões comparativas é
 arriscado visto que os dados produzidos podem se ajustar melhor para uma
 estratégia do que para outras \cite{Herlocker:04}.
 
-\section{Métricas} \label{sec:metricas}
+\subsection{Métricas} \label{sec:metricas}
 
 A tabela \ref{tab:metricas} apresenta métricas utilizadas para avaliação de
 sistemas de recomendação.
@@ -1726,4 +1705,3 @@ sistema de recomendação.
 \end{tabularx}
 \end{sidewaystable}
 
-\newpage

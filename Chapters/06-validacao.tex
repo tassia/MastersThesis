@@ -1,0 +1,99 @@
+\chapter{Validação da proposta} \label{chapter:validacao}
+
+%A primeira fase deste trabalho foi dedicada ao estudo dos métodos comumente
+%utilizados para a produção de recomendação em diversos domínios de aplicação.
+%Nesta seção serão apresentados quais estratégias e técnicas foram selecionadas
+%e estabelecidas como meta de desenvolvimento da presente proposta.
+
+\section{Procedimentos de teste}
+% deixar claro o que os testes visam medir e como isso será medido;
+% tomar cuidado para que as medidas sejam estatisticamente válidas.
+
+Uma avaliação preliminar das diferentes estratégias de recomendação, diferentes
+abordagens de seleção de atributos, bem como o ajuste de parâmetros dos
+algoritmos será realizada através de rodadas de validação cruzada. Dado que o
+conjunto de pacotes instalados em um sistema é sabidamente relevante para o
+mesmo, pode-se selecionar aleatoriamente um conjunto de pacotes de teste e
+utilizar o conjunto restante para treinamento dos algoritmos. As métricas de
+avaliação são então aplicadas a partir dos resultados obtidos para uma série de
+testes.
+
+As soluções que apresentarem melhores resultados nos testes preliminares serão
+avaliados por meio de uma consulta pública. Diante da inexistência de dados que
+possibilitassem a análise \textit{offline} da acurácia de recomendações
+(avaliação real), optou-se pela realização de experimentos diretamente com
+usuários por meio de um \textit{survey} eletrônico. Algumas ferramentas estão
+sendo avaliadas para a construção do \textit{survey}, entre elas, o
+\textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}.
+
+A consulta será guiada através dos seguintes passos:
+\begin{enumerate}
+  \item O usuário envia uma lista de pacotes, como representação de sua
+    identidade. Se desejar, fornece informações adicionais para composição de
+    um perfil baseado em seus interesses pessoais, além de indicar a quantidade
+    de pacotes que deseja receber como sugestão;
+  \item O sistema realiza a computação necessária para gerar recomendações
+    utilizando diferentes estratégias;
+  \item As recomendações são apresentadas ao usuário, juntamente com
+    informações detalhadas de cada item e explicação acerca dos procedimentos
+    realizados;
+  \item O usuário avalia as recomendações apresentadas;
+  \item A análise desta recomendação é realizada com base na aplicação de
+    algumas métricas apresentadas na seção \ref{sec:metricas}.
+\end{enumerate}
+
+Ao término do período de aplicação do \textit{survey}, os dados de avaliações
+individuais serão compilados numa análise de esfera global. Os gráficos
+e considerações resultantes serão apresentados na versão final deste trabalho.
+
+\subsection{Coleta de dados}
+
+Os dados estatísticos disponíveis publicamente no site do \textit{Popcon} não
+preservam os relacionamentos usuário-item, essenciais para a utilização de
+estratégias colaborativas. Por questões relativas à
+privacidade\footnote{\url{http://popcon.debian.org/FAQ}}, as listas de pacotes
+originais submetidas pelos usuários não são publicadas, apenas as estatísticas
+geradas e um resumo de todas as submissões são disponibilizados diariamente.
+No entanto, este trabalho é desenvolvido com o apoio de desenvolvedores
+oficiais Debian, o que possibilitará o acesso aos dados necessários.
+
+No entanto, as bases de dados do \textit{UDD} e do \textit{Debtags} são
+públicas, não havendo impedimento algum para acessá-las. Por fim, perfis de
+usuários podem ser formados com base no preenchimento facultativo de um
+formulário antes da utilização do recomendador.
+
+\subsection{Seleção de atributos}
+
+A seleção de atributos geralmente proporciona ganhos na eficiência e qualidade
+das recomendações, na medida em que diminui o ruído e o montante de dados a
+ser considerado. Além da aplicação de métodos clássicos de seleção,
+apresentados na seção \ref{sec:selecao_atributos}, existem peculiaridades do
+domínio de componentes de software que podem ampliar tais benefícios se
+consideradas.
+
+Seja qual for o sistema operacional ou distribuição GNU/Linux, existe um
+conjunto de componentes que fazem parte da instalação padrão, selecionados
+pela equipe de desenvolvimento. Considerando que os usuários do recomendador
+utilizam um sistema funcional, existem dois casos a considerar: (1) todo o
+conjunto de componentes da instalação padrão está instalado no sistema e (2)
+alguns componentes não estão presentes porque foram propositalmente removidos
+pelo usuário. Em ambos os casos a recomendação de tais pacotes certamente não
+interessaria ao usuário, portanto acredita-se que todos eles possam ser
+desconsiderados sem prejuízo para a recomendação.
+
+Os dados coletados pelo \textit{Popcon} também possuem informações temporais.
+A data de instalação do pacote no sistema é obtida através do atributo
+\textit{ctime} do arquivo, que indica a data de sua criação no sistema de
+arquivos, enquanto a data de última utilização é indicada pelo \textit{atime},
+com a data do último acesso. Apesar destes dados não serem seguramente
+confiáveis\footnote{\url{http://popcon.debian.org/README}}, a possibilidade
+de uso dos mesmo será investigada. Seria interessante, por exemplo, atribuir
+pesos diferentes para pacotes que são usados com muita frequência pelo usuário
+em detrimento de outros que foram acessados pela última vez logo após serem
+instalados.
+
+\section{Ambiente de testes}
+\section{Experimentos realizados}
+\section{Análise dos resultados}
+\section{Comparação com trabalhos correlatos}
+\section{Conclusão}

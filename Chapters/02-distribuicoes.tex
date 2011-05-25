@@ -1,7 +1,16 @@
 \chapter{Distribuições GNU/Linux} \label{chapter:distribuicoes}
 
-Em 1983 Richard Stallman criou o projeto GNU\footnote{\url{hhtp://www.gnu.org}}
-com o objetivo principal de desenvolver um sistema operacional livre em
+\section{Surgimento}
+
+Distribuições GNU/Linux, popularmente conhecidas como \emph{distros}, são
+variações do sistema operacional composto pelo kernel Linux e milhares de
+aplicativos em sua maioria desenvolvidos pelo projeto GNU. As primeiras
+iniciativas neste domínio surgiram em circunstâncias que favoreciam o
+desenvolvimento colaborativo, abertura de código e comunicação predominatemente
+por meio da Internet.
+
+O projeto GNU\footnote{\url{hhtp://www.gnu.org}} foi criado em 1983 por Richard
+Stallman com o objetivo principal de desenvolver um sistema operacional livre em
 alternativa ao UNIX\footnote{\url{http://www.unix.org/}} -- solução comercial
 amplamente difundida na indústria -- e que fosse compatível com os padrões
 POSIX\footnote{Acrônimo para \textit{Portable Operating System Interface}, é uma
@@ -14,30 +23,40 @@ Hurd}) não acompanhou o ritmo dos demais aplicativos.
 
 Em outubro de 1991 o estudante finlandês Linus Torvalds publicou a versão
 0.02 do Freax, o núcleo de um sistema operacional (\textit{kernel}, em inglês)
-desenvolvido por ele na universidade. Nem o próprio Linus imaginava que aquele
-projeto, desenvolvido sem grandes pretensões, teria a dimensão do que hoje
-conhecemos como Linux \cite{Linus:01}.
+desenvolvido por ele na universidade, com o intuito de atrair colaboradores
+para o projeto. Mais tarde Torvalds admitiu que não imaginava que aquele
+projeto desenvolvido sem grandes pretensões teria a dimensão do que hoje se
+conhece como Linux \cite{Linus:01}.
 
 Com o anúncio de Torvalds, Stallman vislumbrou a possibilidade de acelerar o
-lançamento do sistema operacional livre, se os aplicativos GNU que já estavam
+lançamento do sistema operacional livre se os aplicativos GNU que já estavam
 prontos fossem combinados com o núcleo recém-lançado -- de fato, a primeira
 versão estável do GNU Hurd foi lançada apenas em 2001. Em 1992 o Linux foi
 licenciado sob a GNU GPL\footnote{Acrônimo para \textit{General Public
 License}, é um suporte legal para a distribuição livre de softwares.} e as
 equipes dos dois projetos começaram a trabalhar na adaptação do kernel Linux
 para o ambiente GNU. Este esforço conjunto desencadeou o surgimento das
-distribuições GNU/Linux, que são variações do sistema operacional composto por
-milhares de aplicativos majoritariamente desenvolvidos pelo projeto GNU e pelo
-kernel Linux.
+primeiras distribuições GNU/Linux.
 
-Distribuições GNU/Linux, como Debian, Fedora, Mandriva e Ubuntu, oferecem
-diferentes ``sabores'' do sistema operacional, constituídos por aplicativos
-selecionados por seus desenvolvedores. As distribuições reduzem a
-complexidade de instalação e atualização do sistema para usuários finais
-\cite{Cosmo:08}. Os mantenedores da distribuição atuam como intermediários
-entre os usuários e os autores dos softwares (chamados de \textit{upstreams}),
-através do encapsulamento de componentes de software em abstrações denominadas
+As distros oferecem diferentes ``sabores'' do sistema operacional, a exemplo do
+Debian, Fedora, Mandriva e Ubuntu, que são constituídos por aplicativos
+criteriosamente selecionados por seus desenvolvedores. Tais iniciativas tendem
+a reduzir a complexidade de instalação e atualização do sistema para usuários
+finais \cite{Cosmo:08}. Os desenvolvedores (ou \emph{mantenedores}) de
+distribuições atuam como intermediários entre os usuários e os autores dos
+softwares (neste contexto denominados de \textit{upstreams}), por meio do
+encapsulamento de componentes de software em abstrações denominadas
 \textit{pacotes}.
+
+\section{Empacotamento de programas}
+
+%FIXME [Desenvolver os temas relacionados a empacotamento: estrutura de um pacote, tipos e funcoes, repositorios, relacoes de dependecia, etc.]
+
+\section{Sistemas gerenciadores de pacotes}
+
+%FIXME [Descrever o apt, rpm, software-center e outras solucoes]
+
+\section{Seleção de pacotes}
 
 O processo de desenvolvimento e manutenção de uma distribuição varia bastante
 de uma para outra e está diretamente ligado à constituição do projeto. Quando
@@ -55,98 +74,21 @@ mais favorável ao sucesso, pois um bom trabalho de desenvolvimento de software
 é motivado por uma necessidade pessoal do desenvolvedor (ou seja, o
 desenvolvedor é também usuário).
 
-A seleção e configuração dos aplicativos básicos de uma distribuição ficam
-sob a responsabilidade da equipe que a desenvolve, com diferentes níveis de
-interferência da comunidade, como descrito acima. Este é um ponto crucial do
-desenvolvimento, visto que é um dos fatores que mais influenciam a escolha dos
-usuários pela distribuição. O impacto que tal seleção tem para a comunidade de
-usuários resulta em frequentes polêmicas em torno do tema, como a gerada pelo
-anúncio de que o projeto \textit{Ubuntu} abandonaria o \textit{Gnome} como
-interface padrão de usuário \cite{Paul:10}.
+A seleção e configuração dos aplicativos básicos de uma distribuição são
+de responsabilidade da equipe que a desenvolve, com diferentes níveis de
+interferência da comunidade, sendo uma questão crucial no projeto, dado que é
+um dos fatores de grande influência na escolha dos usuários pela distribuição.
+O impacto de tal seleção para os usuários finais resulta em frequentes
+polêmicas em torno do tema, como a gerada pelo anúncio de que o projeto
+\textit{Ubuntu} abandonaria o \textit{Gnome} como interface padrão de usuário
+\cite{Paul:10}.
 
-Softwares adicionais para atender a demandas específicas dos usuários
-devem ser instalados pelos mesmos, após a configuração do sistema operacional.
-A infraestrutura de instalação de softwares provida pela distribuição,
-geralmente baseada em pacotes, facilita este processo \cite{Cosmo:08}. Ainda
-assim, a seleção dos programas é de responsabilidade do usuário do sistema.
+Após a configuração de um sistema básico, a instalação de programas adicionais
+resulta na personalização do sistema para atender a demandas específicas dos
+usuários para o qual foi projetado. Ainda que a infraestrutura de instalação
+de softwares provida pelas distribuições (geralmente baseada em pacotes)
+simplifique a manutenção de sistemas \cite{Cosmo:08}, a seleção dos programas
+depende de uma ação humana. Com o desenvolvimento deste trabalho, pretende-se
+auxiliar o indivíduo nesta tarefa, especialmente quando este não possuir
+experiência pessoal para realizar escolhas neste contexto.
 
-\section{Escolha da plataforma}
-
-A distribuição escolhida como base para o desenvolvimento deste trabalho
-foi o Debian GNU/Linux. No entanto, a codificação será realizada com o maior
-grau possível de independência de plataforma, com o intuito de que os
-resultados sejam facilmente adaptáveis para outros contextos. As seguir estão
-descritos os critérios que pautaram esta escolha.
-
-\begin{enumerate}
-
-\item \textbf{Esquema consistente de distribuição de aplicativos.} O
-  gerenciamento de pacotes em sistemas Debian GNU/Linux é realizado através do
-  \textit{APT (Advanced Packaging
-  Tool)}\footnote{\url{http://wiki.debian.org/Apt}}. Ações como a busca,
-  obtenção, instalação, atualização e remoção de pacotes são disparadas pelo
-  \textit{APT}, que num nível mais baixo faz uso do \textit{dpkg}, ferramenta
-  que de fato realiza instalações e remoções de softwares. O \textit{APT}
-  também gerencia de maneira eficiente as relações de conflito e dependência
-  entre pacotes. Ao receber um pedido de modificação da configuração do sistema
-  -- por exemplo, instalação de um novo componente -- o \textit{APT} tenta
-  satisfazer a requisição a partir do conhecimento de como obter os componentes
-  (endereço dos repositórios de pacotes) e das relações de dependência entre os
-  mesmos. Desta forma, o gerenciador promove a instalação de todas as
-  dependências de um pacote antes de instalá-lo, ao passo que não permite a
-  instalação de pacotes que conflitem com outros já instalados no sistema.
-
-\vspace{0.3cm}
-\item \textbf{Disponibilidade de dados estatísticos.} O \textit{Popcon
-  (Popularity Contest)}\footnote{\url{http://popcon.debian.org}} é a concurso
-  de popularidade entre pacotes. Os usuários que aceitam participar do concurso
-  enviam periodicamente a sua lista de pacotes instalados no sistema, que são
-  armazenados no servidor do Popcon. Diariamente as listas recebidas são
-  processadas e dados estatísticos acerca do uso dos pacotes são gerados e
-  disponibilizados no website do projeto.
-
-\vspace{0.3cm}
-\item \textbf{Possibilidade de integração dos resultados do trabalho.} Segundo
-  o \textit{contrato social
-  Debian}\footnote{\url{http://www.debian.org/social_contract.pt.html}},
-  o desenvolvimento do projeto é guiado pelas necessidades dos usuários e da
-  comunidade. Portanto, as iniciativas de colaboradores individuais, sejam eles
-  desenvolvedores oficiais ou não, serão igualmente consideradas e passarão a
-  fazer parte da distribuição se seguirem os princípios do projeto e forem
-  considerados úteis para a comunidade.
-
-\vspace{0.3cm}
-\item \textbf{Popularidade.} O Debian é um projeto de destaque no ecossistema
-  do software livre. Desde o lançamento da primeira versão de sua distribuição,
-  em 1993, o projeto cresceu bastante em termos de componentes de software
-  (atualmente provê mais de 25.000 pacotes), colaboradores e usuários. A
-  \textit{Distrowatch}, que tem 323 distribuições ativas em sua base de
-  dados\footnote{Consulta realizada em 24 de janeiro de 2011.}, classifica o
-  Debian GNU/Linux entre as 10 distribuições mais
-  populares\footnote{\url{http://distrowatch.com/dwres.php?resource=major}}.
-  O Debian aparece na quinta posição em suas estatísticas de páginas
-  visitadas\footnote{\url{http://distrowatch.com/stats.php?section=popularity}}.
-  Já o \textit{Linux Counter\footnote{\url{http://counter.li.org/reports/machines.php}}} apresenta o Debian como a segunda distribuição mais popular entre as
-  máquinas cadastradas que rodam o kernel Linux ($16\%$), ficando atrás apenas
-  do Ubuntu\footnote{\url{http://www.ubuntu.com/community/ubuntu-and-debian}}
-  ($24\%$), que é uma distribuição derivada do Debian. Nas pesquisas da
-  \textit{W$^{\textrm{3}}$Techs} sobre tecnologias para serviços
-  web\footnote{\url{http://w3techs.com/technologies/history_details/os-linux}},
-  o Debian aparece em segundo lugar, estando presente em $27\%$ dos servidores.
-  Na primeira posição está o CentOS com $31\%$.
-
-\end{enumerate}
-
-De maneira geral, quando o projeto Debian é mencionado trata-se não somente do
-sistema operacional, mas de toda a infra-estrutura de desenvolvimento e
-coordenação que dá suporte ao trabalho de cerca de 900 desenvolvedores
-oficiais\footnote{\url{http://www.perrier.eu.org/weblog/2010/08/07\#devel-countries-2010}},
-além de outros milhares de colaboradores ao redor do globo. O trabalho é
-realizado de forma colaborativa, afinado pelo objetivo comum de produzir e
-disponibilizar livremente um sistema operacional de qualidade para seus
-usuários \cite{Jackson:98}. A interação entre os desenvolvedores acontece
-majoritariamente através da Internet, por meio de canais IRC e listas de
-discussão públicas. Não existe uma entidade formal ou qualquer tipo de
-organização que concentre, coordene ou defina as atividades do projeto. O que
-observa-se é um modelo de governança consolidado que emergiu naturalmente ao
-longo de sua história \cite{Ferraro:07}.
