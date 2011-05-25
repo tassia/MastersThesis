@@ -3,12 +3,13 @@
 \LoadClass[11pt,a4paper,twoside,openright]{memoir}
 \RequirePackage{graphicx,url,fancybox,wrapfig}
 \RequirePackage{multirow,tabularx}
-\RequirePackage[english,brazil]{babel}
+\RequirePackage[english,brazilian]{babel}
 \newcommand{\keywordsname}{""}
 \addto\captionsenglish{\renewcommand{\keywordsname}{Keywords}}
-\addto\captionsbrazil{\renewcommand{\keywordsname}{Palavras-chave}}
+\addto\captionsbrazilian{\renewcommand{\keywordsname}{Palavras-chave}}
 \RequirePackage[latin1]{inputenc}
-\RequirePackage{hyperref}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{ae,aecompl}
 \RequirePackage{amsmath}
 \RequirePackage{pdflscape}
 \RequirePackage{enumerate}
@@ -17,10 +18,14 @@
 \RequirePackage{slashbox}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{cancel}
-\pagestyle{empty}
-\chapterstyle{bianchi}
-\sloppy
 \RequirePackage[a4paper,inner=3.0cm,outer=2.5cm,top=2.5cm,bottom=2.5cm,pdftex]{geometry}
+\RequirePackage[colorlinks=true,linkcolor=magenta,urlcolor=blue]{hyperref}
+
+\chapterstyle{bianchi}
+\pagestyle{empty}
+\maxsecnumdepth{subsection}
+\sloppy
+\hyphenpenalty=750
 
 % Definição da capa da dissertação com base em:
 % http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
