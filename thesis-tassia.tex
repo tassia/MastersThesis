@@ -16,48 +16,51 @@
 
 \begin{document}
 \maketitle
+\frontmatter
 \begin{abstract}
-  A crescente oferta de programas de código aberto na rede mundial de
-  computadores expõe potenciais usuários a inúmeras possibilidades de escolha.
-  Em face da pluralidade de interesses destes indivíduos, mecanismos eficientes
-  que os aproximem daquilo que buscam trazem benefícios para eles próprios,
-  assim como para os desenvolvedores dos programas. O \emph{AppRecommender} é
-  um recomendador de aplicativos GNU/Linux que realiza uma filtragem no
-  conjunto de programas disponíveis e oferece sugestões individualizadas para
-  os usuários. Tal feito é alcançado por meio da análise de perfis e descoberta
-  de padrões de comportamento na população estudada, de sorte que apenas os
-  aplicativos considerados mais suscetíveis a aceitação sejam oferecidos aos
-  usuários.
-\end{abstract}
+A crescente oferta de programas de código aberto na rede mundial de
+computadores expõe potenciais usuários a inúmeras possibilidades de
+escolha.\ Em face da pluralidade de interesses destes indivíduos, mecanismos
+eficientes que os aproximem daquilo que buscam trazem benefícios para eles
+próprios, assim como para os desenvolvedores dos programas.\ O
+\emph{AppRecommender} é um recomendador de aplicativos GNU/Linux que realiza
+uma filtragem no conjunto de programas disponíveis e oferece sugestões
+individualizadas para os usuários. Tal feito é alcançado por meio da análise de
+perfis e descoberta de padrões de comportamento na população estudada, de sorte
+que apenas os aplicativos considerados mais suscetíveis a aceitação sejam
+oferecidos aos usuários. \keywords{Sistemas de recomendação, distribuições
+GNU/Linux}.  \end{abstract}
 \selectlanguage{english}
 \begin{abstract}
-  The increasing availability of open source software on the World Wide Web
-  exposes potential users to a wide range of choices. Given the individuals
-  plurality of interests, mechanisms that get them close to what they are
-  looking for would benefit themselves and the software developers as well.
-  \emph{AppRecommender} is a recommender system for GNU/Linux applications
-  which performs a filtering on the set of available software and individually
-  offers suggestions to users. This is achieved by analyzing profiles and
-  discovering patterns of behavior of the studied population, in a way that
-  only those applications considered most prone to acceptance are presented to
-  users.
+The increasing availability of open source software on the World Wide Web
+exposes potential users to a wide range of choices.\ Given the individuals
+plurality of interests, mechanisms that get them close to what they are
+looking for would benefit themselves and the software developers as well.
+\emph{AppRecommender} is a recommender system for GNU/Linux applications
+which performs a filtering on the set of available software and individually
+offers suggestions to users. This is achieved by analyzing profiles and
+discovering patterns of behavior of the studied population, in a way that
+only those applications considered most prone to acceptance are presented to
+users. \keywords{Recommender systems, GNU/Linux distributions}.
 \end{abstract}
 
-\selectlanguage{portuguese}
-\pagestyle{plain}
-
+\selectlanguage{brazilian}
 \cleardoublepage
+\pagestyle{ruled}
 \tableofcontents
+\cleardoublepage
 \listoffigures
+\cleardoublepage
 \listoftables
 
+\mainmatter
 \input{Chapters/01-introducao}
 \input{Chapters/02-distribuicoes}
 \input{Chapters/03-sistemas-recomendadores}
 \input{Chapters/04-trabalhos-correlatos}
 \input{Chapters/05-app-recommender}
-\input{Chapters/06-trabalhos-futuros}
-\input{Chapters/07-conclusao}
+\input{Chapters/06-validacao}
+\input{Chapters/07-conclusoes}
 
 \bibliographystyle{sbc}
 \bibliography{thesis-tassia}
