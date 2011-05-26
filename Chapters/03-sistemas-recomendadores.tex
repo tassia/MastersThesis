@@ -1,25 +1,32 @@
 \chapter{Sistemas Recomendadores} \label{chapter:recomendadores}
 
-%A popularização de recursos computacionais e do acesso à Internet nas
-%últimas décadas proporcionou um aumento expressivo na diversidade de serviços e
-%conteúdo à disposição dos usuários. Um dos fatores para este aumento é que
-%os usuários, que anteriormente eram considerados meros consumidores,
-%apresentam-se atualmente como produtores de conteúdo. \cite{Castells:06} analisa
-%este fenômeno e afirma que a maioria da população acredita que pode influenciar
-%outras pessoas atuando no mundo através da sua força de vontade e
-%utilizando seus próprios meios. Isto pode ser observado no surgimento e
-%proliferação de serviços criados e mantidos pelos usuários: blogs, enciclopédias
-%colaborativas, como a Wikipedia\footnote{\url{http://wikipedia.org}},
-%repositórios para compartilhamento de fotografia e vídeo, como Flickr
-%\footnote{\url{http://flickr.com}} e Youtube\footnote{\url{http://youtube.com}},
-%entre outros. Considerando a produção em termos de software, observa-se o
-%exemplo das comunidades de software livre e/ou de código aberto
-%(FOSS\footnote{Termo consolidado no idioma inglês, acrônimo para
-%\textit{Free/Open-Source Software}, que diz respeito aos programas licenciados
-%livremente para garantir aos usuários o direito de uso, estudo e modificação,
-%por meio da disponibilidade do seu código-fonte.}), que propiciam a construção
-%coletiva de uma ampla gama de softwares de qualidade em constante atualização
-%e evolução, organizados na forma de um rossio \cite{Simon:08}.
+O estado da arte em sistemas de recomendação é apresentado neste capítulo. As
+circunstâncias que justificaram o surgimento de tais sistemas, objetivos e
+desafios comuns no desenvolvimento, técnicas que apoiam a composição das
+recomendações e métricas de avaliação são alguns dos tópicos tratados.
+
+\section{Contexto histórico}
+
+A popularização de recursos computacionais e do acesso à Internet nas
+últimas décadas proporcionou um aumento expressivo na diversidade de serviços e
+conteúdo à disposição dos usuários. Um dos fatores para este aumento é que
+os usuários, que anteriormente eram considerados meros consumidores,
+apresentam-se atualmente como produtores de conteúdo. \cite{Castells:06} analisa
+este fenômeno e afirma que a maioria da população acredita que pode influenciar
+outras pessoas atuando no mundo através da sua força de vontade e
+utilizando seus próprios meios. Isto pode ser observado no surgimento e
+proliferação de serviços criados e mantidos pelos usuários: blogs, enciclopédias
+colaborativas, como a Wikipedia\footnote{\url{http://wikipedia.org}},
+repositórios para compartilhamento de fotografia e vídeo, como Flickr
+\footnote{\url{http://flickr.com}} e Youtube\footnote{\url{http://youtube.com}},
+entre outros. Considerando a produção em termos de software, observa-se o
+exemplo das comunidades de software livre e/ou de código aberto
+(FOSS\footnote{Termo consolidado no idioma inglês, acrônimo para
+\textit{Free/Open-Source Software}, que diz respeito aos programas licenciados
+livremente para garantir aos usuários o direito de uso, estudo e modificação,
+por meio da disponibilidade do seu código-fonte.}), que propiciam a construção
+coletiva de uma ampla gama de softwares de qualidade em constante atualização
+e evolução, organizados na forma de um rossio \cite{Simon:08}.
 
 Segundo \cite{Resnick:97}, os sistemas de recomendação aumentam a capacidade e
 eficácia de um processo de indicação bastante popular nas relações sociais.
@@ -31,6 +38,8 @@ agregarem valor às mesmas. O que acontece de forma explícita, quando o
 próprio usuário escreve sua opinião ou avalia a qualidade de um item, ou
 implícita, quando suas preferências, comportamentos e transações são analisados
 e incorporados à recomendação de forma transparente ao usuário.
+
+\section{O problema computacional}
 
 O problema da recomendação é comumente formalizado através de uma estrutura de
 pontuação como representação computacional da utilidade dos itens para os
@@ -44,6 +53,12 @@ dificuldades em distinguir qualitativamente e definir quantitativamente os
 fatores que a determinam. Portanto, com a ressalva de que estas medidas não
 representam necessariamente a realidade, as pontuações são usadas como
 aproximações, pois têm como base as avaliações registradas pelos próprios usuários.
+
+%FIXME [Desenvolver os temas: perfis de usuario e privacidade]
+
+\section{Identidade}
+
+Identidade, geração e manutenção de perfis de usuários, reputação, privacidade.
 
 \section{Ações e desafios} \label{sec:acoes}
 
@@ -135,15 +150,6 @@ por \cite{Vozalis:03} e são citadas a seguir.
     se beneficiam de sistemas de recomendações.
 
 \end{description}
-
-%FIXME [Desenvolver os temas: perfis de usuario e privacidade]
-
-%\subsection{Perfis de Usuário}
-%. Identidade\\
-%. Geração e manutenção de perfil\\
-%. Reputação
-%
-%\subsection{Privacidade}
 
 %FIXME [Analisar complexidade de cada tecnica]
 %FIXME [Produzir figuras ilustrativas do naive bayes]

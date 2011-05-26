@@ -1,7 +1,7 @@
 \chapter{App-Recommender} \label{chapter:app-rec}
 
-Esta seção apresenta as fases de desenvolvimento deste trabalho, de acordo com
-seu planejamento até a presente data.
+Este capítulo apresenta o \emph{AppRecommender} como proposta de um
+recomendador de aplicativos GNU/Linux.
 
 \section{Escolha da plataforma}
 
@@ -83,27 +83,6 @@ discussão públicas. Não existe uma entidade formal ou qualquer tipo de
 organização que concentre, coordene ou defina as atividades do projeto. O que
 observa-se é um modelo de governança consolidado que emergiu naturalmente ao
 longo de sua história \cite{Ferraro:07}.
-
-\section{Pacotes Debian}
-%[Pacotes Debian, Relação entre pacotes, O Repositório de Pacotes]
-
-%\subsection{Pacotes Debian}
-%. Binários e fontes\\
-%. upstream, maintainer, uploader\\
-%. Prioridade: required, important, standard, optional, extra\\
-%. Base system = required or important (muitos são marcados como essenciais)\\
-%. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado\\
-%
-%\subsection{Relação entre pacotes}
-%. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
-%. Anti-dependência: Breaks, Conflicts, Replaces\\
-%. Pacotes virtuais: Provides\\
-%. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
-%
-%\subsection{O Repositório de Pacotes}
-%. The Debian Archive,\\
-%. Áreas: main, contrib, non-free\\
-%. Seções\\
 
 \section{Caracterização do problema}
 
@@ -202,7 +181,64 @@ revelar novas funcionalidades como abstrações de conjuntos de \textit{tags},
 que poderão eventualmente ser utilizadas para refinar o cálculo das
 recomendações.
 
-\section{Estratégias de recomendação}
+\section{Coleta de dados}
+
+Os dados estatísticos disponíveis publicamente no site do \textit{Popcon} não
+preservam os relacionamentos usuário-item, essenciais para a utilização de
+estratégias colaborativas. Por questões relativas à
+privacidade\footnote{\url{http://popcon.debian.org/FAQ}}, as listas de pacotes
+originais submetidas pelos usuários não são publicadas, apenas as estatísticas
+geradas e um resumo de todas as submissões são disponibilizados diariamente.
+No entanto, este trabalho é desenvolvido com o apoio de desenvolvedores
+oficiais Debian, o que possibilitará o acesso aos dados necessários.
+
+No entanto, as bases de dados do \textit{UDD} e do \textit{Debtags} são
+públicas, não havendo impedimento algum para acessá-las. Por fim, perfis de
+usuários podem ser formados com base no preenchimento facultativo de um
+formulário antes da utilização do recomendador.
+
+\section{Seleção de atributos}
+
+A seleção de atributos geralmente proporciona ganhos na eficiência e qualidade
+das recomendações, na medida em que diminui o ruído e o montante de dados a
+ser considerado. Além da aplicação de métodos clássicos de seleção,
+apresentados na seção \ref{sec:selecao_atributos}, existem peculiaridades do
+domínio de componentes de software que podem ampliar tais benefícios se
+consideradas.
+
+Seja qual for o sistema operacional ou distribuição GNU/Linux, existe um
+conjunto de componentes que fazem parte da instalação padrão, selecionados
+pela equipe de desenvolvimento. Considerando que os usuários do recomendador
+utilizam um sistema funcional, existem dois casos a considerar: (1) todo o
+conjunto de componentes da instalação padrão está instalado no sistema e (2)
+alguns componentes não estão presentes porque foram propositalmente removidos
+pelo usuário. Em ambos os casos a recomendação de tais pacotes certamente não
+interessaria ao usuário, portanto acredita-se que todos eles possam ser
+desconsiderados sem prejuízo para a recomendação.
+
+Os dados coletados pelo \textit{Popcon} também possuem informações temporais.
+A data de instalação do pacote no sistema é obtida através do atributo
+\textit{ctime} do arquivo, que indica a data de sua criação no sistema de
+arquivos, enquanto a data de última utilização é indicada pelo \textit{atime},
+com a data do último acesso. Apesar destes dados não serem seguramente
+confiáveis\footnote{\url{http://popcon.debian.org/README}}, a possibilidade
+de uso dos mesmo será investigada. Seria interessante, por exemplo, atribuir
+pesos diferentes para pacotes que são usados com muita frequência pelo usuário
+em detrimento de outros que foram acessados pela última vez logo após serem
+instalados.
+
+\section{Codificação}
+
+O desenvolvimento de software será majoritariamente realizado na linguagem de
+programação \textit{Python}\footnote{\url{http://www.python.org/}},
+principalmente pela facilidade de integração com outras ferramentas do Debian
+também desenvolvidas nesta linguagem. Ademais, a vasta documentação e grande
+variedade de bibliotecas de utilidade para o trabalho, a exemplo da
+\textit{NLTK}\footnote{\url{http://www.nltk.org/}}
+e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
+contribuíram para esta escolha.
+
+\section{Estratégias implementadas}
 
 \begin{enumerate}[(a)]
   \item \textbf{Baseada em conteúdo}
@@ -282,15 +318,4 @@ recomendadores. De certa forma, a combinação vai acontecer na apresentação do
 \textit{survey} para o usuário.
 
 \end{enumerate}
-
-\section{Codificação}
-
-O desenvolvimento de software será majoritariamente realizado na linguagem de
-programação \textit{Python}\footnote{\url{http://www.python.org/}},
-principalmente pela facilidade de integração com outras ferramentas do Debian
-também desenvolvidas nesta linguagem. Ademais, a vasta documentação e grande
-variedade de bibliotecas de utilidade para o trabalho, a exemplo da
-\textit{NLTK}\footnote{\url{http://www.nltk.org/}}
-e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
-contribuíram para esta escolha.
 
