@@ -1,55 +1,173 @@
 \chapter{Validação da proposta} \label{chapter:validacao}
 
-Este capítulo descreve os experimentos realizados com o intuito de validar a
+Este capítulo relata os experimentos realizados com o intuito de validar a
 ferramenta desenvolvida, seguidos pelos resultados obtidos e considerações
-sobre os mesmos.
+sobre os mesmos. Os procedimentos de teste aconteceram em dois momentos
+distintos, seleção de modelo e consulta pública, descritos nas seções a seguir.
 
-\section{Procedimentos de teste}
+%p. 50: "é aceitável experimentar diversos algoritmos no mesmo conjunto de dados
+%porque análise de cluster é geralmente utilizada como ferramenta exploratória
+%ou descritiva, em contraste com testes estatísticos que são realizados para
+%fins de confirmação ou inferência. Ou seja, não queremos provar (ou disprovar)
+%uma hipótese pré-concebida; nós só queremos ver o que os dados estão tentando
+%nos dizer."
+
+\section{Seleção de modelo}
 
 As diferentes estratégias de recomendação e abordagens para seleção de
-atributos podem ser comparadas através de validação cruzada, um método
-de estimativa de acurácia de modelos preditivos. \emph{10-fold cross-validation}
-foi a técnica escolhida, por geralmente apresentar resultados \cite{Kohavi:95}.
+atributos foram comparadas através de validação cruzada, método para
+estimativa de acurácia de modelos preditivos. Dado que tais estimativas são
+utilizadas primordialmente para fins de comparação entre modelos de
+recomendadores, a acurácia absoluta de cada estratégia é considerada menos
+importante, admitindo-se resultados enviesados\footnote{o termo viés é
+utilizado em estatística para expressar erro sistemático ou tendenciosidade}
+de acordo com a hipótese de que o viés afeta todos os modelos de forma similar
+(por exemplo, todas as estimativas são pessimistas ou todas são otimistas)
+\cite{Kohavi:95}. % a comparação é feita através da variância obtida para cada modelo.
 
-Dado que o conjunto de pacotes instalados em um sistema é sabidamente relevante
-para o mesmo, pode-se selecionar aleatoriamente um conjunto de pacotes de teste
-a partir desses e utilizar o conjunto restante para treinamento dos algoritmos.
-As métricas de avaliação são então aplicadas a partir dos resultados obtidos
-para uma série de testes.
+A ideia central da validação cruzada é o isolamento de uma porção aleatória dos
+dados cuja relevância é conhecida, treinamento do modelo com os demais dados e
+posterior submissão da porção reservada para teste. A acurácia dos resultados é
+medida por meio da comparação dos resultados obtidos com os esperados (media
+estatística de variância). A validação em rodadas (\emph{k-fold
+cross-validation}) consiste basicamente nos seguintes passos:
 
-Os parâmetros de alguns algoritmos também foram ajustados com base em
-rodadas de validação cruzada.
+\begin{enumerate}
+\item O conjunto de dados original é particionado em $k$ subconjuntos;
+\item Em cada uma das $k$ rodadas, apenas um dos subconjuntos é reservado para
+testar o modelo ao passo que todos os outros são usados como dados treinamento;
+\item Ao final dos testes, os resultados são combinados para produzir uma única
+estimativa.
+\end{enumerate}
 
-%As soluções que apresentarem melhores resultados nos testes preliminares serão
-%avaliados por meio de uma consulta pública. Diante da inexistência de dados que
-%possibilitassem a análise \textit{offline} da acurácia de recomendações
-%(avaliação real), optou-se pela realização de experimentos diretamente com
-%usuários por meio de um \textit{survey} eletrônico. Algumas ferramentas estão
-%sendo avaliadas para a construção do \textit{survey}, entre elas, o
-%\textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}.
-%
-%A consulta será guiada através dos seguintes passos:
-%\begin{enumerate}
-%  \item O usuário envia uma lista de pacotes, como representação de sua
-%    identidade. Se desejar, fornece informações adicionais para composição de
-%    um perfil baseado em seus interesses pessoais, além de indicar a quantidade
-%    de pacotes que deseja receber como sugestão;
-%  \item O sistema realiza a computação necessária para gerar recomendações
-%    utilizando diferentes estratégias;
-%  \item As recomendações são apresentadas ao usuário, juntamente com
-%    informações detalhadas de cada item e explicação acerca dos procedimentos
-%    realizados;
-%  \item O usuário avalia as recomendações apresentadas;
-%  \item A análise desta recomendação é realizada com base na aplicação de
-%    algumas métricas apresentadas na seção \ref{sec:metricas}.
-%\end{enumerate}
-%
+Supondo que o conjunto de pacotes instalados em um sistema é relevante
+para o mesmo, em cada uma das rodadas foi selecionado aleatoriamente um
+subconjunto de pacotes para testar o recomendador. As métricas de avaliação
+foram então calculadas a partir das sugestões geradas em relação à relevância
+conhecida.
+
+\subsection{Ambiente de testes}
+
+Os experimentos de seleção de modelo foram realizados no servidor
+brucutu.ime.usp.br, acessível apenas a partir da rede interna do IME-USP.
+Detalhes de software e hardware estão descritos na tabela abaixo.
+
+\begin{table}[h!]
+  \caption{Descrição de ambiente de testes}
+  \label{tab:modelos_recomendadores}
+  \centering
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabular}{| l | l |}
+    \hline
+    Nome & brucutu.ime.usp.br  \T\B\\
+    \hline
+    Sistema Operacional & Ubuntu GNU/Linux  \T\B\\
+    \hline
+    Kernel & Linux 2.6.28-19  \T\B\\
+    \hline
+    Quantidade de processadores & 8  \T\B\\
+    \hline
+    Modelo & Intel(R) Xeon(R) CPU E5440  @ 2.83GHz (64 bits)\T\B\\
+    \hline
+    Memória volátil & 32GB \T\B\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{Experimentos realizados}
+
+\subsection{Pré-processamento dos dados}
+
+Os modelos testados estão descritos na tabela \ref{tab:modelos_recomendadores} e
+a validação cruzada foi realizada em 10 rodadas ($k=10$).
+
+\begin{table}[h!]
+  \caption{Descrição de modelos de recomendadores}
+  \label{tab:modelos_recomendadores}
+  \centering
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabular}{| l | l |}
+    \hline
+    Identificador & Estratégia  \T\B\\
+    \hline
+    ct & baseada em conteúdo utilizando tags  \T\B\\
+    \hline
+    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
+    \hline
+    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
+    \hline
+    col & colaborativa \T\B\\
+    \hline
+    colct & colaborativa utilizando tags como conteúdo \T\B\\
+    \hline
+    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
+    \hline
+  \end{tabular}
+\end{table}
+
+%\subsection{Análise dos resultados}
+\subsection{Resultados}
+
+Apresentação e análise dos resultados.
+
+\section{Consulta pública}
+
+Diante da inexistência de dados que possibilitassem a análise \textit{offline}
+da acurácia de recomendações (avaliação real realizada previamente por seres
+humanos), optou-se pela realização de experimentos diretamente com usuários por
+meio de um \textit{survey} eletrônico. As soluções que apresentaram melhores
+resultados nos experimentos de seleção de modelo foram então avaliadas por meio
+de uma consulta pública.
+
+Algumas ferramentas foram avaliadas para a construção do \textit{survey}, entre
+as quais o \textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}. No
+entanto, uma avaliação de acurácia da recomendação requer que a construção do
+questionário aconteça de forma dinâmica, com questões específicas para cada
+o conjunto de pacotes sugeridos para o usuário em questão, o que não foi
+possível realizar com este tipo de ferramenta.
+
+Sendo assim, foi desenvolvida uma aplicação em python para a web que utiliza o
+\emph{AppRecommender} como \emph{backend} e apresenta as recomendações
+juntamente com um questionário para o usuário sobre a eficácia das sugestões.
+
+A consulta é guiada através dos seguintes passos:
+\begin{enumerate}
+  \item O usuário envia uma lista de pacotes, como representação de sua
+    identidade. Se desejar, fornece informações adicionais para composição de
+    um perfil baseado em seus interesses pessoais, além de indicar a quantidade
+    de pacotes que deseja receber como sugestão;
+  \item O sistema realiza a computação necessária para gerar recomendações
+    utilizando diferentes estratégias;
+  \item As recomendações são apresentadas ao usuário, juntamente com
+    informações detalhadas de cada item e explicação acerca dos procedimentos
+    realizados;
+  \item O usuário avalia as recomendações apresentadas;
+  \item A análise desta recomendação é realizada com base na aplicação de
+    algumas métricas apresentadas na seção \ref{sec:metricas}.
+\end{enumerate}
+
+\subsection{Ambiente de teste}
+
+Esta etapa de experimentos foi desenvolvida no
+Alioth\footnote{http://alioth.debian.org}, o servidor \emph{forge} do projeto
+Debian, que provê uma infraestrutura de apoio ao desenvolvimento colaborativo
+de software, principalmente que tem alguma relação com o Debian.
+
+\subsection{Experimentos realizados}
+
+O \emph{survey} foi disponibilizado no dia 30 de junho de 2011 e após 30 dias
+de consulta, XX usuários participaram da pesquisa.
+
+%\subsection{Análise dos resultados}
+\subsection{Resultados}
+
+Apresentação e análise dos resultados.
+
 %Ao término do período de aplicação do \textit{survey}, os dados de avaliações
 %individuais serão compilados numa análise de esfera global. Os gráficos
 %e considerações resultantes serão apresentados na versão final deste trabalho.
 
-\section{Ambiente de testes}
-\section{Experimentos realizados}
-\section{Análise dos resultados}
 \section{Conclusão}
-%\section{Comparação com trabalhos correlatos} -- dificuldade de
+% \section{Comparação com trabalhos correlatos} -- dificuldade de comparação, no previous results

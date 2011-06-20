@@ -7,37 +7,62 @@ recomendações e métricas de avaliação são alguns dos tópicos tratados.
 
 \section{Contexto histórico}
 
-A popularização de recursos computacionais e do acesso à Internet nas
-últimas décadas proporcionou um aumento expressivo na diversidade de serviços e
-conteúdo à disposição dos usuários. Um dos fatores para este aumento é que
-os usuários, que anteriormente eram considerados meros consumidores,
-apresentam-se atualmente como produtores de conteúdo. \cite{Castells:06} analisa
-este fenômeno e afirma que a maioria da população acredita que pode influenciar
-outras pessoas atuando no mundo através da sua força de vontade e
-utilizando seus próprios meios. Isto pode ser observado no surgimento e
-proliferação de serviços criados e mantidos pelos usuários: blogs, enciclopédias
-colaborativas, como a Wikipedia\footnote{\url{http://wikipedia.org}},
-repositórios para compartilhamento de fotografia e vídeo, como Flickr
-\footnote{\url{http://flickr.com}} e Youtube\footnote{\url{http://youtube.com}},
-entre outros. Considerando a produção em termos de software, observa-se o
-exemplo das comunidades de software livre e/ou de código aberto
-(FOSS\footnote{Termo consolidado no idioma inglês, acrônimo para
-\textit{Free/Open-Source Software}, que diz respeito aos programas licenciados
-livremente para garantir aos usuários o direito de uso, estudo e modificação,
-por meio da disponibilidade do seu código-fonte.}), que propiciam a construção
-coletiva de uma ampla gama de softwares de qualidade em constante atualização
-e evolução, organizados na forma de um rossio \cite{Simon:08}.
+A popularização de recursos computacionais e do acesso à Internet nas últimas
+décadas favoreceu um aumento expressivo na quantidade e diversidade de conteúdo
+e serviços à disposição dos usuários. Um dos fatores para este aumento é
+que indivíduos anteriormente considerados meros consumidores apresentam-se
+atualmente como produtores de conteúdo. Surgiram inúmeros casos de sucesso de
+serviços criados e/ou mantidos por usuários, a exemplo de \textit{blogs},
+enciclopédias colaborativas como a Wikipedia\footnote{\url{http://wikipedia.org}}, repositórios para compartilhamento de fotografia e vídeo, como Flickr\footnote{\url{http://flickr.com}} e Youtube\footnote{\url{http://youtube.com}}, entre
+outros. \cite{Castells:06} analisa este fenômeno e afirma que a maioria da
+população acredita que pode influenciar outras pessoas atuando no mundo através
+da sua força de vontade e utilizando seus próprios meios. Como ilustração deste
+tipo de influência, é comum que os clientes levem em conta opiniões de antigos
+hóspedes ao escolher o hotel em que se hospedará na próxima viagem.
 
-Segundo \cite{Resnick:97}, os sistemas de recomendação aumentam a capacidade e
-eficácia de um processo de indicação bastante popular nas relações sociais.
-Existem recomendações produzidas exclusivamente por especialistas, a exemplo de
-indicações de filmes publicadas nos principais jornais e revistas do país por
-críticos de arte. Nos últimos anos, porém, a opinião e o comportamento de
-usuários não especializados passaram a ser considerados nas recomendações, por
-agregarem valor às mesmas. O que acontece de forma explícita, quando o
-próprio usuário escreve sua opinião ou avalia a qualidade de um item, ou
-implícita, quando suas preferências, comportamentos e transações são analisados
-e incorporados à recomendação de forma transparente ao usuário.
+Num cenário de sobrecarga de informações, sistemas recomendadores começaram
+a ser desenvolvidos com o intuito de potencializar o processo de indicação
+bastante popular nas relações sociais, aumentando sua capacidade e eficácia
+\cite{Resnick:97}. Um exemplo de recomendação tradicional são as avaliações de
+livros e filmes produzidas por críticos de arte e publicadas nos principais
+jornais e revistas do país. Nos últimos anos, no entanto, percebeu-se que a
+opinião e o comportamento de usuários não especializados agregariam valor às
+recomendações se considerados. A Netflix\footnote{\url{http://www.netflix.com}}
+é uma locadora de filmes norte-americana pioneira em utilizar o preferências de
+usuários e o histórico de transações para produção de recomendações
+automatizadas.
+
+Este trabalho se insere num contexto onde o conteúdo tratado diz respeito ao
+universo de programas disponíveis, que também teve um crescimento significativo
+nas últimas décadas. A produção de software pode acontecer por meio de processos
+distintos. Quando os projetos são criados por empresas, costumam receber a
+colaboração dos usuários de forma limitada, visto que as decisões-chave são
+tomadas dentro da organização, mesmo que o código seja aberto. Este é o modelo
+de desenvolvimento descrito por \cite{Raymond:99} como catedral. Por outro
+lado, os projetos criados independentemente, formam ao longo do tempo uma
+comunidade de desenvolvedores interessados em colaborar, sendo estes os únicos
+responsáveis pelo sucesso ou fracasso do projeto. Neste modelo, denominado
+bazar, o código-fonte está disponível durante todo o processo de
+desenvolvimento, não apenas nos lançamentos, permitindo que a contribuição
+seja mais efetiva. Segundo o autor, este modelo é mais favorável ao sucesso,
+pois um bom trabalho de desenvolvimento de software é motivado por uma
+necessidade pessoal do desenvolvedor. Nesses casos observa-se com mais clareza
+o fenômeno do consumidor produtor descrito anteriormente.
+
+Segundo \cite{Simon:08}, o ambiente em torno de comunidades de software livre
+e/ou de código aberto (FOSS\footnote{Termo consolidado no idioma inglês,
+acrônimo para \textit{Free/Open-Source Software}, que diz respeito aos
+programas licenciados livremente para garantir aos usuários o direito de uso,
+estudo e modificação, por meio da disponibilidade do seu código-fonte.})
+propicia a construção coletiva de uma ampla gama de softwares de qualidade em
+constante atualização e evolução, organizados na forma de um
+rossio\footnote{Termo pouco utilizado neste contexto, escolhido pelo autor para
+estimular o uso da palavra em português que significa um conjunto de recursos
+utilizados em comum e equitativamente por uma determinada comunidade
+(equivale ao termo \textit{commons} no idioma inglês).}. O principal objetivo
+deste trabalho é contribuir de alguma forma para que os usuários encontrem com
+mais facilidade os programas que de fato necessitam, diante da enorme
+quantidade de opções disponíveis.
 
 \section{O problema computacional}
 
@@ -48,71 +73,87 @@ sistema, tenta-se estimar pontuações para os itens que ainda não foram
 avaliados pelos mesmos. Uma vez que esta estimativa tenha sido feita, pode-se
 recomendar os itens com maior pontuação estimada.
 
+%FIXME [inserir figura]
+
 O conceito de utilidade, porém, é subjetivo e arduamente mensurável devido às
 dificuldades em distinguir qualitativamente e definir quantitativamente os
 fatores que a determinam. Portanto, com a ressalva de que estas medidas não
 representam necessariamente a realidade, as pontuações são usadas como
-aproximações, pois têm como base as avaliações registradas pelos próprios usuários.
+aproximações, pois têm como base as avaliações registradas pelos próprios
+usuários.
 
-%FIXME [Desenvolver os temas: perfis de usuario e privacidade]
+%FIXME [Desenvolver os temas: identidade e privacidade]
 
 \section{Identidade}
 
-Identidade, geração e manutenção de perfis de usuários, reputação, privacidade.
+Identidade, geração e manutenção de perfis de usuários, reputação.
+
+\section{Privacidade}
+
+Concurso do NetFlix suspenso após processo judicial. Ataques comuns a sistemas
+de recomendação\footnote{"You might also like: privacy risks of collaborative
+filtering".}.
 
 \section{Ações e desafios} \label{sec:acoes}
 
-Sistemas de recomendação são implementados nos mais diversos contextos
-e podem ser projetados com finalidades distintas. Abaixo estão descritas
-algumas ações relacionadas a estes sistemas identificadas por
-\cite{Herlocker:04}.
+Sistemas recomendadores são implementados nos mais diversos contextos e podem
+ser desenvolvidos para propósitos distintos, referenciados na literatura como
+ações de sistemas de recomendação \cite{Herlocker:04}. Encontrar itens mais
+relevantes, encontrar todos os itens relevantes, recomendar sequência de itens,
+facilitar a navegação num repositório grande de itens e expressão de opinião
+para auxiliar outros usuários estão entre as ações mais frequentes.
 
-\begin{description}
+Recomendadores desenvolvidos para finalidades diferentes por vezes compartilham
+as mesmas técnicas para o cálculo das recomendações, havendo um tratamento
+específico dos resultados antes de serem apresentados aos usuários. No entanto,
+a avaliação de eficácia de um sistema de recomendação está diretamente
+relacionada com sua ação principal.
 
-\item[Anotação em contexto.] Os primeiros sistemas de recomendação eram
-  utilizados num cenário de informação estruturada (mensagens classificadas
-  num contexto), e auxiliavam os usuários a selecionarem as mensagens a serem
-  lidas dentro de cada contexto.
-
-\item[Encontrar itens relevantes.] O sistema sugere itens para o usuário
-  através de uma lista ordenada de forma decrescente, de acordo com a
-  probabilidade do item ser considerado relevante pelo usuário. Esta é a ação
-  mais comum entre os sistemas de recomendação comerciais, atraindo grande
-  parte das pesquisas relacionadas com o tema.
-
-\item[Encontrar todos os itens relevantes.] Em situações em que não se deseja
-  ignorar nenhum item relevante, ao invés da recomendação de apenas alguns,
-  todos os itens considerados relevantes devem ser retornados.
-
-\item[Sequência recomendada.] Quando não somente os itens recomendados importa,
-  mas também a ordem em que eles são apresentados, caracteriza-se a ação de
-  recomendação de sequência.
-
-\item[Expressão de opinião.] A recomendação em si muitas vezes não é o que
-  atrai usuários desses sistemas. Alguns estão interessados simplesmente em
-  emitir suas opiniões. Esta ação é comum em ambientes que disponibilizam um
-  espaço para os usuários registrarem seus comentários e avaliações sobre os
-  produtos.
-
-\item[Ajudar usuários.] Alguns usuários utilizam sistemas de recomendação
-  por acreditarem que a comunidade se beneficia da sua contribuição. Apesar de
-  nem sempre aparecerem juntas, tal atividade está comumente relacionada com a
-  expressão de opinião.
-
-\item[Navegação.] Alguns usuários utilizam recomendadores mesmo quando não têm
-  planos de consumir produto algum, apenas para navegar entre os itens
-  disponíveis. Neste caso, aspectos como a interface, facilidade de uso e
-  natureza da informação provida são de extrema importância.
-
-\end{description}
+%\begin{description}
+%
+%\item[Anotação em contexto.] Os primeiros sistemas de recomendação eram
+%  utilizados num cenário de informação estruturada (mensagens classificadas
+%  num contexto), e auxiliavam os usuários a selecionarem as mensagens a serem
+%  lidas dentro de cada contexto.
+%
+%\item[Encontrar itens relevantes.] O sistema sugere itens para o usuário
+%  através de uma lista ordenada de forma decrescente, de acordo com a
+%  probabilidade do item ser considerado relevante pelo usuário. Esta é a ação
+%  mais comum entre os sistemas de recomendação comerciais, atraindo grande
+%  parte das pesquisas relacionadas com o tema.
+%
+%\item[Encontrar todos os itens relevantes.] Em situações em que não se deseja
+%  ignorar nenhum item relevante, ao invés da recomendação de apenas alguns,
+%  todos os itens considerados relevantes devem ser retornados.
+%
+%\item[Sequência recomendada.] Quando não somente os itens recomendados importa,
+%  mas também a ordem em que eles são apresentados, caracteriza-se a ação de
+%  recomendação de sequência.
+%
+%\item[Expressão de opinião.] A recomendação em si muitas vezes não é o que
+%  atrai usuários desses sistemas. Alguns estão interessados simplesmente em
+%  emitir suas opiniões. Esta ação é comum em ambientes que disponibilizam um
+%  espaço para os usuários registrarem seus comentários e avaliações sobre os
+%  produtos.
+%
+%\item[Ajudar usuários.] Alguns usuários utilizam sistemas de recomendação
+%  por acreditarem que a comunidade se beneficia da sua contribuição. Apesar de
+%  nem sempre aparecerem juntas, tal atividade está comumente relacionada com a
+%  expressão de opinião.
+%
+%\item[Navegação.] Alguns usuários utilizam recomendadores mesmo quando não têm
+%  planos de consumir produto algum, apenas para navegar entre os itens
+%  disponíveis. Neste caso, aspectos como a interface, facilidade de uso e
+%  natureza da informação provida são de extrema importância.
+%
+%\end{description}
 
 %\section{Desafios}
 
-O desenvolvimento de sistemas recomendadores têm como desafios questões
-inerentes ao problema de recomendação e sua representação computacional. As
-estratégias e técnicas propostas devem levar em conta tais questões e tentar
-contorná-las na medida do possível. Alguns destas questões foram apontadas
-por \cite{Vozalis:03} e são citadas a seguir.
+Os desafios do desenvolvimento de tais sistemas estão relacionados a questões
+inerentes ao problema e sua representação computacional. As estratégias e
+técnicas propostas devem levar em conta tais questões, algumas das quais foram
+apontadas por \cite{Vozalis:03} e são citadas a seguir.
 
 \begin{description}
 
@@ -150,6 +191,267 @@ por \cite{Vozalis:03} e são citadas a seguir.
     se beneficiam de sistemas de recomendações.
 
 \end{description}
+
+\section{Estratégias de recomendação} \label{sec:estrategias_recomendacao}
+
+Em geral as estratégias de recomendação são classificadas como baseadas em
+conteúdo (recomenda-se itens semelhantes aos que o usuário já escolheu),
+colaborativas (recomenda-se itens que usuários semelhantes escolheram) ou
+híbridas (diferentes abordagens são combinadas). Este trabalho considera uma
+classificação um pouco mais abrangente, a partir de taxonomias propostas por
+diferentes autores. A peculiaridade de cada abordagem está relacionada com a
+fonte de dados utilizada para produzir o conhecimento do recomendador e o tipo
+de técnica aplicada para extrair as recomendações.
+
+\subsection{Reputação dos itens}
+
+Popular entre serviços de venda como livrarias, sites de leilão e lojas em
+geral, esta estratégia consiste no registro de avaliações dos produtos
+produzidas por usuários, bem como na apresentação das mesmas no momento e local
+apropriado \cite{Cazella:10}.
+
+Esta é uma abordagem de simples implementação, visto que geralmente depende
+apenas da manutenção dos dados originais e nenhuma análise posterior é
+realizada. Os desafios surgem quando se tenta quantificar automaticamente as
+avaliações, seja pelo processamento do texto e classificação entre avaliação
+boa ou ruim \cite{}, ou ainda, quando a reputação é composta por meio de outros
+parâmetros, por exemplo, a quantidade de vendas, reclamações e devoluções de um
+produto. Outra dificuldade é lidar com a premissa a imparcialidade dos usuários
+em suas opiniões, que geralmente não pode ser verificada devido a seu caráter
+subjetivo e estritamente pessoal.
+
+Atualmente existem serviços especializados em reputação de produtos que apenas
+disponibilizam as avaliações, sem haver venda associada. Alguns exemplos são o
+\textit{Trip Advisor}\footnote{\url{http://www.tripadvisor.com/}}, que oferece
+avaliações sobre hotéis, restaurantes e recomendações em geral para viagens, e
+o \textit{Internet Movie Database}\footnote{\url{http://www.imdb.com/}}, que
+armazena uma vasta coleção de informações sobre cinema (figura \ref{fig:imdb}).
+
+\begin{figure}[h!]
+\centering
+\fbox{
+  \includegraphics{Figures/imdb.pdf}
+}
+\caption{Avaliação de usuário no IMDb}
+\label{fig:imdb}
+\end{figure}
+
+\subsection{Recomendação baseada em conteúdo}
+
+Esta abordagem parte do princípio de que os usuários tendem a se interessar por
+itens semelhantes aos que eles já se interessaram no passado
+\cite{Herlocker:00}. Em uma livraria, por exemplo, sugerir ao cliente outros
+livros do mesmo autor ou tema dos previamente selecionados é uma estratégia
+amplamente adotada.
+
+O ponto chave desta estratégia é a representação dos itens por meio de suas
+características, por exemplo, descrever um livro pelo conjunto \textit{\{título,
+autor, editora, tema\}}. A partir da identificação de atributos, aplica-se
+técnicas de recuperação da informação com o intuito de encontrar itens
+semelhantes (p. ex. $\tfidf$ e \textit{BM25}) ou de classificação a fim de
+encontrar itens relevantes (p. ex. \textit{K-NN} e \textit{Bayes ingênuo}).
+Estas e outras técnicas serão descritas em detalhes na seção \ref{sec:tecnicas}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{Figures/rec_conteudo.pdf}
+\caption{Cenário de uma recomendação baseada em conteúdo}
+\label{fig:rec_conteudo}
+\end{figure}
+
+Pelo fato de se apoiar na classificação dos itens, os resultados da
+recomendação são prejudicados nos casos em que os atributos não podem ser
+identificados de forma automatizada. Outro problema é a superespecialização, ou
+seja, a abrangência das recomendações fica limitada a itens similares aos já
+escolhidos pelos usuários \cite{Adomavicius:05}.
+
+\subsection{Recomendação colaborativa}
+
+A recomendação colaborativa é fundamentada na troca de experiências entre
+indivíduos que possuem interesses em comum, portanto não exige o reconhecimento
+semântico do conteúdo dos itens. Esta estratégia é inspirada na técnica
+de classificação \textit{K-NN} (seção \ref{sec:knn}).
+
+A vizinhança de um determinado usuário é composta pelos usuários que estiverem
+mais próximos a ele. O ponto chave desta abordagem é a definição da função que
+quantifica a proximidade entre os usuários, que também pode ser herdada de
+soluções em classificação e recuperação da informação. A recomendação é então
+produzida a partir da análise dos itens que os seus vizinhos consideram
+relevantes. Geralmente os itens que ocorrem com maior frequência na vizinhança
+compõem a recomendação. A figura \ref{fig:rec_colaborativa} ilustra o cenário
+de uma recomendação colaborativa.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{Figures/rec_colaborativa.pdf}
+\caption{Cenário da recomendação colaborativa}
+\label{fig:rec_colaborativa}
+\end{figure}
+
+O problema da superespecialização é superado, visto que a recomendação neste
+caso não se baseia no histórico do próprio usuário, consequentemente pode
+apresentar itens totalmente inesperados. Outro ponto positivo é a
+possibilidade de formação de comunidades de usuários pela identificação de
+interesses semelhantes entre os mesmos \cite{Cazella:10}.
+
+\subsection{Baseada em conhecimento}
+
+Esta estratégia tem como princípio a produção de recomendações a partir de um
+conhecimento previamente adquirido sobre o domínio da aplicação, em vez de
+avaliações prévias produzidas por usuários. A grande vantagem desta abordagem é
+que ela não depende de preferências individuais dos usuários, já que não usa a
+base de dados de avaliação usuário-item.
+
+No entanto, a descoberta de conhecimento é o principal gargalo desta categoria
+de soluções, e por isso é mais utilizada nos casos em que já existe uma base de
+conhecimento disponível, por exemplo, na forma de uma ontologia
+\cite{Adomavicius:05}. Quando não é este o caso, técnicas de aprendizado de
+máquina e mineração de dados podem ser utilizadas para extrair correlações e
+padrões frequentes no comportamento dos usuários, por meio da análise das
+escolhas dos usuários ao longo do tempo.
+
+Regras de associação são outro tipo de conhecimento formalizado, representado
+por regras de inferência que indicam a presença simultânea de conjuntos de
+itens numa determinada porcentagem dos casos conhecidos. As técnicas mais
+utilizadas para descoberta de tais regras são variações do algoritmo Apriori,
+apresentado na seção \ref{sec:apriori} \cite{Kotsiantis:06}. Dado um conjunto
+de associações, a recomendação para determinado usuário é produzida de acordo
+com as regras satisfeitas pelo conjunto de itens que ele já tenha selecionado.
+Por exemplo, a regra ${A,B,C} \Rightarrow {D}$ seria satisfeita por usuários
+que possuem os itens $A$, $B$ e $C$, resultando na indicação do item $D$:
+\textit{``Clientes que compraram os itens A, B e C também compraram o item D''}.
+
+Segundo \cite{Hegland:03}, recomendação baseada em conhecimento é
+frequentemente utilizada para sugestões implícitas, por exemplo, na definição
+do posicionamento de produtos numa prateleira ou a realização de propagandas
+dirigidas. Um caso popular deste estratégia é encontrado na loja virtual da
+empresa \textit{Amazon}\footnote{\url{http://www.amazon.com/}} (figura
+\ref{fig:amazon}).
+
+\begin{figure}[h!]
+\centering
+\fbox{
+  \includegraphics{Figures/amazon.pdf}
+}
+\caption{Recomendação por associação na Amazon}
+\label{fig:amazon}
+\end{figure}
+
+\subsection{Baseada em dados demográficos}
+
+A estratégia demográfica fundamenta-se na composição de perfis de usuários e
+identificação de nichos demográficos para produção de recomendações. Os dados
+pessoais geralmente são coletados de forma explícita, através de um cadastro
+do usuário, e podem englobar informações como idade, sexo, profissão e áreas de
+interesse. Dados demográficos, no entanto, geralmente são utilizados em
+combinação com outras fontes de dados e técnicas diversas, como parte de uma
+estratégia de recomendação híbrida.
+
+\subsection{Estratégia híbrida} \label{sec:estrategias_hibrida}
+
+Sistemas de recomendação híbridos combinam duas ou mais estratégias, com o
+intuito de obter melhor performance do que a que as estratégias oferecem
+individualmente. A tabela \ref{tab:metodos_hibridizacao} apresenta as
+principais técnicas de hibridização segundo \cite{Burke:02}.
+
+\begin{table}[h!]
+\caption{Métodos de hibridização}
+\label{tab:metodos_hibridizacao}
+\small
+\begin{tabularx}{\textwidth}{| l | X |}
+\hline
+\normalsize{\textbf{\textit{Método}}} &
+\normalsize{\textbf{\textit{Descrição}}} \\
+\hline
+Ponderação & Pontuações de relevância oriundas de diversas técnicas de
+             recomendação são combinadas para compor uma única recomendação. \\
+\hline
+Revezamento & O sistema reveza entre técnicas de recomendação diversas, de
+              acordo com a situação do momento. \\
+\hline
+Combinação & Recomendações oriundas de diversos recomendadores diferentes são
+             apresentados de uma só vez. \\
+\hline
+Combinação de atributo & Um algoritmo de recomendação único coleta atributos
+                         de diferentes bases de dados para recomendação. \\
+\hline
+Cascata & Um recomendador refina a recomendação produzida por outro. \\
+\hline
+Acréscimo de atributo & O resultado de uma técnica é usado como atributo de
+                        entrada para outra. \\
+\hline
+Meta-nível & O modelo que um recomendador ``aprendeu'' é usado como entrada
+             para o outro. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Similaridades e distâncias} \label{sec:similaridades}
+
+tipos de dados
+intervalos numericos - possibilidade de padronizar a escala (pros e contras)
+requisitos fundamentais para uma operacao de distancia (p. 26)
+importancia da selecao de atributos - trach variables (p.27)
+missing values - posicao preenchida com valor negativo p. ex., e como as
+distancia devem ser calculadas? valor medio? - comparar com postings lists
+diferenca entre dissimilarida e distancia, que exige a propriedade da
+desigualdade triangular
+pearson e spearman como medidas de similaridade - coeficientes de correlacao,
+medem o quanto duas variaveis estao relacionadas - variam entre -1 e +1
+. podem ser implementadas se as listas forem completadas com zeros
+. pearson busca uma correlacao linear entre os dois conjuntos
+- spearman procura uma relacao monotona (qd um cresce a outra cresce tb)
+dissimilaridades a partir de correlacoes
+d(x,y)=(1-c(x,y))/2
+propriedades de medidas de similaridade (p.33)
+* proximityMatrix resemblaceMatrix
+transformar similaridade em dissimilaridade: d(x,y)=1-s(x,y)
+uso de coeficientes de correlacao para calcular proximidade entre objetos nao e
+adequado (p. 34) - envolvem calcula de medias em variaveis com unidades
+diferentes, o que nao faz sentido
+dados binarios
+coeficientes invariantes - para variaveis simetricas (p.37)
+nao faz diferenca qual coeficiente usar se os algoritmos dependem do ranking de
+similaridades - ex: single linkage method - relacao monotona entre os coeficientes
+coeficientes variantes - p.ex. considerar atributos raros: jaccard coeficiente
+
+\section{Seleção de atributos} \label{sec:selecao_atributos}
+
+Uma grande quantidade de atributos a ser considerada resulta em alta
+complexidade computacional, além de geralmente mascarar a presença de ruídos
+(dados que prejudicam a acurácia da classificação quando considerados).
+A fim de amenizar este problema, é comum a realização de um processo denominado
+seleção de atributos, que consiste em escolher alguns atributos dos dados e
+utilizar apenas estes como conjunto de treinamento para a classificação. Esta
+seleção equivale à substituição de um classificador complexo por um mais
+simples. \cite{Manning:09} defende que, especialmente quando a quantidade de
+dados de treinamento é limitada, modelos mais fracos são preferíveis.
+
+A seleção de atributos geralmente é realizada para cada classe em separado,
+seguida pela combinação dos diversos conjuntos. Abaixo são apresentados alguns
+métodos de escolha.
+
+\begin{description}
+  \item[Informação mútua.] Análise de quanto a presença ou ausência de um
+    atributo contribui para a tomada de decisão correta por uma determinada
+    classe. Informação mútua máxima significa que o atributo é um indicador
+    perfeito para pertencimento a uma classe. Isto acontece quando um objeto
+    apresenta o atributo se e somente se o objeto pertence à classe.
+  \item[Independência de eventos.] Aplicação do teste estatístico $\chi^2$ para
+    avaliar a independência de dois eventos -- neste caso, um atributo e uma
+    classe. Se os dois eventos são dependentes, então a ocorrência do atributo
+    torna a ocorrência da classe mais provável.
+  \item[Baseado em frequência.] Seleção dos atributos mais comuns para uma
+    classe.
+\end{description}
+
+Os métodos apresentados acima são ``gulosos'', ou seja, assumem escolhas ótimas
+locais na esperança de serem ótimas globais. Como resultado, podem selecionar
+atributos que não acrescentam nenhuma informação para a classificação quando
+considerados outros previamente escolhidos. Apesar disto, algoritmos não
+gulosos são raramente utilizados devido a seu custo computacional
+\cite{Manning:09}.
+
 
 %FIXME [Analisar complexidade de cada tecnica]
 %FIXME [Produzir figuras ilustrativas do naive bayes]
@@ -209,274 +511,7 @@ prévia dos exemplos.
 
 A seguir são apresentadas algumas técnicas para tratamento destes problemas
 que também são utilizadas na construção de sistemas de recomendação, dando
-suporte às estratégias apresentadas na seção \ref{sec:estrategias}.
-
-\subsection{K-NN} \label{sec:knn}
-
-\textit{K-nearest neighbors (k-NN)}, em português \textit{k vizinhos mais
-próximos}, é mais um algoritmo de aprendizado supervisionado para
-classificação. Este método baseia-se no conceito de vizinhança, que representa
-um conjunto de objetos que estão próximos no espaço de busca.
-
-O \textit{K-NN} não exige nenhum treinamento prévio com os dados de exemplo,
-que podem ser diretamente armazenados como vetores de atributos acompanhados
-por suas devidas classes. A classificação de um novo objeto parte do cálculo da
-vizinhança do mesmo, que é composta por $k$ objetos.
-
-A determinação da vizinhança está diretamente relacionada com o conceito de
-proximidade entre objetos, que pode ser expressa em termos de similaridade ou
-de distância entre os mesmos (quanto maior a distância, menor a similaridade).
-Existem diversas medidas para mensurar estes conceitos, deve-se adotar a
-métrica que melhor se adeque ao domínio da aplicação e conjunto de dados.
-A tabela \ref{tab:knn_distancia} apresenta algumas dessas medidas, onde os
-objetos $X$ e $Y$ são representados por seus vetores $\vec{X} = (x_1,...,x_n)$
-e $\vec{Y} = (y_1,...,y_n)$. A similaridade de cosseno mede a similaridade de
-dois vetores através do cosseno do ângulo entre os mesmos. O coeficiente de
-\textit{Pearson} é equivalente ao cosseno do ângulo entre os vetores
-centralizados na média. E o coeficiente de \textit{Tanimoto} é uma extensão da
-similaridade de cossenos que resulta no índice de \textit{Jaccard} para
-atributos binários.
-
-\begin{table}[h!]
-  \caption{K-NN: Medidas de distância e similaridade entre objetos}
-  \label{tab:knn_distancia}
-  \centering
-  \newcommand\T{\rule{0pt}{2.8ex}}
-  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-  \begin{tabular}{| l | l |}
-    \hline
-    Distância euclidiana &
-    \T\B$\mathid{D}(X,Y) = \sqrt{(x_1-y_1)^2+(x_2-y_2)^2+...+(x_n-y_n)^2}$\\
-    \hline
-    Similaridade de cosseno &
-    $\mathid{sim}(X,Y) = \frac{\T\vec{X} \cdot \vec{Y}}{|\vec{X}| |\vec{Y}|}
-                       = \frac{\textstyle \sum_{1\leq i \leq n} x_i y_i}
-                              {\textstyle \sqrt{\sum_{1\leq i \leq n} x_i^2}
-                               \sqrt{\sum_{1\leq i \leq n} y_i^2}\B}$\\
-    \hline
-    Coeficiente de \textit{Pearson} &
-    $\mathid{P}(X,Y) = \frac{\T\textstyle\sum_{1 \leq i \leq n} (x_i-\bar{x})
-                                     (y_i-\bar{y})}
-                   {\textstyle\sqrt{\sum_{1 \leq i \leq n} (x_i-\bar{x})^2}
-                    \sqrt{\sum_{1 \leq i \leq n} (y_i-\bar{y})^2}\B}$\\
-    \hline
-    Coeficiente de \textit{Tanimoto} &
-    $\mathid{T}(X,Y) = \frac{\T\textstyle\vec{X} \cdot \vec{Y}}
-                            {\textstyle |\vec{X}|^2 + |\vec{Y}|^2 -
-                             \vec{X} \cdot \vec{Y}}$\\
-    \hline
-  \end{tabular}
-\end{table}
-
-Após a definição de vizinhança, a classe mais frequente entre seus $k$ vizinhos
-é atribuída ao novo objeto. Desta forma, a similaridade também pode ser
-entendida como grau de influência entre os objetos. Os objetos mais semelhantes
-a um novo objeto terão maior influência no cálculo de sua classificação.
-
-\subsubsection{Seleção de atributos} \label{sec:selecao_atributos}
-
-Uma grande quantidade de atributos a ser considerada resulta em alta
-complexidade computacional, além de geralmente mascarar a presença de ruídos
-(dados que prejudicam a acurácia da classificação quando considerados).
-A fim de amenizar este problema, é comum a realização de um processo denominado
-seleção de atributos, que consiste em escolher alguns atributos dos dados e
-utilizar apenas estes como conjunto de treinamento para a classificação. Esta
-seleção equivale à substituição de um classificador complexo por um mais
-simples. \cite{Manning:09} defende que, especialmente quando a quantidade de
-dados de treinamento é limitada, modelos mais fracos são preferíveis.
-
-A seleção de atributos geralmente é realizada para cada classe em separado,
-seguida pela combinação dos diversos conjuntos. Abaixo são apresentados alguns
-métodos de escolha.
-
-\begin{description}
-  \item[Informação mútua.] Análise de quanto a presença ou ausência de um
-    atributo contribui para a tomada de decisão correta por uma determinada
-    classe. Informação mútua máxima significa que o atributo é um indicador
-    perfeito para pertencimento a uma classe. Isto acontece quando um objeto
-    apresenta o atributo se e somente se o objeto pertence à classe.
-  \item[Independência de eventos.] Aplicação do teste estatístico $\chi^2$ para
-    avaliar a independência de dois eventos -- neste caso, um atributo e uma
-    classe. Se os dois eventos são dependentes, então a ocorrência do atributo
-    torna a ocorrência da classe mais provável.
-  \item[Baseado em frequência.] Seleção dos atributos mais comuns para uma
-    classe.
-\end{description}
-
-Os métodos apresentados acima são ``gulosos'', ou seja, assumem escolhas ótimas
-locais na esperança de serem ótimas globais. Como resultado, podem selecionar
-atributos que não acrescentam nenhuma informação para a classificação quando
-considerados outros previamente escolhidos. Apesar disto, algoritmos não
-gulosos são raramente utilizados devido a seu custo computacional
-\cite{Manning:09}.
-
-\subsection{Classificador bayesiano}
-
-\textit{Bayes ingênuo} é uma solução para classificação que figura entre os
-algoritmos de aprendizado de máquina supervisionados. O classificador apoia-se
-num modelo probabilístico que aplica o teorema de Bayes com fortes suposições
-de independência de atributos -- por esta razão o método é considerado ingênuo.
-Em outras palavras, a presença ou ausência de um atributo em um objeto de uma
-classe não estaria relacionada com a incidência de nenhum outro atributo.
-
-A decisão acerca da classe a qual um objeto pertence é tomada de acordo com o
-modelo de probabilidade máxima posterior \textit{(MAP)}, indicada na equação
-\ref{eq:map}. Dado que $C$ é o conjunto de classes e $x$ objeto a ser
-classificado, a classe atribuída a este será a que apresentar maior
-probabilidade condicionada a $x$. $\hat{P}$ é utilizado ao invés de $P$ porque
-geralmente não se sabe o valor exato das probabilidades, que são estimadas a
-partir dos dados de treinamento.
-
-\begin{equation}
-\label{eq:map}
-  \mathid{c_{MAP}} = \underset{c \in C}{\operatorname{arg\ max}} \ \hat{P}(c|x)
-\end{equation}
-
-A equação \ref{eq:bayes} aplica o Teorema de Bayes para probabilidades
-condicionadas. Na prática, apenas o numerador da fração interessa, visto que o
-denominador é constante para todas as classes, portanto não afeta o
-$\operatorname{arg\ max}$ (equação \ref{eq:bayes_no_deno}).
-
-\begin{eqnarray}
-\label{eq:bayes}
-  \mathid{c_{MAP}} & = & \underset{c \in C}{\operatorname{arg\ max}} \
-                         \frac{\hat{P}(x|c) \hat{P}(c)}{\cancel{\hat{P}(x)}} \\
-                {} & {} & {} \nonumber \\
-\label{eq:bayes_no_deno}
-                   & = & \underset{c \in C}{\operatorname{arg\ max}} \
-                         \hat{P}(x|c) \hat{P}(c)
-\end{eqnarray}
-
-É neste ponto que a independência de atributos é importante. Considera-se que
-um documento $x$ pode ser caracterizado por uma série de atributos $x_i$ -- no
-caso de documentos de texto, os atributos são os próprios termos. Assumindo que
-a ocorrência de atributos acontece independentemente, tem-se que:
-
-\begin{equation}
-\label{eq:independencia}
-  \hat{P}(x|c) = \hat{P}(x_1,x_2,...,x_n|c)
-               = \hat{P}(x_1|c) \hat{P}(x_2|c)\ ...\ \hat{P}(x_n|c)
-\end{equation}
-
-Portanto, a função de decisão pode ser reescrita através da equação
-\ref{eq:bayes_prod}. Cada parâmetro condicional $\hat{P}(x_i|c)$ é um peso
-que representa a qualidade do atributo $x_i$ como indicador da classe $c$,
-enquanto que $\hat{P}(c)$ é a frequência relativa da classe $c$.
-
-\begin{equation}
-\label{eq:bayes_prod}
-  \mathid{c_{MAP}} = \underset{c \in C}{\operatorname{arg\ max}} \ \
-                     \hat{P}(c) \prod_{1 \le i \le n} \hat{P}(x_i|c)
-\end{equation}
-
-Os parâmetros são obtidos através da estimativa de maior probabilidade
-\textit{(MLE)}, que corresponde ao valor mais provável de cada parâmetro de
-acordo com os dados de treinamento. A equação \ref{eq:p_c} traz a estimativa de
-$\hat{P}(c)$, onde $N_c$ é o número de objetos da classe $c$ e $N$ é o número
-total de documentos.
-
-\begin{equation}
-\label{eq:p_c}
-  \hat{P}(c) = \frac{N_c}{N}
-\end{equation}
-
-As probabilidades condicionais são estimadas como a frequência relativa do
-atributo $x$ em objetos que pertencem à classe $c$. Na equação \ref{eq:p_xc},
-$T_{\mathit{cx}}$ é o número de ocorrências de $x$ em objetos de exemplo da
-classe $c$ e $V$ é o conjunto de atributos que os objetos podem apresentar.
-
-\begin{equation}
-\label{eq:p_xc}
-  \hat{P}(x|c) = \frac{T_{\mathit{cx}}}
-                      {\displaystyle \sum_{x' \in V} T_{\mathit{cx}'}}
-\end{equation}
-
-No entanto, a estimativa \textit{MLE} é zero para combinações atributo-classe
-que não ocorrem nos dados de treinamento. Considerando que as probabilidades
-condicionais de todos os atributos serão multiplicadas (equação
-\ref{eq:bayes_prod}), a simples ocorrência de uma probabilidade zerada resulta
-na desconsideração da classe na referida classificação. E de fato, dados de
-treinamento nunca são abrangentes o suficiente para representar a frequência de
-eventos raros de forma adequada \cite{Manning:09}. Para eliminar
-$\mathit{zeros}$, adiciona-se $1$ a cada termo da equação \ref{eq:p_xc}:
-
-\begin{equation}
-\label{eq:p_xc+1}
-  \hat{P}(x|c) = \frac{T_{\mathit{cx}}+1}
-                      {\displaystyle \sum_{x' \in V} T_{\mathit{cx}'}+1}
-\end{equation}
-
-O classificador bayesiano também é sensível a ruídos, logo, sua performance é
-igualmente beneficiada pelo processo de seleção de atributos descrito na seção
-\ref{sec:selecao_atributos}.
-
-Apesar de a independência de atributos não ser verificada para a maioria
-dos domínios de aplicação, na prática o Bayes ingênuo apresenta resultados
-satisfatórios. \cite{Zhang:04} atribui a surpreendente boa performance deste
-método ao fato de que a mera existência de dependências entre atributos não
-prejudicaria a classificação, mas sim o modo como as dependências estão
-distribuídas ao longo das classes. Segundo o autor, desde que as dependências
-estejam distribuídas igualmente nas classes, não há problema em haver
-dependência forte entre dois atributos.
-
-\subsubsection{Variantes do modelo Bayes ingênuo} \label{sec:variantes_bayes}
-
-As duas principais variantes de implementação do classificador bayesiano,
-denominadas de modelo \textit{multinomial} e de \textit{Bernoulli}, diferem
-fundamentalmente na maneira como os objetos são representados.
-
-O primeiro modelo utiliza uma representação que considera informações espaciais
-sobre o objeto. Na classificação de documentos de texto, por exemplo, o modelo
-gera um atributo para cada posição do documento, que corresponde a um termo do
-vocabulário. Já o modelo de \textit{Bernoulli} produz um indicador de
-presença ou ausência para cada possível atributo (no caso de texto, cada termo
-do vocabulário).
-
-A escolha da representação de documentos adequada é uma decisão crítica no
-projeto de um classificador, visto que o próprio significado de um atributo
-depende da representação. No \textit{multinomial}, um atributo pode assumir
-como valor qualquer termo do vocabulário, o que resulta numa representação do
-documento correspondente à sequência de termos do mesmo. Já para o modelo de
-\textit{Bernoulli}, um atributo pode assumir apenas os valores $0$ e $1$, e a
-representação do documento é uma sequência de $0$s e $1$s do tamanho do
-vocabulário.
-
-%A figura \ref{fig:exemplo_bayes} ilustra as peculiaridades de cada
-%representação.
-%
-%\begin{figure}[ht]
-%\centering
-%\begin{tabular}{*4{c}}
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (1)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Por motivo \\ de segurança, \\
-%    comunicamos a todos os clientes que atualizem sua senha por email.}}
-%    \end{overpic} &
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (2)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Atualização \\ urgente de \\  senha.
-%    \\ \\ Clique aqui.}}\end{overpic} &
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (3)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Você foi \\ sorteado e \\ acaba de
-%    ganhar 1 milhão de reais. Clique aqui e saiba como resgatar seu prêmio.}}
-%    \end{overpic} &
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (4)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Perca peso fácil e de forma divertida.
-%    Pare de sofrer!}}\end{overpic} \\
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (5)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Emagreça 10kg em duas semanas! Clique
-%    aqui e descubra como.}}\end{overpic} &
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (6)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Compre viagra com 69\% de desconto!}}
-%    \end{overpic} &
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (7)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Se você não pode mudar sua vida, mude
-%    pelo menos a sua bolsa!}}\end{overpic} &
-%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (8)}
-%  \put(5,44){\parbox{1.8cm}{\scriptsize Aprenda a investir na bolsa em uma
-%    semana.}}\end{overpic}
-%\end{tabular}
-%\caption{Coleção de documentos classificados em \textit{spam} e \textit{não-spam}}
-%\label{fig:colecao_spam}
-%\end{figure}
+suporte às estratégias apresentadas na seção \ref{sec:estrategias_recomendacao}.
 
 \subsection{Medida $\boldsymbol{\tfidf}$}
 
@@ -1004,7 +1039,7 @@ seja expressa em função de $P(D|L)$ (equação \ref{eq:bayes-okapi}).
   P(L|D) = \frac{P(D|L)P(L)}{P(D)}
 \end{equation}
 
-Para evitar a expansão de $P(D)$, a chance de $(L|D)$ é utilizada ao invés da
+Para evitar a expansão de $P(D)$, a chance de $(L|D)$ é utilizada em vez da
 probabilidade. Na verdade, o logaritmo da chance é aplicado (equação
 \ref{eq:log-odd}), considerando que esta é uma transformação que satisfaz o
 Princípio de Ordenação \cite{Jones:00}. Ademais, dado que o último termo da
@@ -1235,7 +1270,7 @@ Os comprimentos dos documentos da coleção podem variar por inúmeros motivos.
 Todavia, nesta nova interpretação assume-se que quando dois documentos acerca
 do mesmo conceito têm tamanhos distintos, a razão é simplesmente que um é mais
 verboso que o outro. Em outras palavras, considera-se que a recorrência de
-palavras deve-se sempre à repetição, ao invés por exemplo da melhor elaboração
+palavras deve-se sempre à repetição em vez de, por exemplo, melhor elaboração
 do tema. Partindo desta suposição, é apropriado estender o modelo normalizando
 o valor de $\tf_{t,D}$ em função do comprimento do documento (equação
 \ref{eq:RD_nl}).
@@ -1256,7 +1291,7 @@ resultaria na mesma pontuação para um documento de comprimento $l$ no qual o
 termo ocorre $tf$ vezes e para outro de comprimento $2l$ que contém $2tf$
 ocorrências do termo. Este comportamento pode ser indesejável por exemplo
 quando se considera que a recorrência de palavras está geralmente associada ao
-aprofundamento do conceito, ao invés de mera repetição.
+aprofundamento do conceito, em vez de mera repetição.
 
 A fórmula proposta \eqref{eq:nl} permite que a normalização ocorra em
 diferentes graus, de acordo com o ajuste do parâmetro constante $b$ que assume
@@ -1283,7 +1318,7 @@ longas, por exemplo, o caso em que um documento pode ser utilizado como
 base para a consulta, a consideração da frequência do termo na \textit{query}
 pode ser mais um fator contribuinte para a estimativa de relevância. O
 componente $\rQ$ também é derivado a partir da modelagem em distribuições de
-\textit{Poisson}, porém aplicadas ao conjunto de \textit{queries} ao invés do
+\textit{Poisson}, porém aplicadas ao conjunto de \textit{queries} em vez do
 conjunto de documentos. O resultado é um peso semelhante ao $\rD$, porém com
 parâmetros constantes próprios (equação \ref{eq:RQ}). Todavia, para o caso de
 \textit{queries} com poucos termos, este componente do peso deve ser
@@ -1307,6 +1342,312 @@ anteriormente, como indica a equação \ref{eq:bm25}.
 \end{equation}
 
 % ver http://en.wikipedia.org/wiki/Neighbourhood_components_analysis
+
+\subsection{K-NN} \label{sec:knn}
+
+\textit{K-nearest neighbors (k-NN)}, em português \textit{k vizinhos mais
+próximos}, é mais um algoritmo de aprendizado supervisionado para
+classificação. Este método baseia-se no conceito de vizinhança, que representa
+um conjunto de objetos que estão próximos no espaço de busca.
+
+O \textit{K-NN} não exige nenhum treinamento prévio com os dados de exemplo,
+que podem ser diretamente armazenados como vetores de atributos acompanhados
+por suas devidas classes. A classificação de um novo objeto parte do cálculo da
+vizinhança do mesmo, que é composta por $k$ objetos.
+
+A determinação da vizinhança está diretamente relacionada com o conceito de
+proximidade entre objetos, que pode ser expressa em termos de similaridade ou
+de distância entre os mesmos (quanto maior a distância, menor a similaridade).
+Existem diversas medidas para mensurar estes conceitos, deve-se adotar a
+métrica que melhor se adeque ao domínio da aplicação e conjunto de dados.
+A tabela \ref{tab:knn_distancia} apresenta algumas dessas medidas, onde os
+objetos $X$ e $Y$ são representados por seus vetores $\vec{X} = (x_1,...,x_n)$
+e $\vec{Y} = (y_1,...,y_n)$. A similaridade de cosseno mede a similaridade de
+dois vetores através do cosseno do ângulo entre os mesmos. O coeficiente de
+\textit{Pearson} é equivalente ao cosseno do ângulo entre os vetores
+centralizados na média. E o coeficiente de \textit{Tanimoto} é uma extensão da
+similaridade de cossenos que resulta no índice de \textit{Jaccard} para
+atributos binários.
+
+\begin{table}[h!]
+  \caption{K-NN: Medidas de distância e similaridade entre objetos}
+  \label{tab:knn_distancia}
+  \centering
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabular}{| l | l |}
+    \hline
+    Distância euclidiana &
+    \T\B$\mathid{D}(X,Y) = \sqrt{(x_1-y_1)^2+(x_2-y_2)^2+...+(x_n-y_n)^2}$\\
+    \hline
+    Similaridade de cosseno &
+    $\mathid{sim}(X,Y) = \frac{\T\vec{X} \cdot \vec{Y}}{|\vec{X}| |\vec{Y}|}
+                       = \frac{\textstyle \sum_{1\leq i \leq n} x_i y_i}
+                              {\textstyle \sqrt{\sum_{1\leq i \leq n} x_i^2}
+                               \sqrt{\sum_{1\leq i \leq n} y_i^2}\B}$\\
+    \hline
+    Coeficiente de \textit{Pearson} &
+    $\mathid{P}(X,Y) = \frac{\T\textstyle\sum_{1 \leq i \leq n} (x_i-\bar{x})
+                                     (y_i-\bar{y})}
+                   {\textstyle\sqrt{\sum_{1 \leq i \leq n} (x_i-\bar{x})^2}
+                    \sqrt{\sum_{1 \leq i \leq n} (y_i-\bar{y})^2}\B}$\\
+    \hline
+    Coeficiente de \textit{Tanimoto} &
+    $\mathid{T}(X,Y) = \frac{\T\textstyle\vec{X} \cdot \vec{Y}}
+                            {\textstyle |\vec{X}|^2 + |\vec{Y}|^2 -
+                             \vec{X} \cdot \vec{Y}}$\\
+    \hline
+  \end{tabular}
+\end{table}
+
+Após a definição de vizinhança, a classe mais frequente entre seus $k$ vizinhos
+é atribuída ao novo objeto. Desta forma, a similaridade também pode ser
+entendida como grau de influência entre os objetos. Os objetos mais semelhantes
+a um novo objeto terão maior influência no cálculo de sua classificação.
+
+\subsection{Classificador bayesiano}
+
+\textit{Bayes ingênuo} é uma solução para classificação que figura entre os
+algoritmos de aprendizado de máquina supervisionados. O classificador apoia-se
+num modelo probabilístico que aplica o teorema de Bayes com fortes suposições
+de independência de atributos -- por esta razão o método é considerado ingênuo.
+Em outras palavras, a presença ou ausência de um atributo em um objeto de uma
+classe não estaria relacionada com a incidência de nenhum outro atributo.
+
+A decisão acerca da classe a qual um objeto pertence é tomada de acordo com o
+modelo de probabilidade máxima posterior \textit{(MAP)}, indicada na equação
+\ref{eq:map}. Dado que $C$ é o conjunto de classes e $x$ objeto a ser
+classificado, a classe atribuída a este será a que apresentar maior
+probabilidade condicionada a $x$. $\hat{P}$ é utilizado em vez de $P$ porque
+geralmente não se sabe o valor exato das probabilidades, que são estimadas a
+partir dos dados de treinamento.
+
+\begin{equation}
+\label{eq:map}
+  \mathid{c_{MAP}} = \underset{c \in C}{\operatorname{arg\ max}} \ \hat{P}(c|x)
+\end{equation}
+
+A equação \ref{eq:bayes} aplica o Teorema de Bayes para probabilidades
+condicionadas. Na prática, apenas o numerador da fração interessa, visto que o
+denominador é constante para todas as classes, portanto não afeta o
+$\operatorname{arg\ max}$ (equação \ref{eq:bayes_no_deno}).
+
+\begin{eqnarray}
+\label{eq:bayes}
+  \mathid{c_{MAP}} & = & \underset{c \in C}{\operatorname{arg\ max}} \
+                         \frac{\hat{P}(x|c) \hat{P}(c)}{\cancel{\hat{P}(x)}} \\
+                {} & {} & {} \nonumber \\
+\label{eq:bayes_no_deno}
+                   & = & \underset{c \in C}{\operatorname{arg\ max}} \
+                         \hat{P}(x|c) \hat{P}(c)
+\end{eqnarray}
+
+É neste ponto que a independência de atributos é importante. Considera-se que
+um documento $x$ pode ser caracterizado por uma série de atributos $x_i$ -- no
+caso de documentos de texto, os atributos são os próprios termos. Assumindo que
+a ocorrência de atributos acontece independentemente, tem-se que:
+
+\begin{equation}
+\label{eq:independencia}
+  \hat{P}(x|c) = \hat{P}(x_1,x_2,...,x_n|c)
+               = \hat{P}(x_1|c) \hat{P}(x_2|c)\ ...\ \hat{P}(x_n|c)
+\end{equation}
+
+Portanto, a função de decisão pode ser reescrita através da equação
+\ref{eq:bayes_prod}. Cada parâmetro condicional $\hat{P}(x_i|c)$ é um peso
+que representa a qualidade do atributo $x_i$ como indicador da classe $c$,
+enquanto que $\hat{P}(c)$ é a frequência relativa da classe $c$.
+
+\begin{equation}
+\label{eq:bayes_prod}
+  \mathid{c_{MAP}} = \underset{c \in C}{\operatorname{arg\ max}} \ \
+                     \hat{P}(c) \prod_{1 \le i \le n} \hat{P}(x_i|c)
+\end{equation}
+
+Os parâmetros são obtidos através da estimativa de maior probabilidade
+\textit{(MLE)}, que corresponde ao valor mais provável de cada parâmetro de
+acordo com os dados de treinamento. A equação \ref{eq:p_c} traz a estimativa de
+$\hat{P}(c)$, onde $N_c$ é o número de objetos da classe $c$ e $N$ é o número
+total de documentos.
+
+\begin{equation}
+\label{eq:p_c}
+  \hat{P}(c) = \frac{N_c}{N}
+\end{equation}
+
+As probabilidades condicionais são estimadas como a frequência relativa do
+atributo $x$ em objetos que pertencem à classe $c$. Na equação \ref{eq:p_xc},
+$T_{\mathit{cx}}$ é o número de ocorrências de $x$ em objetos de exemplo da
+classe $c$ e $V$ é o conjunto de atributos que os objetos podem apresentar.
+
+\begin{equation}
+\label{eq:p_xc}
+  \hat{P}(x|c) = \frac{T_{\mathit{cx}}}
+                      {\displaystyle \sum_{x' \in V} T_{\mathit{cx}'}}
+\end{equation}
+
+No entanto, a estimativa \textit{MLE} é zero para combinações atributo-classe
+que não ocorrem nos dados de treinamento. Considerando que as probabilidades
+condicionais de todos os atributos serão multiplicadas (equação
+\ref{eq:bayes_prod}), a simples ocorrência de uma probabilidade zerada resulta
+na desconsideração da classe na referida classificação. E de fato, dados de
+treinamento nunca são abrangentes o suficiente para representar a frequência de
+eventos raros de forma adequada \cite{Manning:09}. Para eliminar
+$\mathit{zeros}$, adiciona-se $1$ a cada termo da equação \ref{eq:p_xc}:
+
+\begin{equation}
+\label{eq:p_xc+1}
+  \hat{P}(x|c) = \frac{T_{\mathit{cx}}+1}
+                      {\displaystyle \sum_{x' \in V} T_{\mathit{cx}'}+1}
+\end{equation}
+
+O classificador bayesiano também é sensível a ruídos, logo, sua performance é
+igualmente beneficiada pelo processo de seleção de atributos descrito na seção
+\ref{sec:selecao_atributos}.
+
+Apesar de a independência de atributos não ser verificada para a maioria
+dos domínios de aplicação, na prática o Bayes ingênuo apresenta resultados
+satisfatórios. \cite{Zhang:04} atribui a surpreendente boa performance deste
+método ao fato de que a mera existência de dependências entre atributos não
+prejudicaria a classificação, mas sim o modo como as dependências estão
+distribuídas ao longo das classes. Segundo o autor, desde que as dependências
+estejam distribuídas igualmente nas classes, não há problema em haver
+dependência forte entre dois atributos.
+
+\subsubsection{Variantes do modelo Bayes ingênuo} \label{sec:variantes_bayes}
+
+As duas principais variantes de implementação do classificador bayesiano,
+denominadas de modelo \textit{multinomial} e de \textit{Bernoulli}, diferem
+fundamentalmente na maneira como os objetos são representados.
+
+O primeiro modelo utiliza uma representação que considera informações espaciais
+sobre o objeto. Na classificação de documentos de texto, por exemplo, o modelo
+gera um atributo para cada posição do documento, que corresponde a um termo do
+vocabulário. Já o modelo de \textit{Bernoulli} produz um indicador de
+presença ou ausência para cada possível atributo (no caso de texto, cada termo
+do vocabulário).
+
+A escolha da representação de documentos adequada é uma decisão crítica no
+projeto de um classificador, visto que o próprio significado de um atributo
+depende da representação. No \textit{multinomial}, um atributo pode assumir
+como valor qualquer termo do vocabulário, o que resulta numa representação do
+documento correspondente à sequência de termos do mesmo. Já para o modelo de
+\textit{Bernoulli}, um atributo pode assumir apenas os valores $0$ e $1$, e a
+representação do documento é uma sequência de $0$s e $1$s do tamanho do
+vocabulário.
+
+%A figura \ref{fig:exemplo_bayes} ilustra as peculiaridades de cada
+%representação.
+%
+%\begin{figure}[ht]
+%\centering
+%\begin{tabular}{*4{c}}
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (1)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Por motivo \\ de segurança, \\
+%    comunicamos a todos os clientes que atualizem sua senha por email.}}
+%    \end{overpic} &
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (2)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Atualização \\ urgente de \\  senha.
+%    \\ \\ Clique aqui.}}\end{overpic} &
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (3)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Você foi \\ sorteado e \\ acaba de
+%    ganhar 1 milhão de reais. Clique aqui e saiba como resgatar seu prêmio.}}
+%    \end{overpic} &
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (4)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Perca peso fácil e de forma divertida.
+%    Pare de sofrer!}}\end{overpic} \\
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (5)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Emagreça 10kg em duas semanas! Clique
+%    aqui e descubra como.}}\end{overpic} &
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (6)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Compre viagra com 69\% de desconto!}}
+%    \end{overpic} &
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (7)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Se você não pode mudar sua vida, mude
+%    pelo menos a sua bolsa!}}\end{overpic} &
+%\begin{overpic}[width=2.3cm]{fig/doc_background.png}\put(60,5){\scriptsize (8)}
+%  \put(5,44){\parbox{1.8cm}{\scriptsize Aprenda a investir na bolsa em uma
+%    semana.}}\end{overpic}
+%\end{tabular}
+%\caption{Coleção de documentos classificados em \textit{spam} e \textit{não-spam}}
+%\label{fig:colecao_spam}
+%\end{figure}
+
+\subsection{Agrupamento} \label{sec:agrupamento}
+
+Agrupamento (\textit{clustering}, em inglês) é uma técnica de aprendizado de
+máquina não supervisionado. O algoritmo particiona a base de dados de forma a
+criar automaticamente grupos que reúnam usuários com comportamentos
+semelhantes.
+
+A escolha do algoritmos a ser utilizadoo deve depender do tipo de dados
+disponível e nos objetivos específicos da aplicação. É aceitável experimentar
+diversos algoritmos no mesmo conjunto de dados porque a análise de grupos é
+geralmente utilizada como ferramenta exploratória ou descritiva, em contraste
+com testes estatísticos que são realizados para fins de confirmação ou
+inferência. Ou seja, geralmente não se quere provar ou disprovar uma hipótese
+pré-concebida; mas sim ver ``o que os dados estão tentando nos dizer''
+\cite{Kaufman:05}.
+
+\subsubsection{Métodos partitivos}
+
+Os dados são classificados em k grupos que satisfazem os requisitos de uma
+partição: cada grupo contém no minimo um objeto e cada objeto pertence a
+exatamente um grupo;
+
+\begin{enumerate}[(a)]
+\item \textbf{K-Means}
+
+Uma das técnicas mais populares de agrupamento é o $k\mhyphen means$, que
+consiste basicamente nos seguintes passos:
+
+\begin{enumerate}[1.]
+  \item Seleção de $k$ elementos considerados sementes;
+  \item Associação de cada elemento da base de dados com a semente mais próxima
+    a ele;
+  \item Cálculo de novos pontos no espaço centrais para cada grupo, a partir
+    dos elementos que o compõem.
+\end{enumerate}
+
+O passo 3 é repetido até que não seja mais necessário calcular novos
+centróides. Desta forma, um sistema de recomendação pode realizar o agrupamento
+da base de dados de usuários e sugerir itens de acordo com o grupo em que o
+usuário se encontra ao final do processo de agrupamento. Devem ser recomendados
+os itens mais frequentes entre os outros usuários do grupo que este usuário
+específico não tenha.
+
+\item \textbf{K-Medoids}
+
+Este é outro método partitivo, porém as partições giram em torno de
+\text{medoids}, que são os elementos que acumulam menor dissimilaridade com o
+restante dos objetos do grupo. É uma solução mais genérica do que o
+\textit{K-Means} porque pode ser utilizada mesmo quando um centróide não pode
+ser definido (a depender do tipo das variáveis), já que se apoiam em
+coeficientes de dissimilaridades. Recomendado também quando há interesse em
+preservar os objetos representativos de cada grupo, úteis para fins de redução
+de dados ou caracterização.
+
+\item \textbf{Fuzzy}
+
+Evita decisões estritas. (detalhar...)
+% [FIXME] detalhar clustering fuzzy
+
+\item \textbf{Agrupamento em larga escala}
+
+A distância entre pares de objetos de um grupo é geralmente armazenado em
+memória, alocando um espaço de memoria da ordem de $O(n^2)$.
+
+Para aplicações com bases de dados grandes, o agrupamento é realizado numa
+amostra dos dados selecionada aleatoriamente e o restante dos dados é
+classificado de acordo com a promiximidade a cada cluster formado. Para
+melhores resultados, o processo deve ser realizado diversas vezes e a melhor
+solução de agrupamento deve ser mantida.
+% - p. ex. exeperimentar n=100.
+\end{enumerate}
+\subsubsection{Métodos hierárquicos}
+
+Podem ser aglomerativos ou divisivos. (detalhar...)
+% [FIXME] detalhar métodos de clustering hierárquicos
 
 \subsection{Apriori} \label{sec:apriori}
 
@@ -1373,8 +1714,8 @@ consegue detectar todos os conjuntos frequentes sem a necessidade de calcular o
 suporte para todos os $2^n$ subconjuntos possíveis.
 
 A descoberta de conjuntos frequentes acontece por níveis, como uma busca em
-largura no diagrama de \emph{Hasse} começando pelos conjuntos unitários. Ao
-invés de gerar os conjuntos candidatos a partir da base de dados, a cada nível
+largura no diagrama de \emph{Hasse} começando pelos conjuntos unitários. Em
+vez de gerar os conjuntos candidatos a partir da base de dados, a cada nível
 da busca é feita uma combinação dos elementos para gerar os candidatos do nível
 seguinte. Neste ponto a solução se beneficia do seguinte princípio: qualquer
 subconjunto de um conjunto frequente também é um conjunto frequente. Portanto,
@@ -1415,185 +1756,7 @@ extraídas da base de dados numa única passagem, evitando desta forma repetidos
 acessos à mesma. Árvores de prefixos, árvores lexicográficas e matrizes
 binárias são algumas dessas estruturas \cite{Kotsiantis:06}.
 
-\section{Composição de recomendações} \label{sec:composicao_recomendacoes}
-
-Neste trabalho considera-se uma classificação mista dos seguintes autores.
-\cite{Burke:02} distingue as diferentes estratégias de recomendação a partir
-da fonte de dados de onde é extraído o conhecimento para produzir as
-recomendações. \cite{Cazella:10} propõe uma classificação um pouco mais
-abrangente, considerando por exemplo a recomendação por reputação dos itens,
-que por não oferecer grandes desafios computacionais é omitida por algumas
-taxonomias.
-
-\subsection{Reputação dos itens}
-
-Popular entre serviços de venda como livrarias, sites de leilão e
-lojas de modo geral, esta estratégia consiste no armazenamento de avaliações
-dos produtos escritas por usuários, bem como na apresentação das mesmas no
-momento e local apropriado \cite{Cazella:10}. A implementação desta solução é
-simples, visto que exige apenas a manutenção dos dados originais, não sendo
-necessária análise posterior alguma. No entanto, tem-se como premissa a
-imparcialidade dos usuários em suas opiniões, que de fato não pode ser
-verificada devido a seu caráter subjetivo e estritamente pessoal. Atualmente
-existem serviços especializados em reputação de produtos que não realizam
-venda associada, apenas disponibilizam as avaliações. É o caso do
-\textit{Internet Movie Database} \footnote{\url{http://www.imdb.com/}},
-apresentado na figura \ref{fig:imdb}.
-
-\begin{figure}[h!]
-\centering
-\fbox{
-  \includegraphics{Figures/imdb.pdf}
-}
-\caption{Avaliação de usuário no IMDb}
-\label{fig:imdb}
-\end{figure}
-
-\subsection{Recomendação baseada em conteúdo}
-
-Esta abordagem parte do princípio de que os usuários tendem a se interessar por
-itens semelhantes aos que eles já se interessaram no passado
-\cite{Herlocker:00}. O ponto chave desta estratégia é a caracterização dos
-itens, por exemplo, através da identificação de atributos (autores e temas de
-livros, por exemplo). A partir dos atributos dos itens, aplica-se técnicas de
-recuperação da informação (por exemplo, $\tfidf$ e \textit{BM25}) para
-encontrar itens semelhantes ou de classificação (por exemplo, \textit{Bayes
-ingênuo} e \textit{K-NN}) para encontrar itens relevantes. Em uma livraria,
-sugerir ao cliente outros livros do mesmo autor ou tema de livros previamente
-selecionados é uma estratégia amplamente adotada.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=\textwidth]{Figures/rec_conteudo.pdf}
-\caption{Cenário de uma recomendação baseada em conteúdo}
-\label{fig:rec_conteudo}
-\end{figure}
-
-Pelo fato de se apoiar na classificação dos itens, os resultados da
-recomendação são prejudicados nos casos em que os atributos não podem ser
-identificados de forma automatizada. A superespecialização é outro problema
-indicado por \cite{Adomavicius:05}, que diz respeito à abrangência das
-recomendações estar limitada a itens similares aos já escolhidos pelos usuários.
-
-\subsection{Recomendação colaborativa}
-
-Esta estratégia não exige o reconhecimento semântico do conteúdo dos itens,
-pois é fundamentado na troca de experiências entre indivíduos que possuem
-interesses em comum. A figura \ref{fig:rec_colaborativa} ilustra o cenário da
-recomendação colaborativa.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=\textwidth]{Figures/rec_colaborativa.pdf}
-\caption{Cenário da recomendação colaborativa}
-\label{fig:rec_colaborativa}
-\end{figure}
-
-A técnica \textit{K-NN} é comumente utilizada neste tipo de solução. Define-se
-uma função que representa a proximidade entre os usuários. Com base nesta
-medida, a vizinhança de um determinado usuário é composta por outros $k$
-usuários que estiverem mais próximos a ele. Porém, ao invés de uma classe ser
-extraída da vizinhança, como descrito na seção \ref{sec:knn}, uma recomendação
-para o usuário é produzida a partir da análise dos itens que os usuários
-vizinhos consideram relevantes. Geralmente os itens que ocorrem com maior
-frequência na vizinhança compõem a recomendação.
-
-O problema da superespecialização é superado, visto que a recomendação neste
-caso não se baseia no histórico do próprio usuário, portanto pode apresentar
-itens totalmente inesperados. Outra contribuição é a possibilidade de formação
-de comunidades de usuários pela identificação de interesses semelhantes
-\cite{Cazella:10}.
-
-\subsection{Baseada em conhecimento}
-
-Esta estratégia tem como princípio a descoberta de conhecimento a partir da
-análise de uma base de dados de transações, que registra a escolha dos usuários
-ao longo do tempo. Técnicas de classificação e mineração de dados são
-utilizadas para extrair correlações e padrões frequentes no comportamento dos
-usuários. Tal abordagem é frequentemente utilizada em recomendações implícitas,
-por exemplo, na definição do posicionamento de produtos numa prateleira ou a
-realização de propagandas dirigidas \cite{Hegland:03}.
-
-Agrupamento (\textit{clustering}, em inglês) é uma técnica de aprendizado de
-máquina não supervisionado. O algoritmo particiona a base de dados de forma a
-criar automaticamente grupos que reúnam usuários com comportamentos
-semelhantes. Uma das técnicas mais utilizadas é o $k\mhyphen means$, que
-consiste basicamente em: (1) seleção de $k$ usuários considerados sementes; (2)
-associar cada usuário da base de dados com a semente mais próxima dele; (3)
-calcular novos elementos centrais para cada grupo, entre os usuários que o
-compõem. O passo 3 é repetido até que não seja mais necessário calcular novos
-centróides. Desta forma, um sistema de recomendação poderia sugerir itens de
-acordo com as características de cada grupo \cite{Cazella:10}.
-
-Para descoberta de regras de associação, as técnicas mais utilizadas são
-variações do algoritmos Apriori, apresentado na seção \ref{sec:apriori}
-\cite{Kotsiantis:06}. Dado um conjunto de associações, a recomendação para
-determinado usuário é produzida de acordo com as regras satisfeitas pelo
-conjunto de itens que ele já tenha selecionado. Por exemplo, a regra ${A,B,C}
-\Rightarrow {D}$ seria satisfeita por usuários que possuem os itens $A$, $B$ e
-$C$, resultando na indicação do item $D$: \textit{``Clientes que compraram os
-itens A, B e C também compraram o item D''}. Um exemplo de recomendação por
-associação é encontrado na loja virtual da empresa \textit{Amazon}\footnote{\url{http://www.amazon.com/}} (figura \ref{fig:amazon}).
-
-\begin{figure}[h!]
-\centering
-\fbox{
-  \includegraphics{Figures/amazon.pdf}
-}
-\caption{Recomendação por associação na Amazon}
-\label{fig:amazon}
-\end{figure}
-
-\subsection{Baseada em dados demográficos}
-
-A estratégia demográfica fundamenta-se na composição de perfis de usuários e
-identificação de nichos demográficos para produção de recomendações. Os dados
-pessoais geralmente são coletados de forma explícita, através de um cadastro
-do usuário, e podem englobar informações como idade, sexo, profissão e áreas de
-interesse. Dados demográficos, no entanto, geralmente são utilizados em
-combinação com outras fontes de dados e técnicas diversas, como parte de uma
-estratégia de recomendação híbrida.
-
-\subsection{Estratégia híbrida} \label{sec:estrategias_hibrida}
-
-Sistemas de recomendação híbridos combinam duas ou mais estratégias, com o
-intuito de obter melhor performance do que a que as estratégias oferecem
-individualmente. A tabela \ref{tab:metodos_hibridizacao} apresenta as
-principais técnicas de hibridização, segundo \cite{Burke:02}.
-
-\begin{table}[h!]
-\caption{Métodos de hibridização}
-\label{tab:metodos_hibridizacao}
-\small
-\begin{tabularx}{\textwidth}{| l | X |}
-\hline
-\normalsize{\textbf{\textit{Método}}} &
-\normalsize{\textbf{\textit{Descrição}}} \\
-\hline
-Ponderação & Pontuações de relevância oriundas de diversas técnicas de
-             recomendação são combinadas para compor uma única recomendação. \\
-\hline
-Revezamento & O sistema reveza entre técnicas de recomendação diversas, de
-              acordo com a situação do momento. \\
-\hline
-Combinação & Recomendações oriundas de diversos recomendadores diferentes são
-             apresentados de uma só vez. \\
-\hline
-Combinação de atributo & Um algoritmo de recomendação único coleta atributos
-                         de diferentes bases de dados para recomendação. \\
-\hline
-Cascata & Um recomendador refina a recomendação produzida por outro. \\
-\hline
-Acréscimo de atributo & O resultado de uma técnica é usado como atributo de
-                        entrada para outra. \\
-\hline
-Meta-nível & O modelo que um recomendador ``aprendeu'' é usado como entrada
-             para o outro. \\
-\hline
-\end{tabularx}
-\end{table}
-
-\section{Avaliação} \label{sec:avaliacao}
+\section{Avaliação de recomendadores} \label{sec:avaliacao}
 
 A avaliação de sistemas de recomendação não é uma tarefa trivial,
 principalmente porque não há consenso sobre quais atributos devem ser
@@ -1658,6 +1821,7 @@ Além de medidas de acurácia, são apresentados outras métricas para mensurar
 qualidades que proporcionam maior grau de satisfação do usuário ao utilizar um
 sistema de recomendação.
 
+%\begin{landscape}
 \begin{sidewaystable}
 \caption{Métricas para avaliação de sistemas recomendadores}
 \label{tab:metricas}
@@ -1710,4 +1874,5 @@ sistema de recomendação.
 \hline
 \end{tabularx}
 \end{sidewaystable}
+%\end{landscape}
 

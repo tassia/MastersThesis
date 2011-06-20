@@ -6,8 +6,8 @@ recomendador de aplicativos GNU/Linux.
 \section{Escolha da plataforma}
 
 A distribuição escolhida como base para o desenvolvimento deste trabalho
-foi o Debian GNU/Linux. No entanto, a codificação será realizada com o maior
-grau possível de independência de plataforma, com o intuito de que os
+foi o Debian GNU/Linux. No entanto, a independência de plataforma foi sempre
+levada em consideração na fase de desenvolvimento, com o intuito de que os
 resultados sejam facilmente adaptáveis para outros contextos. As seguir estão
 descritos os critérios que pautaram esta escolha.
 
@@ -15,23 +15,15 @@ descritos os critérios que pautaram esta escolha.
 
 \item \textbf{Esquema consistente de distribuição de aplicativos.} O
   gerenciamento de pacotes em sistemas Debian GNU/Linux é realizado através do
-  \textit{APT (Advanced Packaging
-  Tool)}\footnote{\url{http://wiki.debian.org/Apt}}. Ações como a busca,
-  obtenção, instalação, atualização e remoção de pacotes são disparadas pelo
-  \textit{APT}, que num nível mais baixo faz uso do \textit{dpkg}, ferramenta
-  que de fato realiza instalações e remoções de softwares. O \textit{APT}
-  também gerencia de maneira eficiente as relações de conflito e dependência
-  entre pacotes. Ao receber um pedido de modificação da configuração do sistema
-  -- por exemplo, instalação de um novo componente -- o \textit{APT} tenta
-  satisfazer a requisição a partir do conhecimento de como obter os componentes
-  (endereço dos repositórios de pacotes) e das relações de dependência entre os
-  mesmos. Desta forma, o gerenciador promove a instalação de todas as
-  dependências de um pacote antes de instalá-lo, ao passo que não permite a
-  instalação de pacotes que conflitem com outros já instalados no sistema.
+  \textit{APT}, cujas funcionalidades foram apresentadas na seção
+  \ref{sec:apt}. Apesar de atualmente outras distribuições oferecerem
+  ferramentas similares, o \textit{APT} é certamente uma das mais maduras,
+  sendo inclusive apontada por alguns desenvolvedores como razão da explosão
+  no surgimento de distribuições derivadas do Debian (herdeiras do esquema).
 
 \vspace{0.3cm}
 \item \textbf{Disponibilidade de dados estatísticos.} O \textit{Popcon
-  (Popularity Contest)}\footnote{\url{http://popcon.debian.org}} é a concurso
+  (Popularity Contest)}\footnote{\url{http://popcon.debian.org}} é o concurso
   de popularidade entre pacotes. Os usuários que aceitam participar do concurso
   enviam periodicamente a sua lista de pacotes instalados no sistema, que são
   armazenados no servidor do Popcon. Diariamente as listas recebidas são
@@ -164,7 +156,7 @@ A necessidade do usuário diz respeito às funcionalidades que os aplicativos
 oferecem. Visto que aplicativos diferentes podem executar a mesma função,
 (resguardadas as devidas peculiaridades), o mais apropriado seria representar
 a necessidade ou desejo do usuário (analogamente, sua identidade) como um
-conjunto de funcionalidades, ao invés de um conjunto de pacotes específicos.
+conjunto de funcionalidades, em vez de um conjunto de pacotes específicos.
 
 Algumas funcionalidades de pacotes podem ser extraídas a partir da lista de
 pacotes virtuais\footnote{http://www.debian.org/doc/packaging-manuals/virtual-package-names-list.txt}. Este conceito foi criado especialmente para situações
@@ -227,53 +219,79 @@ pesos diferentes para pacotes que são usados com muita frequência pelo usuário
 em detrimento de outros que foram acessados pela última vez logo após serem
 instalados.
 
-\section{Codificação}
-
-O desenvolvimento de software será majoritariamente realizado na linguagem de
-programação \textit{Python}\footnote{\url{http://www.python.org/}},
-principalmente pela facilidade de integração com outras ferramentas do Debian
-também desenvolvidas nesta linguagem. Ademais, a vasta documentação e grande
-variedade de bibliotecas de utilidade para o trabalho, a exemplo da
-\textit{NLTK}\footnote{\url{http://www.nltk.org/}}
-e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
-contribuíram para esta escolha.
-
 \section{Estratégias implementadas}
 
-\begin{enumerate}[(a)]
-  \item \textbf{Baseada em conteúdo}
+Optou-se por utilizar técnicas de busca como base das soluções, mesmo para
+estratégias herdadas de classificação, dado que a construção prévia de índices
+de busca otimiza o cálculo de dissimilaridades entre itens.
 
-Pretende-se implementar as técnicas \textit{BM25} e \textit{Bayes ingênuo} para
-recomendações de pacotes com base na descrição dos pacotes já instalados
-pelo usuário.
+Ao final desta seção, na tabela \ref{}, será apresentado o conjunto de
+identificadores das diferentes estratégias adotadas, que a seguir são
+apresentadas em detalhes.
+ 
+\subsection{Repositórios de dados}
 
-\hspace{1cm}A caracterização dos pacotes através de \textit{Debtags} é essencial
-para a implementação de estratégias baseadas em conteúdo. Fazendo um paralelo
-com uma coleção de documentos de texto compostos por palavras-chave, o cenário
-neste contexto é de uma coleção de descrições de pacotes compostas por
-\textit{tags}. O modelo de espaço vetorial neste caso é representado por uma
-matriz de pacotes por \textit{tags}.
+Os repositórios utilizados na implementação estão descritos na tabela abaixo.
+A tabela \ref{tab:repositorios_dados} apresenta a fonte de dados de cada índice
+de busca e faz um paralelo com uma coleção de documentos de texto compostos por
+termos ou palavras-chave, o que em cada cenário representa um documento e o que
+representam termos. O modelo de espaço vetorial em cada caso pode representado
+por uma matriz de documentos por termos.
 
-\vspace{0.3cm}
-  \item \textbf{Colaborativa}
+\begin{table}[h!]
+  \caption{Descrição de repositórios de dados utilizados}
+  \label{tab:repositorios_dados}
+  \centering
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabularx}{15cm}{| c | l | l | X |}
+    \hline
+    \textbf{Identificador} & \textbf{Fonte dos dados} & \textbf{Documento}
+                                                      & \textbf{Termos}  \T\B\\
+    \hline
+    axi & Pacote apt-xapian-index & pacote Debian & conjunto de metadados sobre
+                                                    o pacote (descrição,
+                                                    dependências etc) \T\B\\
+    \hline
+    txi & Base de Debtags & pacote Debian & tags \T\B\\
+    \hline
+    pxi & Popcon & submissão do popcon & pacotes instalados  \T\B\\
+    \hline
+  \end{tabularx}
+\end{table}
 
-Através de estratégias colaborativas, pretende-se implementar recomendadores
-que analisem as escolhas de pacotes de outros usuários para compor a sua lista
-de sugestões, com base na técnica \textit{K-NN}.
+\subsection{Baseadas em conteúdo}
 
-\hspace{1cm}O \textit{Popcon} é a fonte de dados disponível atualmente para
-soluções colaborativas de recomendação. Neste contexto, listas de pacotes
-representam a identidade do usuário, que receberá recomendações com base
-no que outros usuários com interesses semelhantes aos dele têm instalado
-em seus sistemas e ele não tem.
+As técnicas baseadas em conteúdo foram implementadas com o suporte da
+biblioteca Xapian, que utiliza a técnica \textit{BM25}, descrita na seção
+\ref{sec:bm25}. As recomendações podem ser produzidas com base na descrição dos
+pacotes já instalados pelo usuário ou por suas tags.
 
-\vspace{0.3cm}
-  \item \textbf{Híbrida}
+%\hspace{1cm}A caracterização dos pacotes através de \textit{Debtags} é
+% essencial para a implementação de estratégias baseadas em conteúdo.
+
+\subsection{Colaborativas}
+
+O \textit{Popcon} é a fonte de dados disponível atualmente para soluções
+colaborativas de recomendação. Neste contexto, listas de pacotes representam a
+identidade do usuário, que receberá recomendações com base no que outros
+usuários com interesses semelhantes aos dele têm instalado em seus sistemas e
+ele não tem.
+
+Como estratégias colaborativas, foram implementadas soluções baseadas nas
+técnicas \textit{K-NN} e agrupamento por \textit{k-medoid}. A composição da
+vizinhança do \textit{K-NN}, no entanto foi realizada a partir de uma busca no
+repositório \textit{pxi}. Já para a solução de agrupamento, foi necessário
+adotar medidas para aplicações em larga escala, dado que a base submissões do
+popcon ultrapassou a marca de 100.000 usuário, o que torna o processamento de
+todas as distância par-a-par extremamente custosa.
+
+\subsection{Híbridas}
 
 No sentido de refinar as recomendações produzidas através das estratégias
-colaborativa e baseada em conteúdo, algumas implementações híbridas serão
+colaborativas e baseadas em conteúdo, algumas implementações híbridas foram
 experimentadas. Além das listas de pacotes provenientes do \textit{Popcon} e
-informações do \textit{Debtags}, outros fatores podem ser considerados para
+informações do \textit{Debtags}, outros fatores foram considerados para
 composição das sugestões, alguns dos quais são descritos abaixo.
 
 \begin{itemize}
@@ -301,7 +319,7 @@ recomendadores básicos, caracterizando uma hibridização em \textit{cascata}
 
 \hspace{1cm}Neste contexto é possível também produzir recomendações de forma
 colaborativa com base em conteúdo, o que caracteriza um sistema híbrido
-\textit{meta-nível}. Ao invés de a identidade dos usuários ser representada
+\textit{meta-nível}. Em vez de a identidade dos usuários ser representada
 por uma lista de itens, seria representada pela caracterização destes itens. No caso dos pacotes, a estratégia colaborativa seria realizada a partir das
 \textit{tags} dos pacotes e não das listas de pacotes originais.
 
@@ -317,5 +335,60 @@ basicamente na apresentação em conjunto dos resultados de múltiplos
 recomendadores. De certa forma, a combinação vai acontecer na apresentação do
 \textit{survey} para o usuário.
 
-\end{enumerate}
+\begin{table}[h!]
+  \caption{Descrição das estratégias de recomendação implementadas}
+  \label{tab:modelos_recomendadores}
+  \centering
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabular}{| l | l |}
+    \hline
+    Identificador & Estratégia  \T\B\\
+    \hline
+    ct & baseada em conteúdo utilizando tags  \T\B\\
+    \hline
+    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
+    \hline
+    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
+    \hline
+    col & colaborativa nomes de pacotes como conteúdo \T\B\\
+    \hline
+    colct & colaborativa utilizando tags como conteúdo \T\B\\
+    \hline
+    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
+    \hline
+  \end{tabular}
+\end{table}
 
+\section{Codificação}
+
+O desenvolvimento do \emph{AppRecommender} foi majoritariamente realizado na
+linguagem de programação \textit{Python}\footnote{\url{http://www.python.org/}},
+principalmente pela facilidade de integração com outras ferramentas do Debian
+também desenvolvidas nesta linguagem. Ademais, a vasta documentação e grande
+variedade de bibliotecas de utilidade para o trabalho, a exemplo da
+\textit{Python-cluster}\footnote{\url{http://python-cluster.sourceforge.net/}}
+e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
+contribuíram para esta escolha.
+
+O código-fonte está licenciado pela GNU GPL e disponível em um repositório
+público\footnote{\url{http://github.com/tassia/AppRecommender}}. O
+desenvolvimento obedeceu ao guia de estilo para código em
+python\footnote{\url{http://www.python.org/dev/peps/pep-0008/}}, fez uso de
+testes automatizados e padrões de projeto. A documentação é automaticamente
+gerada pelo Doxygen\footnote{\url{http://www.stack.nl/~dimitri/doxygen/}} e
+pode ser acessada no apêndice A deste documento. O diagrama UML do sistema está
+representado na figura \ref{fig:uml_apprec}.
+% FIXME [incluir referência real da documentacao]
+
+\begin{landscape}
+\begin{figure}[ht]
+\resizebox{\linewidth}{!}{
+  \beginpgfgraphicnamed{app_rec}
+  \input{Figures/uml_apprec.tex}
+  \endpgfgraphicnamed
+}
+\caption{Diagrama UML do AppRecommender}
+\label{fig:uml_apprec}
+\end{figure}
+\end{landscape}

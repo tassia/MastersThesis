@@ -20,7 +20,7 @@ alternativa ao UNIX\footnote{\url{http://www.unix.org/}} -- solução comercial
 amplamente difundida na indústria -- e que fosse compatível com os padrões
 POSIX\footnote{Acrônimo para \textit{Portable Operating System Interface}, é uma
 família de normas definidas pelo IEEE com foco na portabilidade entre sistemas
-operacionais. Disponível em \url{http://standards.ieee.org/develop/wg/POSIX.html}}.
+operacionais.}\footnote{Disponível em \url{http://standards.ieee.org/develop/wg/POSIX.html}}.
 Nos anos 90 o projeto GNU já havia atraído muitos colaboradores, que num curto
 espaço de tempo haviam desenvolvido inúmeros aplicativos para compor o sistema
 operacional. No entanto, o desenvolvimento do núcleo do sistema (\textit{GNU
@@ -54,67 +54,96 @@ encapsulamento de componentes de software em abstrações denominadas
 \textit{pacotes}.
 
 \section{Empacotamento de programas}
-
 %FIXME [Desenvolver os temas relacionados a empacotamento]
-Desenvolver temas relacionados a empacotamento: estrutura de um pacote,
-tipos e funções, repositórios, relações de dependência entre pacotes, etc.
 
-%\subsection{Pacotes Debian}
-%. Binários e fontes\\
-%. upstream, maintainer, uploader\\
-%. Prioridade: required, important, standard, optional, extra\\
-%. Base system = required or important (muitos são marcados como essenciais)\\
-%. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado\\
-%
-%\subsection{Relação entre pacotes}
-%. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
-%. Anti-dependência: Breaks, Conflicts, Replaces\\
-%. Pacotes virtuais: Provides\\
-%. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
-%
-%\subsection{O Repositório de Pacotes}
-%. The Debian Archive,\\
-%. Áreas: main, contrib, non-free\\
-%. Seções\\
+\subsection{Pacotes Debian}
+. Binários e fontes\\
+. upstream, maintainer, uploader\\
+. Prioridade: required, important, standard, optional, extra\\
+. Base system = required or important (muitos são marcados como essenciais)\\
+. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado
+
+\subsection{Pacotes rpm}
+
+\subsection{Relação entre pacotes}
+. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
+. Anti-dependência: Breaks, Conflicts, Replaces\\
+. Pacotes virtuais: Provides\\
+. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
+
+\subsection{O Repositório de Pacotes}
+. The Debian Archive,\\
+. Áreas: main, contrib, non-free\\
+. Seções
+  atualmente particionam o repositório em 53 grupos de pacotes\footnote{\url{http://packages.debian.org/unstable/}}, para fins de organização.
+ a seção de um pacote é definida no momento do empacotamento (arquivo \textit{control})em seu conteúdo
 
 \section{Sistemas gerenciadores de pacotes}
 
-%FIXME [Descrever gerenciadores de pacotes mais populares]
-Descrever o apt, rpm, software-center e outras soluções.
+\subsection{APT} \label{sec:apt}
 
-\section{Seleção de pacotes}
+O gerenciamento de pacotes em sistemas Debian GNU/Linux e derivados é realizado
+através do \textit{APT (Advanced Packaging Tool)}\footnote{\url{http://wiki.debian.org/Apt}}. Ações como a busca, obtenção, instalação, atualização e remoção
+de pacotes são disparadas pelo \textit{APT}, que num nível mais baixo faz uso
+do \textit{dpkg}, ferramenta que de fato realiza instalações e remoções de
+softwares. O \textit{APT} também gerencia de maneira eficiente as relações de
+conflito e dependência entre pacotes. Ao receber um pedido de modificação da
+configuração do sistema -- por exemplo, instalação de um novo componente -- o
+\textit{APT} tenta satisfazer a requisição a partir do conhecimento de como
+obter os componentes (endereço dos repositórios de pacotes) e das relações de
+dependência entre os mesmos. Desta forma, o gerenciador promove a instalação de
+todas as dependências de um pacote antes de instalá-lo, ao passo que não
+permite a instalação de pacotes que conflitem com outros já instalados no
+sistema.
 
-O processo de desenvolvimento e manutenção de uma distribuição varia bastante
-de uma para outra e está diretamente ligado à constituição do projeto. Quando
-são criadas por empresas, costumam receber colaboração dos usuários de
-forma limitada, visto que as decisões-chave são tomadas dentro da organização.
-Este é o modelo de desenvolvimento descrito por \cite{Raymond:99} como catedral.
-Por outro lado, os projetos criados independentemente, formam ao longo do tempo
-uma comunidade de desenvolvedores interessados em colaborar, sendo estes os
-únicos responsáveis pelo sucesso ou fracasso do projeto. Neste modelo,
-denominado bazar, o código-fonte está disponível durante todo o processo
-de desenvolvimento, não apenas nos lançamentos, permitindo que a contribuição
-seja mais efetiva. Nesses casos observa-se com mais clareza o fenômeno do
-consumidor produtor descrito anteriormente. Segundo o autor, este modelo é
-mais favorável ao sucesso, pois um bom trabalho de desenvolvimento de software
-é motivado por uma necessidade pessoal do desenvolvedor (ou seja, o
-desenvolvedor é também usuário).
+\subsection{Synaptic}
 
-A seleção e configuração dos aplicativos básicos de uma distribuição são
-de responsabilidade da equipe que a desenvolve, com diferentes níveis de
-interferência da comunidade, sendo uma questão crucial no projeto, dado que é
-um dos fatores de grande influência na escolha dos usuários pela distribuição.
-O impacto de tal seleção para os usuários finais resulta em frequentes
-polêmicas em torno do tema, como a gerada pelo anúncio de que o projeto
-\textit{Ubuntu} abandonaria o \textit{Gnome} como interface padrão de usuário
-\cite{Paul:10}.
+\begin{figure}[h!]
+\centering
+  \includegraphics{Figures/synaptic.png}
+\caption{Screenshot do synaptic}
+\label{fig:synaptic}
+\end{figure}
 
-Após a configuração de um sistema básico, a instalação de programas adicionais
-resulta na personalização do sistema para atender a demandas específicas dos
-usuários para o qual foi projetado. Ainda que a infraestrutura de instalação
-de softwares provida pelas distribuições (geralmente baseada em pacotes)
-simplifique a manutenção de sistemas \cite{Cosmo:08}, a seleção dos programas
-depende de uma ação humana. Com o desenvolvimento deste trabalho, pretende-se
-auxiliar o indivíduo nesta tarefa, especialmente quando este não possuir
-experiência pessoal para realizar escolhas neste contexto.
+\subsection{Ubuntu Software Center}
 
+Ferramenta inicialmente denominada \textit{AppCenter}, foi projetada
+com o intuito de centralizar as atividades relativas à instalação de
+aplicativos em sistemas Ubuntu (navegação pelo repositório, instalação e
+remoção de pacotes). Foi desenvolvido com base no \textit{gnome-app-install},
+sendo escrito em Python e usa GTK+ como biblioteca gráfica. Serve como
+interface para o APT, dado que o sistema de empacotamento desta distribuição é
+herdado do Debian.
+
+\begin{figure}[h!]
+\centering
+  \includegraphics{Figures/software-center.png}
+\caption{Sreenshot do software-center}
+\label{fig:software_center}
+\end{figure}
+
+\section{Seleção de programas}
+
+O conjunto de programas instalados num determinado sistema é resultado de dois
+processos de seleção: o primeiro é realizado no âmbito do desenvolvimento da
+distribuição e o segundo faz parte da manutenção cotidiana do sistema,
+realizado pelo usuário que administra a máquina.
+
+A seleção e configuração dos aplicativos básicos de uma distribuição
+(instalados por padrão) são de responsabilidade da equipe que a desenvolve, com
+diferentes níveis de interferência da comunidade. Esta é uma questão crucial
+nos projetos, dado que é um dos fatores mais considerados por usuários finais
+na escolha por qual distribuição adotar. Por este motivo, mudanças na seleção
+de pacotes resulta em frequentes polêmicas em torno do tema, como a gerada pelo
+anúncio de que o projeto \textit{Ubuntu} abandonaria o \textit{Gnome} como
+interface padrão de usuário \cite{Paul:10}.
+
+Por outro lado, após a configuração de um sistema básico, este é geralmente
+personalizado para atender às demandas específicas dos usuários finais, o que é
+realizada por meio da instalação de programas adicionais. Ainda que a
+infraestrutura de instalação de softwares provida pelas distribuições
+(geralmente baseada em pacotes) simplifique a manutenção de sistemas
+\cite{Cosmo:08}, a seleção dos programas depende de uma ação humana (do
+administrador). Com o desenvolvimento deste trabalho, pretende-se auxiliar o
+indivíduo nesta tarefa, especialmente quando este não possuir experiência
+pessoal para realizar escolhas neste contexto.

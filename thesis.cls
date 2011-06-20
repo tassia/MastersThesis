@@ -15,6 +15,7 @@
 \RequirePackage{enumerate}
 \RequirePackage{rotfloat}
 \RequirePackage{overpic}
+\RequirePackage{tikz}
 \RequirePackage{slashbox}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{cancel}
@@ -23,9 +24,11 @@
 
 \chapterstyle{bianchi}
 \pagestyle{empty}
-\maxsecnumdepth{subsection}
+\maxsecnumdepth{subsubsection}
 \sloppy
 \hyphenpenalty=750
+
+\pgfrealjobname{thesis-tassia}
 
 % Definição da capa da dissertação com base em:
 % http://zoonek.free.fr/LaTeX/LaTeX_samples_title/0.html
