@@ -95,7 +95,9 @@ de pacotes pode ser expresso em termos de atributos extraídos dos próprios
 pacotes, porém, a caracterização por meio de tags já fornece uma caracterização
 possível de ser utilizada e a custo baixo.
 
-\subsubsection{Popcon}
+\subsubsection{Apt-Xapian-Index}
+
+\subsubsection{Popcon} \label{sec:popcon}
 
 O \textit{Popcon (Popularity Contest)} é o concurso de popularidade entre
 pacotes Debian, criado pelo desenvolvedor Avery Pennarun em 1998 com o
@@ -170,14 +172,12 @@ END-POPULARITY-CONTEST-0 TIME:914183335
   \label{tab:popcon}
 \end{table}
 
-Em fevereiro de 2011 o \textit{popcon} ultrapassou a marca de 100.000
-colaboradores\footnote{\url{http://lists.alioth.debian.org/pipermail/popcon-developers/2011-February/001913.html}}. As submissões recebidas são processadas
-diariamente e as estatísticas geradas são disponibilizadas no website do
-projeto\footnote{\url{http://popcon.debian.org}}. No entento, os dados ``crus''
-(antes de serem processados), compõem uma importante fonte de dados para a
-realização de estratégias colaborativas de recomendação. As seções
-\ref{sec:anapop} e \ref{sec:mining_popcon} descrevem trabalhos anteriores
-que fizeram uso destes dados, porém ambos foram descontinuados.
+As submissões recebidas são processadas diariamente e as estatísticas geradas
+são disponibilizadas no website do projeto\footnote{\url{http://popcon.debian.org}}.
+Os dados ``crus'' (listas de pacotes antes de serem processadas) já foram
+utilizados anteriormente para fins de mineração de dados, como descrito nas
+seções \ref{sec:anapop} e \ref{sec:mining_popcon}, porém ambos os trabalhos
+foram descontinuados.
 
 A informação sobre o uso dos pacotes também tem sido utilizada como guia para o
 time de qualidade acerca de quais pacotes merecem atenção especial. Os times de
@@ -204,15 +204,17 @@ sistemas embarcados); e (2) acurácia de informações temporais, dado que
 \verb!<atime>! e \verb!<ctime>! podem ser inconsistentes caso o sistema de
 arquivos tenha sido montado com a opção \verb!noatime!.
 
-Todas essas ressalvas devem ser levadas em conta quando os dados do
-\textit{popcon} são utilizados e, desde que usados de maneira consciente e
-responsável, acredita-se que informações valiosas possam ser reveladas após uma série de análises.
+Todas essas ressalvas devem ser consideradas quando pretende-se utilizar os
+dados do \textit{popcon}. No entanto, desde que as informações sejam manejadas
+de forma consciente e responsável, acredita-se que valiosas correlações possam
+ser reveladas após uma série de análises.
 
 \subsubsection{UDD}
 
-Acrônimo para \textit{Ultimate Debian Database}, o UDD\footnote{\url{http://udd.debian.org}} é uma iniciativa recente do time de qualidade criada com o intuito
-de reunir informações de diversos aspectos do Debian numa base de dados única
-\cite{Nussbaum:10}.
+Acrônimo para \textit{Ultimate Debian Database}, o
+UDD\footnote{\url{http://udd.debian.org}} é uma iniciativa recente do time de
+qualidade criada com o intuito de reunir informações de diversos aspectos do
+Debian numa base de dados única \cite{Nussbaum:10}.
 
 O fluxo de dados do UDD é apresentado na figura \ref{fig:udd}. Existe um
 coletor para cada tipo de fonte de dados (p. ex. o sistema de acompanhamento de
