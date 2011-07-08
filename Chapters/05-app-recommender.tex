@@ -172,6 +172,15 @@ revelar novas funcionalidades como abstrações de conjuntos de \textit{tags},
 que poderão eventualmente ser utilizadas para refinar o cálculo das
 recomendações.
 
+\section{Proposta de Solução: AppRecommender}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{Figures/diagrama_apprec.pdf}
+\caption{Fluxo de dados no AppRecommender}
+\label{fig:diagrama_apprec}
+\end{figure}
+
 \section{Coleta de dados}
 
 Os dados estatísticos disponíveis publicamente no site do \textit{Popcon} não
@@ -334,30 +343,30 @@ basicamente na apresentação em conjunto dos resultados de múltiplos
 recomendadores. De certa forma, a combinação vai acontecer na apresentação do
 \textit{survey} para o usuário.
 
-\begin{table}[h!]
-  \caption{Descrição das estratégias de recomendação implementadas}
-  \label{tab:modelos_recomendadores}
-  \centering
-  \newcommand\T{\rule{0pt}{2.8ex}}
-  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-  \begin{tabular}{| l | l |}
-    \hline
-    Identificador & Estratégia  \T\B\\
-    \hline
-    ct & baseada em conteúdo utilizando tags  \T\B\\
-    \hline
-    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
-    \hline
-    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
-    \hline
-    col & colaborativa nomes de pacotes como conteúdo \T\B\\
-    \hline
-    colct & colaborativa utilizando tags como conteúdo \T\B\\
-    \hline
-    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
-    \hline
-  \end{tabular}
-\end{table}
+%\begin{table}[h!]
+%  \caption{Descrição das estratégias de recomendação implementadas}
+%  \label{tab:modelos_recomendadores}
+%  \centering
+%  \newcommand\T{\rule{0pt}{2.8ex}}
+%  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+%  \begin{tabular}{| l | l |}
+%    \hline
+%    Identificador & Estratégia  \T\B\\
+%    \hline
+%    ct & baseada em conteúdo utilizando tags  \T\B\\
+%    \hline
+%    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
+%    \hline
+%    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
+%    \hline
+%    col & colaborativa nomes de pacotes como conteúdo \T\B\\
+%    \hline
+%    colct & colaborativa utilizando tags como conteúdo \T\B\\
+%    \hline
+%    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
+%    \hline
+%  \end{tabular}
+%\end{table}
 
 \section{Codificação}
 
@@ -380,14 +389,14 @@ pode ser acessada no apêndice A deste documento. O diagrama UML do sistema está
 representado na figura \ref{fig:uml_apprec}.
 % FIXME [incluir referência real da documentacao]
 
-\begin{landscape}
-\begin{figure}[ht]
-\resizebox{\linewidth}{!}{
-  \beginpgfgraphicnamed{app_rec}
-  \input{Figures/uml_apprec.tex}
-  \endpgfgraphicnamed
-}
-\caption{Diagrama UML do AppRecommender}
-\label{fig:uml_apprec}
-\end{figure}
-\end{landscape}
+%\begin{landscape}
+%\begin{figure}[ht]
+%\resizebox{\linewidth}{!}{
+%  \beginpgfgraphicnamed{app_rec}
+%  \input{Figures/uml_apprec.tex}
+%  \endpgfgraphicnamed
+%}
+%\caption{Diagrama UML do AppRecommender}
+%\label{fig:uml_apprec}
+%\end{figure}
+%\end{landscape}
