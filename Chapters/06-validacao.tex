@@ -1,9 +1,14 @@
 \chapter{Validação da proposta} \label{chapter:validacao}
 
-Este capítulo relata os experimentos realizados com o intuito de validar a
-ferramenta desenvolvida, seguidos pelos resultados obtidos e considerações
-sobre os mesmos. Os procedimentos de teste aconteceram em dois momentos
-distintos, seleção de modelo e consulta pública, descritos nas seções a seguir.
+Este capítulo relata os procedimentos realizados com o intuito de validar a
+ferramenta desenvolvida, acompanhados pelos resultados obtidos em cada etapa.
+Os experimentos realizados tem caráter exploratório, no sentido de que não são
+realizados com o intuito de provar ou refutar uma hipótese, e sim de encontrar
+as soluções que mais se adequam ao domínio da aplicação e conjunto de dados
+utilizados como fontes de recomendação.
+
+Os procedimentos de teste aconteceram em dois momentos distintos, apresentados
+nas seções a seguir.
 
 %p. 50: "é aceitável experimentar diversos algoritmos no mesmo conjunto de dados
 %porque análise de cluster é geralmente utilizada como ferramenta exploratória
@@ -14,12 +19,17 @@ distintos, seleção de modelo e consulta pública, descritos nas seções a seguir.
 
 \section{Seleção de modelo}
 
-As diferentes estratégias de recomendação e abordagens para seleção de
-atributos foram comparadas através de validação cruzada, método para
-estimativa de acurácia de modelos preditivos. Dado que tais estimativas são
-utilizadas primordialmente para fins de comparação entre modelos de
-recomendadores, a acurácia absoluta de cada estratégia é considerada menos
-importante, admitindo-se resultados enviesados\footnote{o termo viés é
+Esta etapa tem como principal objetivo a comparação entre diferentes
+modelos de recomendador, caracterizados por uma determinada configuração de
+estratégias, técnicas e outros parâmetros, a exemplo do tamanho da vizinhança
+para estratégias colaborativas, esquema de pesos utilizado em buscas, e
+abordagens distintas para seleção de atributos.
+
+O metodologia utilizada neste momento basea-se \textit{validação cruzada},
+comumente adotada para estimativa de acurácia de modelos preditivos. Dado que
+tais estimativas são utilizadas primordialmente para fins de comparação entre
+modelos de recomendadores, a acurácia absoluta de cada estratégia é considerada
+menos importante, admitindo-se resultados enviesados\footnote{o termo viés é
 utilizado em estatística para expressar erro sistemático ou tendenciosidade}
 de acordo com a hipótese de que o viés afeta todos os modelos de forma similar
 (por exemplo, todas as estimativas são pessimistas ou todas são otimistas)
@@ -27,8 +37,8 @@ de acordo com a hipótese de que o viés afeta todos os modelos de forma similar
 
 A ideia central da validação cruzada é o isolamento de uma porção aleatória dos
 dados cuja relevância é conhecida, treinamento do modelo com os demais dados e
-posterior submissão da porção reservada para teste. A acurácia dos resultados é
-medida por meio da comparação dos resultados obtidos com os esperados (media
+posterior submissão da porção reservada para testes. A acurácia dos resultados é
+medida por meio da comparação dos resultados obtidos com os esperados (medida
 estatística de variância). A validação em rodadas (\emph{k-fold
 cross-validation}) consiste basicamente nos seguintes passos:
 
@@ -77,76 +87,146 @@ Detalhes de software e hardware estão descritos na tabela abaixo.
 
 \section{Experimentos realizados}
 
-\subsection{Pré-processamento dos dados}
-
-Os modelos testados estão descritos na tabela \ref{tab:modelos_recomendadores} e
-a validação cruzada foi realizada em 10 rodadas ($k=10$).
-
-\begin{table}[h!]
-  \caption{Descrição de modelos de recomendadores}
-  \label{tab:modelos_recomendadores}
-  \centering
-  \newcommand\T{\rule{0pt}{2.8ex}}
-  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-  \begin{tabular}{| l | l |}
-    \hline
-    Identificador & Estratégia  \T\B\\
-    \hline
-    ct & baseada em conteúdo utilizando tags  \T\B\\
-    \hline
-    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
-    \hline
-    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
-    \hline
-    col & colaborativa \T\B\\
-    \hline
-    colct & colaborativa utilizando tags como conteúdo \T\B\\
-    \hline
-    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
-    \hline
-  \end{tabular}
-\end{table}
+%\subsection{Pré-processamento dos dados}
+%
+%Os modelos testados estão descritos na tabela \ref{tab:modelos_recomendadores} e
+%a validação cruzada foi realizada em 10 rodadas ($k=10$).
+%
+%\begin{table}[h!]
+%  \caption{Descrição de modelos de recomendadores}
+%  \label{tab:modelos_recomendadores}
+%  \centering
+%  \newcommand\T{\rule{0pt}{2.8ex}}
+%  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+%  \begin{tabular}{| l | l |}
+%    \hline
+%    Identificador & Estratégia  \T\B\\
+%    \hline
+%    ct & baseada em conteúdo utilizando tags  \T\B\\
+%    \hline
+%    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
+%    \hline
+%    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
+%    \hline
+%    col & colaborativa \T\B\\
+%    \hline
+%    colct & colaborativa utilizando tags como conteúdo \T\B\\
+%    \hline
+%    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
+%    \hline
+%  \end{tabular}
+%\end{table}
 
 %\subsection{Análise dos resultados}
-\subsection{Resultados}
+\section{Resultados}
 
-Apresentação e análise dos resultados.
+%Apresentação e análise dos resultados.
 
 \section{Consulta pública}
 
-Diante da inexistência de dados que possibilitassem a análise \textit{offline}
-da acurácia de recomendações (avaliação real realizada previamente por seres
-humanos), optou-se pela realização de experimentos diretamente com usuários por
-meio de um \textit{survey} eletrônico. As soluções que apresentaram melhores
-resultados nos experimentos de seleção de modelo foram então avaliadas por meio
-de uma consulta pública.
+Dado que não existem avaliações prévias realizadas por usuários reais acerca da
+utilidade dos itens, os resultados da análise \textit{offline} ficam, senão
+prejudicados, ao menos limitados. O conceito de utilidade de um item é subjetivo
+e apenas um indivíduo dotado de subjetividade é capaz fazer esta avaliação.
+Métricas como novidade e surpresa são dificilmente mensuráveis por meio de
+validação cruzada. Uma consulta pública amplamente divulgada seria uma forma de
+complementar os resultados daquela análise.
 
 Algumas ferramentas foram avaliadas para a construção do \textit{survey}, entre
 as quais o \textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}. No
 entanto, uma avaliação de acurácia da recomendação requer que a construção do
 questionário aconteça de forma dinâmica, com questões específicas para cada
-o conjunto de pacotes sugeridos para o usuário em questão, o que não foi
-possível realizar com este tipo de ferramenta.
-
-Sendo assim, foi desenvolvida uma aplicação em python para a web que utiliza o
-\emph{AppRecommender} como \emph{backend} e apresenta as recomendações
-juntamente com um questionário para o usuário sobre a eficácia das sugestões.
+conjunto de aplicativos sugeridos para o usuário em questão, o que não foi
+possível realizar com este tipo de ferramenta. Sendo assim, foi desenvolvida
+uma interface web para o \emph{AppRecommender}, com um módulo de avaliação
+integrado.
 
 A consulta é guiada através dos seguintes passos:
 \begin{enumerate}
-  \item O usuário envia uma lista de pacotes, como representação de sua
-    identidade. Se desejar, fornece informações adicionais para composição de
-    um perfil baseado em seus interesses pessoais, além de indicar a quantidade
-    de pacotes que deseja receber como sugestão;
-  \item O sistema realiza a computação necessária para gerar recomendações
-    utilizando diferentes estratégias;
-  \item As recomendações são apresentadas ao usuário, juntamente com
-    informações detalhadas de cada item e explicação acerca dos procedimentos
-    realizados;
-  \item O usuário avalia as recomendações apresentadas;
-  \item A análise desta recomendação é realizada com base na aplicação de
-    algumas métricas apresentadas na seção \ref{sec:metricas}.
+  \item O usuário é convidado a experimentar o recomendador de aplicativos por
+    meio do envio de um envia uma lista de pacotes como representação de sua
+    identidade. Esta lista pode ser indicada por um arquivo enviado ao servidor
+    ou pelo preenchimento de um campo de texto no formulário.
+  \item A configuração do recomendador é completamente parametrizável, desde a
+    escolha da estratégia de recomendação, até o tamanho do perfil e outros
+    ajustes específicos de cada estratégia, a exemplo do tamanho da vizinhança
+    (usuários considerados próximos). O usuário tem ainda a possibilidade de
+    optar por uma configuração escolhida aleatoriamente dentre as disponíveis.
+  \item O sistema realiza a computação necessária para gerar recomendações de
+    acordo com a configuração escolhida para o recomendador.
+  \item As sugestões são apresentadas ao usuário juntamente com informações
+    detalhadas de cada item.
+  \item Se o usuário concordar com os termos da pesquisa, a validação da
+    recomendação tem prosseguimento. Neste contexto, \textit{-1} indica que a
+    sugestão não foi útil, \textit{0} é uma avaliação neutra e \textit{1}
+    indica que o usuário aprova a recomendação.
+  \item Os resultados da validação são armazenados no servidor para posterior
+    análise.
 \end{enumerate}
+
+\subsection{Princípios}
+
+\begin{description}
+
+\item[Possibilidade de anonimato] Dado que a consulta pública foi
+instrumentalizada por meio de formulário online, o usuário podia escolher entre
+respondê-lo de forma completamente anônima ou fornecer dados de identificação.
+No caso de pesquisas realizadas por meio de mensagem eletrônica, as respostas
+dos usuários carregam seu email, o que pode causando desconforto no quesito privacidade.
+
+\item[Amostra irrestrita] A pesquisa foi disponibilizada na Internet e
+comunicada à populacao alvo e todas as respostas recebidas foram consideradas.
+Dado que a caracterização Dado que a consulta foi realizada em seguida a uma
+recomendação, todos os usuários foram convidados sem que houvesse o privilégio
+de um perfil especifico de usuário. Em pesquisas de cunho social, por exemplo,
+que pretende alcancar a população em geral, o uso de surveys online privilegia
+o acesso a usuários numa determinada faixa etaria e com interesses específicos,
+tornando os resultados da pesquisa não representativos.
+
+\item[Minimização de dados inválidos] O formulário de envio da avaliação é
+dotado de mecanismos de validação dos dados, evitando assim que sejam enviadas
+respostas que precisem ser inutilizadas posteriormente. Outro ponto neste
+quesito é que múltiplas respostas de um mesmo usuário não comprometem o
+resultado pesquisa, dado que são referentes a validações de múltiplos
+resultados de recomendação. Apenas a múltiplo envio de uma mesma avaliação é
+inutilizado (por exemplo, quando o usuário clica mais de uma vez no botão
+``enviar'').
+
+\item[Simplicidade e objetividade] Questionários simples evitam baixas taxas de
+participação e erros de medida (decorrente do usuário não entender o que está
+sendo perguntado). Por outro lado, a objetividade é um sinal de respeito ao
+tempo do usuário.
+
+\item[Incentivos à participação] A presente pesquisa ofereceu como incentivo a
+portunidade de o participante ser listado numa página de agradecimentos
+referenciada no texto da dissertação, além da aquisição de conhecimento
+acerca do tópico da pesquisa (todos os procedimentos são detalhadamente
+explicados no website.)
+
+\item[Independência cultural] Internacionalização/localização do survey.
+
+\end{description}
+
+%[FIXME] Inserir figura do formulário.
+
+\subsection{Métricas}
+
+\begin{description}
+
+\item[Acurácia da recomendação] de acordo com a seção \ref{sec:metricas}
+
+\item[Taxa de resposta] não há meios de saber quantos usuários tiveram acesso ao
+questionário (ou seu link) e decidiram não participar. Apenas o número de
+surveys completos é conhecido, não o numero de recusas. contadores das paginas
+podem dar uma estimativa, ainda que não confiaveis.
+
+\item[Tempo de avaliação] Tempo decorrido entre a geração de uma recomendação e
+a respectiva validação por parte do usuário.
+
+\item[Tempo de resposta] Registo da distribuição de resposta ao longo do tempo
+em que a pesquisa foi disponibilizada.
+
+\end{description}
 
 \subsection{Ambiente de teste}
 
