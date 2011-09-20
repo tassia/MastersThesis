@@ -1,0 +1,21 @@
+$ ar -x cups_1.4.8-2_i386.deb
+$ ls
+ control.tar.gz  cups_1.4.8-2_i386.deb  data.tar.gz  debian-binary
+$ cat debian-binary 
+ 2.0
+$ tar -tzf control.tar.gz
+ ./
+ ./prerm
+ ./templates
+ ./md5sums
+ ./config
+ ./control
+ ./conffiles
+ ./preinst
+ ./postrm
+ ./postinst
+$ tar -tzf data.tar.gz
+ ./
+ ./etc/
+ ./usr/
+ ./var/

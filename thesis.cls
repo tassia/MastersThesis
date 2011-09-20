@@ -1,14 +1,17 @@
 \ProvidesClass{thesis}
 
 \LoadClass[11pt,a4paper,twoside,openright]{memoir}
-\RequirePackage{graphicx,url,fancybox,wrapfig}
-\RequirePackage{multirow,tabularx}
+\RequirePackage{makeidx}
+\RequirePackage{graphicx,url,fancybox,fancyvrb,wrapfig}
+\RequirePackage{multirow,tabularx,colortbl,ltxtable}
+\RequirePackage[table]{xcolor}
 \RequirePackage[english,brazilian]{babel}
 \newcommand{\keywordsname}{""}
 \addto\captionsenglish{\renewcommand{\keywordsname}{Keywords}}
 \addto\captionsbrazilian{\renewcommand{\keywordsname}{Palavras-chave}}
 \RequirePackage[latin1]{inputenc}
 \RequirePackage[T1]{fontenc}
+\RequirePackage{microtype}
 \RequirePackage{ae,aecompl}
 \RequirePackage{amsmath}
 \RequirePackage{pdflscape}
@@ -113,3 +116,39 @@
 % Definição do hífen para modo matemático
 \mathchardef\mhyphen="2D
 
+%box cinza
+\long\def\greybox#1{%
+   \newbox\contentbox%
+   \newbox\bkgdbox%
+   \setbox\contentbox\hbox to \hsize{%
+       \vtop{
+           \kern\columnsep
+           \hbox to \hsize{%
+               \kern\columnsep%
+               \advance\hsize by -2\columnsep%
+               \setlength{\textwidth}{\hsize}%
+               \vbox{
+                   \parskip=\baselineskip
+                   \parindent=0bp
+                   #1
+               }%
+               \kern\columnsep%
+           }%
+           \kern\columnsep%
+       }%
+   }%
+   \setbox\bkgdbox\vbox{
+       \pdfliteral{0.85 0.85 0.85 rg}
+       \hrule width  \wd\contentbox %
+              height \ht\contentbox %
+              depth  \dp\contentbox
+       \pdfliteral{0 0 0 rg}
+   }%
+   \wd\bkgdbox=0bp%
+   \vbox{\hbox to \hsize{\box\bkgdbox\box\contentbox}}%
+   \vskip\baselineskip%
+}
+\renewcommand{\tt}{\ttfamily}
+
+
+\newcommand{\footurl}[1]{\href{#1}{\phantom{a}}$\!\!$\footnote{\url{#1}}\href{#1}{\phantom{a}}$\!\!\!$}

@@ -1,37 +1,38 @@
 \chapter{Distribuições GNU/Linux} \label{chapter:distribuicoes}
 
-Neste capítulo o contexto histórico que propiciou o surgimento das
-distribuições GNU/Linux é apresentado, seguido por tópicos concernentes ao
-sistema de empacotamento de softwares que está diretamente relacionado com o
-a proposta deste trabalho.
+O contexto histórico no qual emergiu o que se conhece hoje por distribuições
+GNU/Linux é abordado a seguir. Especial atenção é dedicada aos princípios de
+``empacotamento'' de \textit{softwares} e seus sistemas de gerenciamento,
+conceitos que ganharam destaque no processo de consolidação das principais
+distribuições --- e que guardam estreita relação com o presente trabalho.
 
 \section{Surgimento}
 
-Distribuições GNU/Linux, popularmente conhecidas como \emph{distros}, são
-variações do sistema operacional composto pelo kernel Linux e milhares de
-aplicativos em sua maioria desenvolvidos pelo projeto GNU. As primeiras
-iniciativas neste domínio surgiram em circunstâncias que favoreciam o
-desenvolvimento colaborativo, abertura de código e comunicação predominatemente
-por meio da Internet.
+Distribuições GNU/Linux,\index{distribuições GNU/Linux!conceito} popularmente
+conhecidas como \emph{distros}, são variações do sistema operacional composto
+pelo núcleo Linux (\textit{kernel}) e milhares de aplicativos, cuja base foi
+desenvolvida pelo projeto GNU. As primeiras iniciativas neste domínio surgiram
+em circunstâncias que favoreciam o desenvolvimento colaborativo, abertura de
+código e comunicação predominantemente por meio da Internet.
 
-O projeto GNU\footnote{\url{hhtp://www.gnu.org}} foi criado em 1983 por Richard
+O projeto GNU\index{GNU!histórico do projeto}\footnote{\url{hhtp://www.gnu.org}} foi criado em 1983 por Richard
 Stallman com o objetivo principal de desenvolver um sistema operacional livre em
 alternativa ao UNIX\footnote{\url{http://www.unix.org/}} -- solução comercial
 amplamente difundida na indústria -- e que fosse compatível com os padrões
-POSIX\footnote{Acrônimo para \textit{Portable Operating System Interface}, é uma
-família de normas definidas pelo IEEE com foco na portabilidade entre sistemas
-operacionais.}\footnote{Disponível em \url{http://standards.ieee.org/develop/wg/POSIX.html}}.
-Nos anos 90 o projeto GNU já havia atraído muitos colaboradores, que num curto
-espaço de tempo haviam desenvolvido inúmeros aplicativos para compor o sistema
-operacional. No entanto, o desenvolvimento do núcleo do sistema (\textit{GNU
-Hurd}) não acompanhou o ritmo dos demais aplicativos.
+POSIX\footnote{Acrônimo para \textit{Portable Operating System Interface}.
+Família de normas definidas pelo IEEE com foco na portabilidade entre sistemas
+operacionais. \url{http://standards.ieee.org/develop/wg/POSIX.html}}. Nos anos
+90 o projeto GNU já havia atraído muitos colaboradores, que num curto espaço de
+tempo desenvolveram inúmeros aplicativos para compor o sistema operacional. No
+entanto, o desenvolvimento do núcleo do sistema (\textit{GNU Hurd}) não
+acompanhou o ritmo dos demais aplicativos.
 
-Em outubro de 1991 o estudante finlandês Linus Torvalds publicou a versão
-0.02 do Freax, o núcleo de um sistema operacional (\textit{kernel}, em inglês)
-desenvolvido por ele na universidade, com o intuito de atrair colaboradores
-para o projeto. Mais tarde Torvalds admitiu que não imaginava que aquele
-projeto desenvolvido sem grandes pretensões teria a dimensão do que hoje se
-conhece como Linux \cite{Linus:01}.
+\index{Linux!surgimento}
+Em outubro de 1991 o estudante finlandês Linus Torvalds, na tentativa de
+atrair colaboradores, publicou código do Freax, o núcleo de um sistema
+operacional desenvolvido por ele na universidade. Anos mais tarde Torvalds declara
+que não imaginava que aquele projeto desenvolvido sem grandes pretensões teria
+a dimensão do que hoje se conhece como Linux \cite{Linus:01}.
 
 Com o anúncio de Torvalds, Stallman vislumbrou a possibilidade de acelerar o
 lançamento do sistema operacional livre se os aplicativos GNU que já estavam
@@ -39,111 +40,358 @@ prontos fossem combinados com o núcleo recém-lançado -- de fato, a primeira
 versão estável do GNU Hurd foi lançada apenas em 2001. Em 1992 o Linux foi
 licenciado sob a GNU GPL\footnote{Acrônimo para \textit{General Public
 License}, é um suporte legal para a distribuição livre de softwares.} e as
-equipes dos dois projetos começaram a trabalhar na adaptação do kernel Linux
-para o ambiente GNU. Este esforço conjunto desencadeou o surgimento das
+equipes dos dois projetos começaram a trabalhar na adaptação do \textit{kernel}
+Linux para o ambiente GNU. Este esforço conjunto desencadeou o surgimento das
 primeiras distribuições GNU/Linux.
 
+\index{distribuições GNU/Linux!exemplos}
 As distros oferecem diferentes ``sabores'' do sistema operacional, a exemplo do
 Debian, Fedora, Mandriva e Ubuntu, que são constituídos por aplicativos
 criteriosamente selecionados por seus desenvolvedores. Tais iniciativas tendem
 a reduzir a complexidade de instalação e atualização do sistema para usuários
-finais \cite{Cosmo:08}. Os desenvolvedores (ou \emph{mantenedores}) de
-distribuições atuam como intermediários entre os usuários e os autores dos
-softwares (neste contexto denominados de \textit{upstreams}), por meio do
+finais \cite{Cosmo:08}. Os desenvolvedores das distribuições atuam como
+intermediários entre os usuários e os autores dos aplicativos, por meio do
 encapsulamento de componentes de software em abstrações denominadas
 \textit{pacotes}.
 
 \section{Empacotamento de programas}
-%FIXME [Desenvolver os temas relacionados a empacotamento]
+
+\index{empacotamento!conceito}
+O termo empacotamento refere-se ao ato de reunir num único arquivo (o pacote),
+um conjunto de programas executáveis, bibliotecas, arquivos de configuração,
+documentação, e qualquer outro dado necessário para a utilização de um programa
+no sistema operacional.
+
+As distribuições que optam por disponibilizar pacotes mantêm uma infraestrutura
+de servidores como fonte de distribuição de programas. Tais servidores,
+denominados ``repositórios'', podem ser mantidos oficialmente pela distribuição
+ou oferecidos por terceiros, considerados portanto ``não oficiais''. Os sistemas
+gerenciadores de pacotes, responsáveis por manter uma base consistente de
+programas no sistema, são configurados para buscar os pacotes a serem
+instalados em um determinado conjunto de repositórios.
 
 \subsection{Pacotes Debian}
-. Binários e fontes\\
-. upstream, maintainer, uploader\\
-. Prioridade: required, important, standard, optional, extra\\
-. Base system = required or important (muitos são marcados como essenciais)\\
-. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado
 
-\subsection{Pacotes rpm}
+\index{Debian!sistema de empacotamento}
+Debian GNU/Linux e distribuições derivadas, entre elas a
+\textit{Ubuntu}\footnote{\url{http://www.ubuntu.com}}, utilizam o
+formato de pacote binário \textit{deb}, composto por arquivos executáveis,
+bibliotecas e documentação associados a um programa ou conjunto de programas
+relacionados. Idealmente, todos os dados e procedimentos necessários para
+instalar, configurar e remover os aplicativos de um sistema estão contidos em
+seu pacote.
 
-\subsection{Relação entre pacotes}
-. Dependência: Pre-depends, Depends, Recommends, Suggests, Enhances\\
-. Anti-dependência: Breaks, Conflicts, Replaces\\
-. Pacotes virtuais: Provides\\
-. Entre fontes e binários: Build-Depends, Build-Depends-Indep, Build-Conflicts, Build-Conflicts-Indep
+A estrutura dos pacotes e repositórios, bem como os requisitos que um pacote
+deve atender para que seja distribuído oficialmente estão especificados no
+Manual de Políticas Debian\footnote{\url{http://www.debian.org/doc/debian-policy/}}.
+Uma das exigências deste documento é que os pacotes estejam em conformidade com
+padrões que visam a interoperabilidade com outros sistemas GNU/Linux, como o
+\textit{Filesystem Hierarchy Standard (FHS)}, referente à localização de
+arquivos no sistema, e recomendações para aplicativos gráficos estabelecidos
+pelo \textit{FreeDesktop.org}\footnote{\url{http://www.freedesktop.org/}}.
 
-\subsection{O Repositório de Pacotes}
-. The Debian Archive,\\
-. Áreas: main, contrib, non-free\\
-. Seções
-  atualmente particionam o repositório em 53 grupos de pacotes\footnote{\url{http://packages.debian.org/unstable/}}, para fins de organização.
- a seção de um pacote é definida no momento do empacotamento (arquivo \textit{control})em seu conteúdo
+A estrutura de um pacote Debian pode ser observada na figura
+\ref{fig:extrair_deb}, que exibe o conteúdo do pacote \textit{cups} extraído
+pela ferramenta \textit{ar}. O arquivo \textit{debian-binary} contém a versão
+da especificação de empacotamento implementada no pacote (linhas 4 e 5).
+\textit{control.tar.gz} contém scripts e arquivos de controle utilizados
+principalmente pelo gerenciador de pacotes no momento de instalação,
+configuração e remoção do pacote (linhas 8 a 16). \textit{data.tar.gz} contém
+todos os binários e demais arquivos que devem ser copiados para os devidos
+diretórios do sistema de arquivos (linhas 19 a 21).
+\index{Debian!estrutura de um pacote}
+
+\begin{figure}[h]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-control}
+\caption{Extração do conteúdo de um pacote}
+\label{fig:extrair_deb}
+\end{figure}
+
+Para cada pacote no repositório oficial existe um desenvolvedor ou equipe
+responsável por sua manutenção. O mantenedor acompanha o desenvolvimento
+do \textit{software} original, que neste contexto é denominado
+\textit{upstream}, e incorpora as correções e atualizações dos aplicativos
+ao contexto do Debian. Espera-se ainda que ele interaja com o desenvolvedor
+principal e retribua aos projetos originais as melhorias implementadas
+no âmbito do Debian. A tabela \ref{tab:papeis_debian} sumariza os principais
+papéis exercidos por desenvolvedores de \textit{software} no ecossistema de
+programas empacotados para o Debian.
+\index{Debian!manutenção de pacotes}
+
+\begin{table}[h!]
+\footnotesize
+\begin{tabularx}{\textwidth}{| l | X |}
+\hline
+\rowcolor[rgb]{0.8,0.8,0.8}
+\textbf{Papel} & \textbf{Descrição} \\
+\hline
+Mentor & Pessoa experiente que orienta mantenedores novatos nas atividades de
+         empacotamento. \\
+\hline
+Mantenedor & Pessoa ou equipe que mantém o pacote Debian. \\
+\hline
+\textit{Sponsor} & Desenvolvedor com acesso de escrita ao repositório oficial
+                   que revisa e envia aos servidores pacotes de outros
+                   mantenedores que não possuem esta permissão. \\
+\hline
+\textit{Upstream} & Autor ou mantenedor responsável pelo desenvolvimento do
+                    \textit{software} original. \\
+\hline
+\end{tabularx}
+\caption{Papéis exercidos por desenvolvedores no Debian}
+\label{tab:papeis_debian}
+\end{table}
+
+O acesso de escrita aos repositórios do Debian é controlado por uma rede de
+confiança com base em assinatura de chaves criptográficas assimétricas.
+Para fazer parte da rede, um colaborador precisa ter a sua chave assinada por
+pelo menos um membro do projeto e a troca de chaves deve necessariamente
+acontecer pessoalmente, mediante a conferência de um documento de
+identificação do proponente.
+
+O envio de um novo pacote ao repositório oficial deve obrigatoriamente ser
+realizado por um desenvolvedor membro oficial do projeto (\textit{Debian
+Developer (DD)}). As atualizações subsequentes podem também ser realizadas por
+um mantenedor oficial (\textit{Debian Maintainer (DM)}), que não
+passou pelo processo de se tornar DD, mas faz parte da rede de confiança e
+mantém pacotes oficialmente. Colaboradores que não são DD ou DM podem
+igualmente exercer a função de mantenedor, porém, precisam do intermédio de um
+\textit{sponsor} para enviar seus pacotes ao servidor.
+\index{Debian!manutenção de pacotes}
+
+\index{Debian!DDs e DMs}
+\index{DD: Debian Developer}
+\index{DM: Debian Maintainer}
+A título de curiosidade, em outubro de 2010 foi aprovado em
+votação\footnote{\url{http://www.debian.org/vote/2010/vote_002}} que o Debian
+passaria a acolher membros não empacotadores. Em reconhecimento à importância
+de atividades não-técnicas para o projeto, a partir desta data, podem ser
+admitidos como membros oficiais (DDs) colaboradores engajados em atividades
+como tradução, publicidade, \textit{design} gráfico, entre outras. A admissão
+destes membros não testa seu conhecimento técnico, consequentemente, eles não
+têm acesso de escrita aos repositórios.
+
+\section{Relação entre pacotes}
+
+\index{Debian!relação entre pacotes}
+Segundo \cite{Cosmo:09}, as relações entre pacotes podem ser caracterizadas
+como requisitos positivos, quando representam uma dependência, ou requisitos
+negativos, quando indicam um conflito. A tabela \ref{tab:relacoes-pacotes} traz
+a descrição de relações possíveis entre os pacotes fictícios $a$, $b$ e $c$, que
+seriam declaradas no conteúdo do pacote $a$, em seu arquivo \textit{control}
+(linha 12 da figura \ref{fig:extrair_deb}). Existem ainda relações entre pacotes
+fontes\footnote{\url{http://www.debian.org/doc/debian-policy/ch-relationships.html}}
+que deliberadamente não foram listadas por estarem fora do escopo deste trabalho.
+
+\begin{table}[h!]
+\footnotesize
+\begin{tabularx}{\textwidth}{| l | X |}
+\hline
+\rowcolor[rgb]{0.8,0.8,0.8}
+\textbf{Relação} & \textbf{Descrição} \\
+\hline
+$a$ \texttt{Depends} $b$ & \texttt{Dependência absoluta}: $a$ não será
+                           configurado pelo gerenciador de pacotes a menos que
+                           $b$ tenha sido previamente configurado. \\
+\hline
+$a$ \texttt{Pre-Depends} $b$ & \texttt{Pré-dependência absoluta}: a instalação
+                               completa de $b$ deve ser realizada antes que a
+                               instalação de $a$ seja iniciada. \\
+\hline
+$a$ \texttt{Recommends} $b$ & \texttt{Recomendação}: dependência forte, mas não
+                              absoluta; $a$ e $b$ são comumente utilizados em
+                              conjunto, apesar de não haver obrigatoriedade
+                              para tal; em geral os gerenciadores de pacotes
+                              instalam recomendações por padrão. \\
+\hline
+$a$ \texttt{Suggests} $b$ & \texttt{Sugestão}: a utilização de $a$ está
+                            relacionada com o uso de $b$, que pode aumentar a
+                            utilidade de $a$, no entanto, a não instalação de
+                            $b$ é perfeitamente aceitável.\\
+\hline
+$a$ \texttt{Enhances} $c$ & \texttt{Melhoria}: $a$ aumenta a funcionalidade de
+                            $c$; significado equivalente a \textit{suggests},
+                            porém declarado no pacote que aumenta a
+                            funcionalidade do outro. \\
+\hline
+$a$ \texttt{Breaks} $b$ & \texttt{Quebra}: o gerenciador não prossegue com a
+                          instalação de $a$ sem que $b$ seja previamente
+                          desconfigurado. \\
+\hline
+$a$ \texttt{Conflicts} $b$ & \texttt{Conflito}: restrição maior do que a
+                             quebra, pois impede que a instalação do pacote
+                             tenha início antes da completa remoção dos
+                             indicados como conflito.\\
+\hline
+$a$ \texttt{Provides} $b$ & \texttt{Fornecimento}: o pacote provê a
+                            funcionalidade $b$, representada por um pacote
+                            virtual ($b$ não existe de fato no repositório). \\
+                    %virtual\footnote{\url{http://www.debian.org/doc/debian-policy/ch-binary.html#s-virtual_pkg}} \\
+\hline
+$a$ \texttt{Replaces} $b$ & \texttt{Substituição}: $a$ substitui $b$, portanto
+                            na instalação de $a$ os arquivos de $b$ podem ser
+                            sobrescritos. \\
+\hline
+\end{tabularx}
+\caption{Descrição das relações entre pacotes Debian}
+\label{tab:relacoes-pacotes}
+\end{table}
+
+\index{Debian!relação entre pacotes}
+O conceito de pacotes virtuais foi criado especialmente para situações
+em que diversos pacotes diferentes oferecem um conjunto de funcionalidades
+semelhantes. Pacotes virtuais não existem fisicamente no repositório, são apenas
+mencionados na definição de outros pacotes (``concretos''). Por exemplo,
+os pacotes \textit{ssmtp} e \textit{postfix} oferecem a funcionalidade de um
+agente de transporte de mensagem (servidor de \textit{e-mail}), portanto o
+arquivo \textit{control} de ambos os pacotes conterá a informação
+``\texttt{Provides: mail-transport-agent}''. Quando uma dependência se refere a um
+pacote virtual, ela pode ser satisfeita com a instalação de qualquer pacote que
+provê o mesmo.
+
+Informações sobre o relacionamento de um determinado pacote com outros do
+repositório podem ser obtidas por meio da ferramenta \texttt{apt-cache}. A
+figura \ref{fig:detalhes-apt} apresenta detalhes do pacote \textit{apt}, com
+declarações de dependências entre as linhas 10 e 15. Em cada linha, o
+identificador da relação é seguido por uma lista de nomes de pacotes separados
+por vírgulas. Quando há uma lista de pacotes alternativos que satisfazem uma
+relação, eles aparecem separados por uma barra vertical. No exemplo dado, se
+ao menos um entre os pacotes \textit{aptitude}, \textit{synaptic} e
+\textit{wajig} estiver presente no sistema, o termo
+\texttt{Suggests: aptitude|synaptic|wajig} é considerado satisfeito (linha 14).
+
+Todos os campos, com exceção de \texttt{Provides}, podem restringir sua
+aplicabilidade a versões particulares indicadas em parênteses juntamente com
+uma das relações $<<$ , $<=$, $=$, $>=$ e $>>$, para estritamente menor, menor
+ou igual, igual, maior ou igual e estritamente maior, respectivamente.
+
+\begin{figure}[h]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-apt}
+\caption{Detalhes do pacote \textit{apt}}
+\label{fig:detalhes-apt}
+\end{figure}
 
 \section{Sistemas gerenciadores de pacotes}
 
-\subsection{APT} \label{sec:apt}
+\index{empacotamento!gerenciadores de pacotes}
+\index{Debian!gerenciadores de pacotes}
+\index{gerenciadores de pacotes}
+Os gerenciadores de pacotes são sistemas projetados para coordenar as
+ações de aquisição, instalação, atualização e remoção de pacotes no sistema
+operacional, mantendo o estado do sistema consistente. Em sua estrutura os
+pacotes declaram dependências e conflitos com outros pacotes, procedimentos
+que devem ser executados antes ou depois da instalação ou remoção
+(\textit{postinst}, \textit{postrm}, etc), diretórios onde os executáveis,
+configurações e documentações devem ser posicionados, entre outras informações.
 
+\index{empacotamento!dependências e conflitos entre pacotes}
+O tratamento de dependências e conflitos é uma das mais importantes e críticas
+funções de um sistema gerenciador. Ao receber uma requisição -- instalação de
+um novo aplicativo, por exemplo -- o gerenciador tenta modificar o estado
+do sistema satisfazendo todas as restrições indicadas pelo pacote. Promove a
+instalação de todas as dependências antes de instalá-lo, ao passo que não
+permite a instalação de pacotes que conflitam com outros já instalados no
+sistema. Alguns são capazes de oferecer diferentes soluções para problemas de
+dependências não satisfeitas ou conflitos, e cabe ao usuário escolher a que
+melhor lhe convier.
+
+Atualizações parciais dos sistemas e o lançamento incessante de novas versões
+dos pacotes nos repositórios por vezes provocam situações de inconsistência
+indesejável, que o gerenciador não é capaz de resolver sem intervenção humana.
+Esta dificuldade em lidar de forma automatizada com este problema é uma das
+razões para a popularização de esquemas de instalação independentes de pacotes e
+sistemas gerenciadores, como na distribuição
+\textit{Gentoo}\footnote{\url{http://www.gentoo.org/main/pt_br/philosophy.xml}}.
+
+A seguir são listados alguns exemplos de sistemas de gerenciamento de pacotes.
+
+\subsection{Advanced Packaging Tool (APT)} \label{sec:apt}
+
+\index{APT: Advanced Packaging Tool}
+\index{Debian!Advanced Packaging Tool}
+\index{empacotamento!Advanced Packaging Tool}
 O gerenciamento de pacotes em sistemas Debian GNU/Linux e derivados é realizado
-através do \textit{APT (Advanced Packaging Tool)}\footnote{\url{http://wiki.debian.org/Apt}}. Ações como a busca, obtenção, instalação, atualização e remoção
-de pacotes são disparadas pelo \textit{APT}, que num nível mais baixo faz uso
-do \textit{dpkg}, ferramenta que de fato realiza instalações e remoções de
-softwares. O \textit{APT} também gerencia de maneira eficiente as relações de
-conflito e dependência entre pacotes. Ao receber um pedido de modificação da
-configuração do sistema -- por exemplo, instalação de um novo componente -- o
-\textit{APT} tenta satisfazer a requisição a partir do conhecimento de como
-obter os componentes (endereço dos repositórios de pacotes) e das relações de
-dependência entre os mesmos. Desta forma, o gerenciador promove a instalação de
-todas as dependências de um pacote antes de instalá-lo, ao passo que não
-permite a instalação de pacotes que conflitem com outros já instalados no
-sistema.
+através do \textit{APT}\footnote{\url{http://wiki.debian.org/Apt}}, considerado
+um gerenciador de alto nível. Por meio do \textit{APT} são realizadas ações
+como busca, obtenção, instalação, atualização e remoção de pacotes. Após o
+tratamento de dependências e definição da ordem de instalação dos pacotes, o
+\textit{APT} aciona o \textit{dpkg}\footnote{\url{http://wiki.debian.org/dpkg}}
+(nível médio) que apenas checa a satisfação de dependências e por fim aciona o
+\textit{dpkg-deb} para de fato ler os arquivos de controle e extrair os demais
+arquivos, instalando-os nos diretórios indicados.
 
-\subsection{Synaptic}
+\index{Debian!Synaptic}
+\index{Synaptic}
+O \textit{Synaptic} é um gerenciador de pacotes gráfico desenvolvido em GTK+
+como uma interface amigável para o \textit{APT} (figura \ref{fig:synaptic}).
 
 \begin{figure}[h!]
 \centering
-  \includegraphics{Figures/synaptic.png}
-\caption{Screenshot do synaptic}
+  \includegraphics[width=.8\textwidth]{Figures/synaptic.png}
+\caption{Captura de tela do synaptic}
 \label{fig:synaptic}
 \end{figure}
 
 \subsection{Ubuntu Software Center}
 
+\index{Software Center}
+\index{AppCenter}
 Ferramenta inicialmente denominada \textit{AppCenter}, foi projetada
 com o intuito de centralizar as atividades relativas à instalação de
 aplicativos em sistemas Ubuntu (navegação pelo repositório, instalação e
 remoção de pacotes). Foi desenvolvido com base no \textit{gnome-app-install},
 sendo escrito em Python e usa GTK+ como biblioteca gráfica. Serve como
-interface para o APT, dado que o sistema de empacotamento desta distribuição é
-herdado do Debian.
+interface para o \textit{APT}, dado que o sistema de empacotamento desta
+distribuição é herdado do Debian.
 
 \begin{figure}[h!]
 \centering
-  \includegraphics{Figures/software-center.png}
-\caption{Sreenshot do software-center}
+  \includegraphics[width=.8\textwidth]{Figures/software-center.png}
+\caption{Captura de tela do software-center}
 \label{fig:software_center}
 \end{figure}
 
+%\subsection{AppNR}
+%
+%O \textit{AppNR}\footnote{\url{http://appnr.com/}} é um serviço web que provê uma
+%interface para os repositórios de aplicativos da distribuição Ubuntu. Além de
+%navegar pelo repositório e visualizar detalhes dos aplicativos, o usuário pode
+%instalar pacotes, caso o seu navegador ofereça suporte ao protocolo
+%\textit{AptURL}.
+%
+%\begin{figure}[h!]
+%\centering
+%  \includegraphics[width=.8\textwidth]{Figures/appnr-current.png}
+%\caption{Captura de tela do \textit{AppNR}}
+%\label{fig:software_center}
+%\end{figure}
+
 \section{Seleção de programas}
 
-O conjunto de programas instalados num determinado sistema é resultado de dois
-processos de seleção: o primeiro é realizado no âmbito do desenvolvimento da
-distribuição e o segundo faz parte da manutenção cotidiana do sistema,
-realizado pelo usuário que administra a máquina.
+O conjunto de programas instalados num determinado sistema é tipicamente
+resultado de dois processos de seleção: o primeiro é realizado no âmbito do
+desenvolvimento da distribuição e o segundo faz parte da manutenção cotidiana
+do sistema, realizado pelo usuário e/ou administrador da máquina.
 
 A seleção e configuração dos aplicativos básicos de uma distribuição
 (instalados por padrão) são de responsabilidade da equipe que a desenvolve, com
-diferentes níveis de interferência da comunidade. Esta é uma questão crucial
-nos projetos, dado que é um dos fatores mais considerados por usuários finais
-na escolha por qual distribuição adotar. Por este motivo, mudanças na seleção
-de pacotes resulta em frequentes polêmicas em torno do tema, como a gerada pelo
-anúncio de que o projeto \textit{Ubuntu} abandonaria o \textit{Gnome} como
-interface padrão de usuário \cite{Paul:10}.
+diferentes níveis de interferência da comunidade. Este é um ponto bastante
+sensível nos projetos, dado que é um dos fatores que influenciam a escolha dos
+usuários finais por qual distribuição adotar, e pode revelar eventuais
+conflitos de interesses. Por exemplo, a decisão da Canonical que determinou,
+sem debates públicos, a substituição do popular gerenciador de janelas GNOME
+por um outro menos maduro, expôs um modelo em que a comunidade e mesmo os
+desenvolvedores envolvidos exercem papel limitado nos rumos do projeto
+\cite{Paul:10}.
 
 Por outro lado, após a configuração de um sistema básico, este é geralmente
-personalizado para atender às demandas específicas dos usuários finais, o que é
-realizada por meio da instalação de programas adicionais. Ainda que a
-infraestrutura de instalação de softwares provida pelas distribuições
-(geralmente baseada em pacotes) simplifique a manutenção de sistemas
-\cite{Cosmo:08}, a seleção dos programas depende de uma ação humana (do
-administrador). Com o desenvolvimento deste trabalho, pretende-se auxiliar o
-indivíduo nesta tarefa, especialmente quando este não possuir experiência
-pessoal para realizar escolhas neste contexto.
+personalizado para atender às demandas específicas dos usuários finais, por
+meio da instalação de programas adicionais. Ainda que a infraestrutura de
+instalação de softwares provida pelas distribuições (geralmente baseada em
+pacotes) simplifique a manutenção de sistemas \cite{Cosmo:08}, a seleção dos
+programas inevitavelmente dependerá de uma ação humana. Com o desenvolvimento
+deste trabalho pretende-se auxiliar o indivíduo nesta tarefa, especialmente no
+cenário em que o usuário não é dotado de experiência pessoal e habilidade
+suficientes para decidir qual aplicativo instalar.

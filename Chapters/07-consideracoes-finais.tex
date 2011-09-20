@@ -1,22 +1,257 @@
 \chapter{Considerações finais} \label{chapter:conclusoes}
 
-Resumo geral do documento, principais contribuições do trabalho, deficiências,
-e limitações.
+Apontamos como a contribuição mais relevante deste trabalho a
+concepção e desenvolvimento de um recomendador de aplicativos GNU/Linux,
+atualmente disponível para a comunidade por meio de um serviço
+\textit{Web}\footnote{\url{http://recommender.debian.net}}. O trabalho foi
+apresentado na conferência anual de Desenvolvedores Debian
+(\textit{DebConf11})\footnote{\url{http://penta.debconf.org/dc11_schedule/events/773.en.html}},
+onde recebeu críticas e sugestões, inclusive de desenvolvedores que já
+trabalharam em iniciativas semelhantes no Debian (seções \ref{sec:anapop}
+e \ref{sec:mineracao_popcon}).
 
-\section{Trabalhos futuros}
+A validação da proposta aconteceu num primeiro momento por meio de experimentos
+\textit{offline}, com a aplicação de métodos de avaliação para modelos
+preditivos. Os resultados dos experimentos guiaram o ajuste de parâmetros
+das estratégias de recomendação, além de possibilitar o descarte das que
+apresentaram desempenho insatisfatório. A segunda fase de validação está em
+curso, e consiste numa consulta pública por meio da qual usuários reais
+avaliam a eficácia do recomendador.
 
-\begin{enumerate}
-\item Análise de riscos de privacidade do AppRecommender;
-\item Integração com AppStream;
-\item Consideração de informações temporais para pontuação multivalorada
-\item Comparação sistemática no repositório de pacotes debian da saída do
-AppRecommender com a lista de pacotes recomendados e sugeridos por cada pacote.
-Análise proposta por Joey Hess em
-2008\footnote{\url{http://www.mail-archive.com/debian-devel@lists.debian.org/msg260184.html}}.
-\item Testes com o algoritmo OPF para agrupamento \cite{Rocha:09}
-\end{enumerate}
+A seguir são apresentados alguns desdobramentos possíveis deste trabalho,
+que no nosso entendimento abrem portas para futuras colaborações entre a
+academia e a comunidade de desenvolvimento de programas livres, em especial
+o projeto Debian.
 
-%A conclusão do trabalho será pautada pela análise dos resultados obtidos com
-%a aplicação do \textit{survey}, seguida por uma proposta de integração de um
-%recomendador com a infraestrutura de pacotes do projeto Debian, vislumbrando
-%uma solução multi-distribuição.
+\subsubsection*{Ciclos de testes e atualizações}
+
+Os primeiros experimentos foram executados, mas a interpretação dos dados
+gerados ainda pode ser mais aprofundada. Ademais, ao fim de cada fase de testes,
+o recomendador deve ser ajustado de acordo com as configurações que obtiveram
+melhor desempenho nos experimentos. Após os ajustes, é importante que se
+realize outro ciclo de testes, já que o modelo preditivo sofreu alterações. Em
+seguida, outra fase de ajustes, e assim por diante.
+
+Entendemos a calibragem dos algoritmos e estratégias como um processo contínuo,
+sendo esta apenas a primeira fase de ajustes. A configuração do recomendador
+será passível de refinamento por todo o tempo em que estiver a serviço da
+comunidade.
+
+\subsubsection*{Fortalecimento de estratégias baseadas em conteúdo}
+
+De acordo com as métricas de avaliação adotadas, estratégias baseadas puramente
+em conteúdo não apresentaram bons resultados. Acreditamos que um investigação
+ainda mais detalhada na base do \textit{Popcon} possa revelar novos perfis de
+usuário que auxiliem a produção de recomendações mais acertadas.
+Integrantes da equipe responsável por programas científicos no
+Debian\footnote{\url{http://wiki.debian.org/DebianScience}} mostraram
+interesse em aprofundar a pesquisa sobre estes perfis, possivelmente
+utilizando técnicas de agrupamento.
+
+É importante ressaltar a relevância das estratégias baseadas em conteúdo no
+contexto do \textit{AppRecommender}, devido principalmente ao fato de
+não dependerem do acesso a uma base de dados contendo informações de
+outros usuários. Nesta abordagem a recomendação pode ser computada no sistema
+do cliente, mediante o acesso a uma base local de informações sobre os
+aplicativos. Esta seria uma alternativa para os usuários que optam por não
+enviar seus dados a servidores mantidos por terceiros.
+
+O tema foi discutido durante a \textit{Debconf11}, onde surgiu a ideia de
+disponibilizar uma versão do recomendador de aplicativos que funcionasse de
+forma descentralizada, e que a colaboração pudesse acontecer de um para poucos,
+não necessariamente entre todos os usuários. Desenvolvedores do
+\textit{FreedomBox}\footnote{\url{http://freedomboxfoundation.org/learn/}}
+colocaram-se a disposição para colaborar com experimentos do
+\textit{AppRecommender} como uma aplicação piloto do projeto.
+
+\subsubsection*{Análise dos resultados do \textit{survey}}
+
+A coleta de dados por meio da consulta pública ainda está em curso. Esta fase
+de avaliação é de fundamental relevância para o projeto, uma vez que a análise
+humana fornecerá uma visão acerca do quesito \textit{novidade} trazido
+pela recomendação. Os resultados desta etapa serão confrontados com os
+experimentos \textit{offline} e possivelmente nos permitirá ter novas
+percepções sobre a utilidade de cada modelo, corroborando ou enfraquecendo as
+conclusões dos experimentos com base em validação cruzada.
+
+\subsubsection*{Melhorias na solução}
+
+São apresentadas a seguir algumas ideias de melhoria para o processo de
+composição da recomendação que surgiram ao longo do desenvolvimento e
+ainda não foram implementadas na versão atual.
+
+\begin{itemize}
+\item \textit{Atestação de relevância}: Aplicar o conceito de atestação de
+relevância apresentado na seção \ref{sec:incidencia_termos} ao resultado de uma
+recomendação. Após receber um conjunto de aplicativos recomendados, o usuário
+indicaria quais são de fato relevantes para ele e o recomendador utilizaria
+esta informação para estender a primeira consulta realizada. Desta forma o
+recomendador seria realimentado com as avaliações do usuário para produzir
+recomendações ainda mais específicas às suas necessidades.
+
+\item \textit{Ranking de aplicativos}: Adaptar o conceito de \textit{page rank}
+utilizado em buscas na \textit{Web} ao contexto do \textit{AppRecommender}.
+Motores de busca na Internet ``premiam'' as páginas que possuem mais links
+incidentes, como um indicativo de confiabilidade do conteúdo. No caso do
+repositório de aplicativos, entendemos que as relações de dependência entre
+pacotes poderiam conduzir um parâmetro de confiabilidade análogo. Quando
+maior for a quantidade de programas que dependem de um determinado aplicativo,
+maior será a comunidade de desenvolvedores e usuários do aplicativo que se
+importam com seu bom funcionamento. Sendo assim, \textit{bugs} tendem a ser
+resolvidos mais rapidamente e atualizações do \textit{upstream} tendem a ser
+incorporadas com maior frequência.
+%ver tb: http://dl.acm.org/citation.cfm?id=1135881
+
+\item \textit{Log de atividades}: Utilizar um sistema de \textit{log} de
+atividades para registrar informações que forneçam um maior detalhamento acerca
+do perfil do usuário ou sistema. O programa
+\textit{Zeitgeist}\footnote{\url{https://launchpad.net/~zeitgeist}}, por exemplo,
+registra informações sobre a utilização de arquivos no sistema, navegação na
+Internet, conversas por \textit{chat} ou \textit{e-mail}. A coleta destas
+informações é mais intrusiva que a do \textit{Popcon}, pois as informações
+submetidas não limitam-se ao perfil do sistema, mas da pessoa que o utiliza.
+Portanto, o uso de tais dados deveria ser ainda mais criterioso e a coleta só
+deveria ser iniciada mediante expressa solicitação do usuário.
+
+%\item \textit{Identificação de programas ``amigos''}: Analisar o repositório de
+%itens para identificar programas que não possuem relação de dependência alguma,
+%no entanto comumente são utilizados em conjunto. 
+\end{itemize}
+
+\subsubsection*{Análise de riscos de privacidade}
+
+Atualmente a base do \textit{Popcon} utilizada pelo \textit{AppRecommender}
+não é atualizada constantemente, portanto, dificilmente estaria vulnerável a
+ataques que monitoram o comportamento do recomendador ao logo do tempo.
+Contudo, a frequente atualização destes dados certamente permitiria a produção
+de sugestões mais eficazes, dado que se basearia em informações mais ``frescas''.
+Acreditamos na necessidade de um estudo mais aprofundado dos riscos de
+exposição dos dados dos usuários, antes que um esquema de atualização seja
+proposto.
+
+\subsubsection*{Aperfeiçoamento da interface}
+
+A interface \textit{Web} do recomendador disponível
+atualmente\footnote{\url{http://recommender.debian.net}}, além de computar a
+recomendação personalizada de aplicativos, fornece uma série de informações
+sobre os mesmos, por meio da integração de serviços providos pelo Debian, como
+o \textit{screenshots.debian.org} e UDD. No entanto, seria de utilidade para o
+público a integração de outras funcionalidades relacionadas com o repositório
+de pacotes, como a navegação por seções ou \textit{tags}, busca, possibilidade
+de instalação de pacotes por meio do protocolo \textit{AptURL}, entre outras.
+Um exemplo de serviço nesta linha é
+\textit{AppNR}\footnote{\url{http://appnr.com}}.
+
+%[FIXME]
+%configuracoes do recomendador pelo cliente:
+%se eh pouca escolha e ela faz muita diferenca, vale a pena deixar pra ele
+%escolher, mas tem que ter nome fantasia
+
+Outro ponto concernente à interface que merece atenção neste trabalho é a
+\textit{internacionalização} do \textit{AppRecommender}. Pretendemos
+implementar uma infraestrutura que permita a tradução dos textos de
+interface com o usuário para outros idiomas (processo conhecido como
+\textit{localização}).
+
+\subsubsection*{Empacotamento para o Debian}
+
+Estamos trabalhando na criação de um pacote Debian para o
+\textit{AppRecommender}. Estando em conformidade com a política de
+empacotamento de programas para a distribuição, não encontraremos barreiras
+para incorporá-lo oficialmente ao projeto. A inclusão do pacote no repositório
+do Debian daria uma maior visibilidade ao \textit{AppRecommender}, resultando
+na atração de novos usuário e colaboradores, contribuindo assim para o
+amadurecimento do trabalho.
+
+\subsubsection*{Integração com outras distribuições}
+
+A integração com outras distribuições foi sempre uma meta no desenvolvimento do
+recomendador. Acompanhamos as discussões do projeto \textit{AppStream} até o
+ponto que surgiu o impasse sobre o uso do \textit{Software-center} -- ainda não
+resolvido.
+
+Uma alternativa simples para esta questão, que não necessita de infraestrutura
+adicional alguma, é o mapeamento da lista de pacotes do usuário para uma lista
+de pacotes Debian; computação da recomendação e mapeamento de volta para a
+referida distribuição. A função de mapeamento pode ser realizada pelo programa
+\textit{distromatch}\footnote{\url{http://enricozini.org/2011/debian/distromatch/}}.
+
+\subsubsection*{Documentação no idioma inglês}
+
+Pretendemos sumarizar o conteúdo desta dissertação num documento de referência
+para colaboradores externos, incluindo principalmente a arquitetura do serviço
+e as decisões tomadas ao longo do desenvolvimento que dizem respeito ao
+funcionamento do recomendador. A criação de uma documentação em inglês é de
+grande importância para que os desdobramento deste trabalho de fato envolvam a
+comunidade internacional.
+
+\subsection*{Palavras finais}
+
+A realização deste projeto não seria possível sem a colaboração da comunidade
+Debian que, além de disponibilizar os dados utilizados como base da composição
+de recomendações, possibilitou o aproveitamento de esforços anteriores e a
+frequente interação com desenvolvedores mais experientes nos temas abordados.
+
+Além da dedicação contínua para que o presente trabalho ofereça contribuições
+no âmbito acadêmico, estamos confiantes de que fomos também capazes de
+retribuir um pouco ao projeto Debian os benefícios que este tem proporcionado
+aos seus usuários nestes 18 anos de existência. Por fim, seguimos bastante
+motivados a prosseguir com os trabalhos, de sorte que o \textit{AppRecommender}
+siga um processo natural de aperfeiçoamento e consequente integração com outros
+sistemas já consolidados.
+
+%Estamos confiantes que o projeto retriuiu ao Debain e seus usuário
+%
+%O presente trabalho abre um leque de possibilidades de aprofundamento e melhoria
+%da solução proposta, que podem vir a ser tema de trabalhos acadêmicos futuros ou
+%motivar esforços de desenvolvimento independentes.
+
+
+%\item Comparação sistemática no repositório de pacotes debian da saída do
+%AppRecommender com a lista de pacotes recomendados e sugeridos por cada pacote.
+%Análise proposta por Joey Hess em
+%2008\footnote{\url{http://www.mail-archive.com/debian-devel@lists.debian.org/msg260184.html}}.
+
+%[FIXME] Minimizar impacto de instalação de recomendaçoes ao
+%avaliar a qtd de requisitos negativos (quantos pacotes serao removidos?)
+
+%No que diz respeito à mineração de conhecimento a partir de uma base de dados,
+%um ponto importante a considerar é que o fato de pacotes com alguma relação de
+%dependência estarem presentes concomitantemente em grande parte dos sistemas
+%não é uma coincidência, e sim uma consequência direta da dependência. Por outro
+%lado, teriam grande valor as associações que relacionassem componentes que por
+%definição não apresentam relação alguma. Neste cenário, novos graus de
+%relacionamento poderiam ser estabelecidos, baseados não na dependência mas na
+%colaboração entre os componentes.
+
+%\subsection{Dados sobre pacotes \textit{rpm}}
+%
+
+%Apesar de não estarem diretamente relacionadas com o desenvolvimento deste
+%trabalho, a seguir são descritos alguns esforços recentes para coleta de dados
+%sobre pacotes \textit{rpm}.
+%
+%\subsubsection{Sophie}
+%
+%Ferramenta web\footnote{\url{http://sophie.zarb.org/}} que permite a busca e
+%análise do conteúdo de pacotes rpms de múltiplas distribuições. Provê também
+%uma interface XML-RPC que possibilita a criação de outras ferramentas
+%utilizando Sophie como base.
+%
+%\subsubsection{mageia-app-db}
+%
+%Base de dados de aplicativos idealizada pelos desenvolvedores da distribuição
+%Mageia\footnote{\url{http://mageia-app-db.tuxette.fr/projects/mageia-app-db/wiki}},
+%que atualmente também reúne esforços de colaboradores do openSUSE, Mandriva e
+%Fedora. Ainda em fase de desenvolvimento, a ferramenta tem como principal
+%objetivo facilitar a interação entre usuários, testadores e empacotadores de
+%software. Além de acessar a coleção de aplicativos disponíveis na distribuição,
+%o usuário será capaz de requisitar funcionalidades ou correções aos
+%responsáveis pelos pacotes, além de acompanhar seus pedidos e receber
+%notificações automáticas. Produção de recomendações de pacotes também estão
+%previstas como funcionalidades do sistema.
+
+%\subsection{openSUSE Software Portal}
+%
+%Ferramenta web dedicada a aplicativos do openSUSE em desenvolvimento desde o
+%ano de 2007. Legado???

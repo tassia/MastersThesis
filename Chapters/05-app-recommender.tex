@@ -1,44 +1,77 @@
-\chapter{App-Recommender} \label{chapter:app-rec}
+\chapter{AppRecommender} \label{chapter:app-rec}
 
+\index{AppRecommender}
+\index{recomendadores!AppRecommender}
 Este capítulo apresenta o \emph{AppRecommender} como proposta de um
-recomendador de aplicativos GNU/Linux.
+recomendador de aplicativos GNU/Linux. Detalhamento sobre o problema abordado,
+justificativa de escolha da plataforma, fontes de dados da solução, decisões de
+projeto e estratégias implementadas são alguns dos tópicos abordados a seguir.
+
+\section{Caracterização do problema}
+% [FIXME]
+% falar do conceito de utilidade (cap 3) no contexto do apprec, na apresentação
+% do problema
+
+A composição de recomendações de forma automatizada consiste na dedução de um
+conjunto de itens de potencial interesse para determinado usuário a partir da
+avaliação prévia realizada pelo usuário acerca de um conjunto de itens que ele
+tem conhecimento. De acordo com a estratégia de recomendação escolhida, podem
+ser sugeridos por exemplo itens com características semelhantes aos
+considerados relevantes ou, diante da disponibilidade de avaliações por outros
+usuários, itens bem avaliados por indivíduos com perfis semelhantes podem
+fazer parte da recomendação.
+
+No contexto deste trabalho, os clientes do recomendador são instâncias de
+sistemas GNU/Linux. Os programas são mapeados como itens, de modo que o perfil
+do usuário é composto a partir da lista de aplicativos instalados no sistema.
+Neste modelo não existem avaliações explícitas sobre a relevância dos itens para
+o usuário. O perfil é definido pelo comportamento do sistema, caracterizando
+uma avaliação implícita, ao assumirmos que a presença de um aplicativo em sua
+lista de programas é um indicativo de relevância. Para o caso de pontuação
+multi-valorada, além da lista de aplicativos instalados, informações adicionais
+precisam ser disponibilizadas. Por exemplo, a indicação de utilização recente
+de um programa pode resultar numa pontuação superior do que a de um aplicativo
+que não tenha sido executado há bastante tempo.
+
+Um caso típico de recomendação do \textit{AppRecommender} é então caracterizado
+da seguinte maneira: dada a lista programas instalados em determinado sistema,
+o recomendador retorna uma lista de aplicativos sugeridos, que supostamente são
+aplicativos de potencial interesse para os usuários daquele sistema.
 
 \section{Escolha da plataforma}
 
 A distribuição escolhida como base para o desenvolvimento deste trabalho
 foi o Debian GNU/Linux. No entanto, a independência de plataforma foi sempre
-levada em consideração na fase de desenvolvimento, com o intuito de que os
-resultados sejam facilmente adaptáveis para outros contextos. As seguir estão
+levada em consideração na fase de desenvolvimento com o intuito de que os
+resultados sejam facilmente adaptáveis para outros ambientes. As seguir estão
 descritos os critérios que pautaram esta escolha.
+\index{Debian!como plataforma do AppRecommender}
 
 \begin{enumerate}
 
 \item \textbf{Esquema consistente de distribuição de aplicativos.} O
   gerenciamento de pacotes em sistemas Debian GNU/Linux é realizado através do
-  \textit{APT}, cujas funcionalidades foram apresentadas na seção
+  \textit{apt}, cujas funcionalidades foram apresentadas na seção
   \ref{sec:apt}. Apesar de atualmente outras distribuições oferecerem
-  ferramentas similares, o \textit{APT} é certamente uma das mais maduras,
-  sendo inclusive apontada por alguns desenvolvedores como razão da explosão
-  no surgimento de distribuições derivadas do Debian (herdeiras do esquema).
+  ferramentas similares, o \textit{apt} é certamente uma das mais maduras,
+  sendo geralmente apontada como uma das principais razões da explosão
+  no surgimento de distribuições derivadas do Debian, herdeiras do esquema.
+  % [FIXME] estimativa de quantas derivativas
 
+\index{Debian!Popularity Contest (Popcon)}
+\index{Popcon}
 \vspace{0.3cm}
 \item \textbf{Disponibilidade de dados estatísticos.} A base de dados do
    \textit{Popcon} (seção \ref{sec:popcon}) ultrapassou a marca de 100.000
    colaboradores\footnote{\url{http://lists.alioth.debian.org/pipermail/popcon-developers/2011-February/001913.html}}
-   em fevereiro de 2011. É a maior coleção de dados disponível atualmente
-   sobre a utilização de pacotes Debian, compondo uma importante fonte de
-   informação para a realização de estratégias colaborativas de recomendação.
+   em fevereiro de 2011. É certamente uma das maiores coleções de dados
+   disponíveis atualmente sobre a utilização de pacotes Debian, compondo uma
+   importante fonte de informação para a realização de estratégias
+   colaborativas de recomendação.
 
-\vspace{0.3cm}
-\item \textbf{Possibilidade de integração dos resultados do trabalho.} Segundo
-  o \textit{contrato social
-  Debian}\footnote{\url{http://www.debian.org/social_contract.pt.html}},
-  o desenvolvimento do projeto é guiado pelas necessidades dos usuários e da
-  comunidade. Portanto, as iniciativas de colaboradores individuais, sejam eles
-  desenvolvedores oficiais ou não, serão igualmente consideradas e passarão a
-  fazer parte da distribuição se seguirem os princípios do projeto e forem
-  considerados úteis para a comunidade.
-
+\index{Debian!números do projeto}
+\index{CentOS}
+\index{Ubuntu}
 \vspace{0.3cm}
 \item \textbf{Popularidade.} O Debian é um projeto de destaque no ecossistema
   do software livre. Desde o lançamento da primeira versão de sua distribuição,
@@ -48,355 +81,999 @@ descritos os critérios que pautaram esta escolha.
   dados\footnote{Consulta realizada em 24 de janeiro de 2011.}, classifica o
   Debian GNU/Linux entre as 10 distribuições mais
   populares\footnote{\url{http://distrowatch.com/dwres.php?resource=major}}.
-  O Debian aparece na quinta posição em suas estatísticas de páginas
-  visitadas\footnote{\url{http://distrowatch.com/stats.php?section=popularity}}.
-  Já o \textit{Linux Counter\footnote{\url{http://counter.li.org/reports/machines.php}}} apresenta o Debian como a segunda distribuição mais popular entre as
-  máquinas cadastradas que rodam o kernel Linux ($16\%$), ficando atrás apenas
-  do Ubuntu\footnote{\url{http://www.ubuntu.com/community/ubuntu-and-debian}}
-  ($24\%$), que é uma distribuição derivada do Debian. Nas pesquisas da
-  \textit{W$^{\textrm{3}}$Techs} sobre tecnologias para serviços
-  web\footnote{\url{http://w3techs.com/technologies/history_details/os-linux}},
-  o Debian aparece em segundo lugar, estando presente em $27\%$ dos servidores.
-  Na primeira posição está o CentOS com $31\%$.
+  Em suas estatísticas de páginas mais visitadas o Debian aparece na quinta
+  posição\footnote{\url{http://distrowatch.com/stats.php?section=popularity}}.
+  Já o \textit{Linux Counter apresenta o Debian como a segunda distribuição
+  mais popular ($16\%$ das máquinas cadastradas que rodam o kernel
+  Linux\footnote{\url{http://counter.li.org/reports/machines.php}}} , ficando
+  atrás apenas do
+  Ubuntu\footnote{\url{http://www.ubuntu.com/community/ubuntu-and-debian}},
+  que é uma distribuição derivada do Debian, com $24\%$. Nas pesquisas da
+  \textit{W$^{\textrm{3}}$Techs} sobre tecnologias para serviços web, o Debian
+  aparece em segundo lugar, estando presente em $27\%$ dos
+  servidores\footnote{\url{http://w3techs.com/technologies/history_details/os-linux}}
+  -- na primeira posição está o CentOS com $31\%$.
+
+\vspace{0.3cm}
+\item \textbf{Maturidade do projeto.} De modo geral, quando o projeto Debian
+  é mencionado trata-se não somente do sistema operacional, mas de toda
+  infraestrutura de desenvolvimento e coordenação que dá suporte ao trabalho
+  de cerca de 900 desenvolvedores
+  oficiais\footnote{\url{http://www.perrier.eu.org/weblog/2010/08/07\#devel-countries-2010}},
+  além de outros milhares de colaboradores ao redor do globo. O trabalho é
+  realizado de forma colaborativa, afinado pelo objetivo comum de produzir e
+  disponibilizar livremente um sistema operacional de qualidade para seus
+  usuários \cite{Jackson:98}. A interação entre os desenvolvedores acontece
+  majoritariamente através da Internet, por meio de canais IRC e listas de
+  discussão públicas. Não existe uma entidade formal ou qualquer tipo de
+  organização que concentre, coordene ou defina as atividades do projeto. O que
+  observa-se é um modelo de governança consolidado que emergiu naturalmente ao
+  longo de sua história \cite{Ferraro:07}.
+
+\index{Debian!Debtags}
+\vspace{0.3cm}
+\item \textbf{Possibilidade de integração dos resultados do trabalho.} De
+  acordo com o \textit{contrato social do
+  Debian}\footnote{\url{http://www.debian.org/social_contract.pt.html}},
+  o desenvolvimento do projeto é pautado pelas necessidades dos usuários e da
+  comunidade FOSS. Portanto as iniciativas de colaboradores individuais, sejam
+  eles desenvolvedores oficiais ou não, serão igualmente consideradas e poderão
+  fazer parte da distribuição desde que sigam os princípios do projeto e sejam
+  considerados úteis para a comunidade. A autora deste trabalho colabora com o
+  projeto desde de 2005, tendo atuado em esforços de tradução, empacotamento de
+  programas, organização da conferência anual de desenvolvedores e atualmente
+  faz parte da equipe do
+  Debtags\footnote{\url{http://www.ime.usp.br/~tassia/debian.html}}.
+  % [FIXME] conferir referência
 
 \end{enumerate}
 
-De maneira geral, quando o projeto Debian é mencionado trata-se não somente do
-sistema operacional, mas de toda a infra-estrutura de desenvolvimento e
-coordenação que dá suporte ao trabalho de cerca de 900 desenvolvedores
-oficiais\footnote{\url{http://www.perrier.eu.org/weblog/2010/08/07\#devel-countries-2010}},
-além de outros milhares de colaboradores ao redor do globo. O trabalho é
-realizado de forma colaborativa, afinado pelo objetivo comum de produzir e
-disponibilizar livremente um sistema operacional de qualidade para seus
-usuários \cite{Jackson:98}. A interação entre os desenvolvedores acontece
-majoritariamente através da Internet, por meio de canais IRC e listas de
-discussão públicas. Não existe uma entidade formal ou qualquer tipo de
-organização que concentre, coordene ou defina as atividades do projeto. O que
-observa-se é um modelo de governança consolidado que emergiu naturalmente ao
-longo de sua história \cite{Ferraro:07}.
+\section{Fontes de Dados}
 
-\section{Caracterização do problema}
+%Neste trabalho não serão consideradas por exemplo informações registradas no
+%BTS, PTS ou em listas de discussão. A computação será principalmente realizada
+%com base em dados do \textit{Popcon} (listas de pacotes de milhares de sistemas
+%em produção), e do \textit{Debtags} e \textit{UDD} como fonte de metadados
+%sobre os pacotes (atributos). A utilização de dados demográficos também está
+%sendo considerada. Por exemplo, a declaração explícita por parte do usuário de
+%que não tem interesse por determinado nicho de aplicativos eliminaria de
+%antemão uma série de pacotes que a princípio seriam considerados. De certa
+%forma, o uso de perfis pode possibilitar a realização de uma seleção de
+%atributos específica para cada usuário.
 
-Este trabalho tem como proposta principal o desenvolvimento de soluções para o
-problema da recomendação no contexto de componentes de software, em especial no
-âmbito de distribuições GNU/Linux. Neste cenário, os aplicativos são modelados
-como itens e os usuários da distribuição como clientes do recomendador.
+O projeto Debian tem se destacado no universo das distribuições por suas
+iniciativas pioneiras no campo de gerenciamento de aplicações \cite{Zini:11}.
+Diante da complexa e crescente estrutura do projeto, observa-se um esforço por
+parte dos desenvolvedores, principalmente da equipe responsável pelo controle
+de qualidade\footnote{\url{http://qa.debian.org}}, de reunir, organizar e
+disponibilizar as informações ou meta-dados concernentes a esta estrutura
+\cite{Nussbaum:10}.
 
-Embora já faça parte da pauta de discussões entre desenvolvedores um esquema de
-pontuação de pacotes como medida de avaliação pessoal e comentários dos
-usuários, não há previsão para tal solução de fato ser implementada
-\cite{Freedesktop:11}. No entanto, a presença de um componente no sistema do
-usuário pode ser considerado como indicativo de relevância. A pontuação neste
-caso é binária -- um item pode ser relevante ou irrelevante -- e o processo de
-recomendação é caracterizado da seguinte maneira: dada a lista de pacotes
-instalados no sistema de determinado usuário (como representação de sua
-identidade), o recomendador deve retornar uma lista de pacotes sugeridos, que
-representam aplicativos de potencial interesse para tal usuário. Desta forma, a
-ação principal do sistema será \textit{encontrar itens relevantes} (ver seção
-\ref{sec:acoes}).
+Algumas destas iniciativas que serviram como fontes de dados para o
+\textit{AppRecommender} são detalhadas a seguir. Importante ressaltar que todas
+estas foram desenvolvidas inicialmente num contexto extra-oficial e, ao passo
+em que se mostraram úteis e eficazes, foram absorvidas pela comunidade de
+usuários e desenvolvedores.
 
-As recomendações devem ser produzidas a partir do comportamento do usuário.
-Neste trabalho não serão consideradas por exemplo informações registradas no
-BTS, PTS ou em listas de discussão. A computação será principalmente realizada
-com base em dados do \textit{Popcon} (listas de pacotes de milhares de sistemas
-em produção), e do \textit{Debtags} e \textit{UDD} como fonte de metadados
-sobre os pacotes (atributos). A utilização de dados demográficos também está
-sendo considerada. Por exemplo, a declaração explícita por parte do usuário de
-que não tem interesse por determinado nicho de aplicativos eliminaria de
-antemão uma série de pacotes que a princípio seriam considerados. De certa
-forma, o uso de perfis pode possibilitar a realização de uma seleção de
-atributos específica para cada usuário.
+\subsection{Debtags}
+\label{sec:debtags}
 
-\subsection{Considerações acerca da dependência entre pacotes}
-%FIXME [Investigar a utilidade do Debtags pra selecao de atributos]
+\index{Debtags}
+\index{Debian!Debtags}
+Para fins de organização, o repositório oficial Debian é particionado em
+\textit{seções}, que atualmente representam 53 grupos de
+pacotes\footnote{\url{http://packages.debian.org/unstable/}}. A seção de um
+pacote é definida no momento do empacotamento, dado que vem declarada em seu
+conteúdo (arquivo \textit{control}).
 
-Uma característica peculiar da recomendação neste contexto é que,
-diferentemente de outros domínios nos quais os itens não se relacionam entre
-si, os componentes de software objeto desta pesquisa podem declarar requisitos
-em seu conteúdo (dependência, sugestão, recomendação, conflito, substituição,
-quebra etc). Requisitos positivos representam relações de dependência,
-enquanto os negativos caracterizam relações de conflito entre os pacotes
- \cite{Cosmo:09}. Por exemplo, se um componente $a$ depende de $b$, significa
-que $b$ deve ser instalado no sistema para que $a$ funcione como previsto. Por
-outro lado, se $a$ conflita com $c$, a instalação de ambos os aplicativos pode
-provocar um comportamento anômalo ou até comprometer o funcionamento de todo o
-sistema.
+\textit{Debtags} é um esquema de classificação idealizado por Enrico Zini
+como uma maneira de categorizar pacotes alternativa às seções \cite{Zini:05}.
+A principal motivação desta iniciativa foi a impossibilidade de relacionar
+pacotes a múltiplas seções. Um navegador web, por exemplo, não poderia ser
+categorizado como \textit{network} e \textit{web} simultaneamente. O uso de
+\textit{tags} (em português, rótulos) possibilitaria a criação de uma coleção
+estruturada de metadados que poderia ser utilizada para implementar métodos
+mais avançados do que os existentes para apresentação, busca e manutenção do
+repositório de pacotes Debian.
 
-As relações entre componentes também devem ser consideradas pelo recomendador
-de pacotes. Intuitivamente, numa mesma recomendação não faz sentido sugerir
-pacotes dependentes, visto que ao aceitar a recomendação de um determinado
-componente e prosseguir com a instalação do mesmo, o usuário já está
-implicitamente aceitando a recomendação de todas as suas dependências. No
-entanto, um recomendação que contenha por exemplo os pacotes $a$ e $b$, dado
-que $a$ depende de $b$, se $a$ obtiver uma alta estimativa de relevância em
-virtude de seus atributos (por estratégias baseadas em conteúdo), esta
-recomendação não deve ser descartada. No caso de pacotes ``guarda-chuva'',
-que possuem muitas dependências, é comum que o usuário se interesse apenas
-por uma de suas dependências.
+\index{DebConf}
+A proposta foi apresentada na Debconf5 e foi paulatinamente sendo adotada por
+desenvolvedores em suas atividades, sendo atualmente utilizada como base de
+inúmeras ferramentas no Debian, tendo atingido a marca de $45\%$ de pacotes
+categorizados\footnote{Consulta realizada em junho de 2011}.
+%[FIXME] checar sobre os 45% na lista
 
-No que diz respeito à mineração de conhecimento a partir de uma base de dados,
-um ponto importante a considerar é que o fato de pacotes com alguma relação de
-dependência estarem presentes concomitantemente em grande parte dos sistemas
-não é uma coincidência, e sim uma consequência direta da dependência. Por outro
-lado, teriam grande valor as associações que relacionassem componentes que por
-definição não apresentam relação alguma. Neste cenário, novos graus de
-relacionamento poderiam ser estabelecidos, baseados não na dependência mas na
-colaboração entre os componentes.
+Utilizando \textit{Debtags}, os pacotes podem ser caracterizados por múltiplos
+atributos, que são (propositalmente) definidos num momento posterior à
+concepção do pacote. Dado que a base de tags é mantida de forma independente ao
+repositório, as modificações ao longo do tempo não trazem impacto algum ao
+desenvolvimento de pacotes. A atribuição de tags a pacotes é realizada por
+colaboradores por meio do website do
+projeto\footnote{\url{http://debtags.alioth.debian.org/todo.html}} e revisada
+manualmente antes de ser incorporada à base de dados.
 
-\subsection{Considerações acerca da necessidade dos usuários}
+A base de dados é armazenada num arquivo texto segue um formato simples,
+conforme ilustrado na figura \ref{fig:debtags}. O conjunto de \textit{tags}
+disponível faz parte de um vocabulário
+controlado\footnote{\url{http://debtags.alioth.debian.org/vocabulary/}}, que
+também recebe contribuições de colaboradores. O esquema é estruturado para
+permitir a classificação por diferentes pontos de vista, que caracterizam as
+facetas.
 
-Um sistema de recomendação de pacotes tem como principal função sugerir novos
-pacotes a partir de escolhas anteriores do usuário, assumindo que os
-recomendados são os que melhor satisfazem às suas necessidades. Todavia, o
-conceito de \textit{pacote} já é uma abstração, e nem sempre a necessidade de um
-usuário pode ser mapeada diretamente na instalação de pacotes específicos.
+\begin{figure}[h!]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-debtags}
+\caption{Excerto da base do Debtags}
+\label{fig:debtags}
+\end{figure}
 
-A necessidade do usuário diz respeito às funcionalidades que os aplicativos
-oferecem. Visto que aplicativos diferentes podem executar a mesma função,
-(resguardadas as devidas peculiaridades), o mais apropriado seria representar
-a necessidade ou desejo do usuário (analogamente, sua identidade) como um
-conjunto de funcionalidades, em vez de um conjunto de pacotes específicos.
+Ao indicar novas \textit{tags} para um pacote, o usuário é surpreendido com
+sugestões de outras \textit{tags} que geralmente são aplicadas em conjunto com
+as já selecionadas. Esta é uma aplicação de recomendação com base em regras de
+associação descobertas a partir de análise da base de dados de \textit{tags}. O
+algoritmo utilizado para produção das regras é o Apriori, descrito na seção
+\ref{sec:apriori}.
+\index{Apriori}
 
-Algumas funcionalidades de pacotes podem ser extraídas a partir da lista de
-pacotes virtuais\footnote{http://www.debian.org/doc/packaging-manuals/virtual-package-names-list.txt}. Este conceito foi criado especialmente para situações
-em que diversos pacotes diferentes oferecem um conjunto de funcionalidades
-semelhantes. Pacotes virtuais não existem fisicamente no repositório, são
-apenas mencionados no campo \textit{Provides} da definição de outros pacotes
-(``concretos''). Desta forma, quando uma dependência se refere a um pacote
-virtual, ela pode ser satisfeita com a instalação de qualquer pacote que provê
-o mesmo.
+\index{Debtags}
+\index{Debian!Debtags}
+O \textit{Debtags} é uma poderosa ferramenta para a construção de estratégias
+de recomendação de pacotes baseadas em conteúdo. É fato que o conteúdo acerca
+de pacotes pode ser expresso em termos de atributos extraídos dos próprios
+pacotes, porém, a caracterização por meio de \textit{tags} já fornece uma
+caracterização possível de ser utilizada e a baixo custo computacional.
 
-No entanto, a lista de pacotes virtuais é controlada e relativamente pequena.
-Acredita-se porém que uma análise detalhada da base do \textit{Debtags} pode
-revelar novas funcionalidades como abstrações de conjuntos de \textit{tags},
-que poderão eventualmente ser utilizadas para refinar o cálculo das
-recomendações.
+\subsection{Índice de informações sobre pacotes (apt-xapian-index)} \label{sec:axi}
 
-\section{Proposta de Solução: AppRecommender}
+\index{apt-xapian-index}
+\index{Debian!apt-xapian-index}
+\index{Debian!Xapian}
+\index{Xapian}
+O pacote \textit{apt-xapian-index}\footnote{\url{http://www.enricozini.org/sw/apt-xapian-index/}}
+provê um conjunto de ferramentas para manutenção e busca em um índice Xapian de
+informações sobre pacotes Debian. \textit{update-apt-xapian-index} permite a
+instalação de \textit{plugins} no diretório \textls{/usr/share/apt-xapian-index}
+para indexar qualquer tipo de informação relacionada aos pacotes, como tags,
+popularidade ou pontuação. A ferramenta \textit{axi-cache}, pode ser utilizado para consultas no índice.
+
+O índice criado é mantido em \textls{/var/lib/apt-xapian-index}. Cada pacote é
+representado por um documento e as meta-informações relacionadas são
+mapeadas em termos dos documentos. Alguns termos são indexados com prefixos
+especiais para facilitar a busca, por exemplo, ``XP'' para o nome do pacote,
+``XS'' para a seção do repositório, ``XT'' para tags e ``Z'' para termos
+lematizados. A figura \ref{fig:axi-2vcard} apresenta a lista de termos
+indexados para o pacote \textit{2vcard}.
+
+\begin{figure}[h!]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-axi}
+\caption{Lista de termos indexados para o pacote \textit{2vcard}}
+\label{fig:axi-2vcard}
+\end{figure}
+
+\subsection{Popularity Contest (popcon)} \label{sec:popcon}
+
+\index{Debian!Popularity Contest (Popcon)}
+\index{Popcon}
+O \textit{popcon} é um ``concurso de popularidade'' entre pacotes Debian criado
+pelo desenvolvedor Avery Pennarun em 1998 com o propósito inicial de auxiliar a
+escolha dos pacotes que devem ser incluídos no primeiro CD de
+instalação\footnote{\url{http://lists.debian.org/debian-devel-announce/2004/03/msg00009.html}}
+(os mais populares são selecionados). Atualmente o repositório de pacotes
+Debian pode ser obtido em 52 imagens de CDs ou 8 de DVD. Dado que comumente
+apenas a primeira imagem é obtida por \textit{download} -- os demais pacotes
+podem ser obtidos diretamente do repositório por meio de uma conexão de rede --
+a priorização de pacotes populares na primeira imagem tende a contribuir para a
+satisfação dos usuários.
+
+Na instalação de um sistema Debian o administrador é convidado a participar do
+concurso. Se aceitar, o software cliente do \textit{popcon} é instalado na
+máquina e envia para um servidor central periodicamente a lista de pacotes
+instalados naquele sistema, indicando ainda quando cada pacote foi utilizado
+pela última vez.
+
+A figura \ref{fig:popcon} apresenta um exemplo de submissão do popcon. Os
+campos temporais são indicados no formato \textit{Unix
+time\_t}\footnote{Quantidade de segundos desde meia-noite de primeiro de
+janeiro de 1970 no horário GMT.}. A primeira linha contém um hash que
+identifica um sistema unicamente no concurso. Cada linha seguinte representa um
+pacote instalado no sistema, no formato
+\verb!<atime> <ctime> <package-name> <mru-program> <tag>!, detalhado na tabela
+\ref{tab:popcon}. 
+
+\begin{figure}[h!]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-popcon}
+\caption{Exemplo de submissão do popcon}
+\label{fig:popcon}
+\end{figure}
+
+\begin{table}[h!]
+  \footnotesize
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabularx}{15cm}{| c | X |}
+    \hline
+    \rowcolor[rgb]{0.8,0.8,0.8}
+    \textbf{Campo} & \textbf{Descrição} \\
+    \hline
+    <package-name> & Nome do pacote Debian que contém o arquivo <mru-program>\\
+    \hline
+    <mru-program> & Programa, biblioteca ou cabeçalho contido no pacote
+                    que foi utilizado mais recentemente.\\
+    \hline
+    <atime> & Tempo de acesso do <mru-program> no disco, atualizado pelo
+                     kernel cada vez que o arquivo é aberto.\\
+    \hline
+    <ctime> & Tempo de criação do <mru-program> no disco, definido no
+                     momento de instalação do pacote.\\
+    \hline
+    <tag> & RECENT-CTIME: indica que <atime> é muito próximo de <ctime>,
+            geralmente quando o pacote foi recentemente instalado ou
+            atualizado; OLD: <atime> é anterior a 30 dias atrás, portanto o
+            pacote não foi usado no último mês; NOFILES: o pacote não contém
+            programas, portanto <atime>, <ctime> e <mru-program> são
+            inválidos.\\
+    \hline
+  \end{tabularx}
+  \caption{Descrição do formato de uma submissão \textit{popcon}}
+  \label{tab:popcon}
+\end{table}
+
+\index{Popcon}
+\index{Debian!Popularity Contest (Popcon)}
+A informação sobre o uso dos pacotes também tem sido utilizada como guia para o
+time de qualidade acerca de quais pacotes merecem atenção especial. Os times de
+tradução também têm considerado estes dados para ordenar sua lista de
+prioridades de acordo com a popularidade dos pacotes. Por outro lado, a baixa
+popularidade é um dos parâmetros para a remoção de um pacote do repositório
+(\textit{low-popcon}). Pacotes considerados problemáticos\footnote{p. ex.
+pacotes órfãos (sem mantenedor) ou cujo mantenedor está inativo há bastante
+tempo (na terminologia do Debian, mantenedor em MIA - \textit{Missing in
+Action}), contendo muitos \textit{bugs}, especialmente se forem \textit{bugs
+RC} (que impedem o lançamento)} que não são populares tendem a perder a
+simpatia dos desenvolvedores.
+
+\index{Debian!Missing in Action (MIA)}
+Essa abordagem, no entanto, tem sido duramente criticada. Segundo Joey
+Hess\footnote{\url{http://kitenet.net/~joey/blog/entry/the_popcon_problem/}},
+uma vantagem do Debian é justamente que não apenas programas populares são
+empacotados, mas os incomuns e específicos de um nicho de usuário também
+costumam estar disponíveis em pacotes. E de fato o \textit{popcon} não mede o
+benefício de pacotes poucos usados estarem disponíveis no repositório, prontos
+para serem usados. Portanto, ao remover pacotes que aparentemente não são
+populares corre-se o risco de transformar o Debian numa distribuição
+homogênea, submetida à ``tirania da maioria''.
+
+Existem ainda questões relativas a (1) representatividade desses dados, visto
+que alguns perfis de usuários dificilmente participam do concurso (p. ex.
+sistemas embarcados); e (2) acurácia de informações temporais, dado que
+\verb!<atime>! e \verb!<ctime>! podem ser inconsistentes caso o sistema de
+arquivos tenha sido montado com a opção \verb!noatime!.
+
+Todas essas ressalvas devem ser consideradas quando pretende-se utilizar os
+dados do \textit{popcon}. No entanto, desde que as informações sejam manejadas
+de forma consciente e responsável, acredita-se que valiosas correlações possam
+ser reveladas após uma série de análises.
+
+As submissões recebidas são processadas diariamente e as estatísticas geradas
+são disponibilizadas na página web do projeto\footnote{\url{http://popcon.debian.org}}.
+As listas de pacotes originais submetidas não são publicadas a fim de preservar
+a privacidade dos usuários. No entanto, para a realização deste trabalho o
+acesso foi permitido mediante supervisão de desenvolvedores oficiais do
+projeto. Os dados ``crus'' (antes do processamento de estatísticas) são
+essenciais para a realização de estratégias de recomendação colaborativas por
+preservarem os relacionamentos usuários-itens, e já foram utilizados
+anteriormente para o mesmo fim (seções \ref{sec:anapop} e
+\ref{sec:mineracao_popcon}).
+
+
+\subsection{Ultimate Debian Database (UDD)}
+
+\index{Debian!Ultimate Debian Database (UDD)}
+\index{Ultimate Debian Database (UDD)}
+O UDD\footnote{\url{http://udd.debian.org}} é uma iniciativa recente do time de
+qualidade criada com o intuito de reunir informações de diversos aspectos do
+Debian numa base de dados única \cite{Nussbaum:10}.
+
+O fluxo de dados do UDD é apresentado na figura \ref{fig:udd}. Existe um
+coletor para cada fonte de dados (p. ex. o BTS, sistema de acompanhamento de
+\textit{bugs}\footnote{\url{http://bugs.debian.org}}) que implementa uma
+interface comum e esconde a complexidade e especificidade de acessar cada um
+dessas fontes. Existe um processo central no UDD que invoca os coletores
+periodicamente, provocando a inserção dos dados na base única.
 
 \begin{figure}[h!]
 \centering
-  \includegraphics[width=\textwidth]{Figures/diagrama_apprec.pdf}
-\caption{Fluxo de dados no AppRecommender}
+  \includegraphics{Figures/udd.pdf}
+\caption{Fluxo de dados no UDD \cite{Nussbaum:10}}
+\label{fig:udd}
+\end{figure}
+
+A principal motivação para o desenvolvimento do UDD foi a de auxiliar a equipe
+de qualidade em suas atividades, além de facilitar a colaboração com
+distribuições derivadas do Debian. Apesar de ser possível, dificilmente
+usuários consultariam esta base para tomar decisões acerca de que pacotes
+utilizar, visto que os dados armazenados no UDD geralmente são acessíveis por
+outros meios. No entanto, para fins de mineração de dados ou para o
+desenvolvimento de um recomendador automático, a possibilidade de acesso a
+dados de tamanha heterogeneidade numa fonte de dados única é uma grande
+benefício.
+
+\subsection{Debian Data Export (DDE)}
+
+\index{Debian!Debian Data Export (DDE)}
+Informações sobre o Debian e seus pacotes são publicadas em diversos tipos de
+formato, por vezes específicos e obscuros, e nem sempre de fácil localização.
+O DDE\footnote{\url{http://wiki.debian.org/DDE}} foi criado para facilitar a
+publicação e aquisição destas informações e a descoberta de quais informações
+estão disponíveis sem a necessidade de se preocupar com formatos de dados,
+protocolos e controle de acesso.
+
+DDE e UDD são serviços complementares. Enquanto o UDD tem como meta criar um
+ponto central de acesso aos dados, o DDE provê o acesso de forma simples e
+padronizada a determinados conjuntos de dados. Os dois serviços se completam:
+quanto mais dados são coletados pelo UDD, mais informações são disponibilizadas
+via DDE, que atua como uma interface simplificada para as consultas mais úteis
+e populares do UDD.
+
+Além do UDD, existem plugins para o DDE que importam dados do
+\textit{apt-file}\footnote{Busca por arquivos no conteúdo de pacotes Debian},
+\textit{apt-xapian-index} e BTS. Atualmente os dados podem ser exportados na
+notação de objetos JavaScript (JSON), formato de serialização YAML, valores
+separados por vírgula (CSV) ou objetos Python serializados (\textit{pickled
+objects}).
+
+%[FIXME ver se não é RESTfull]
+Os dados são representados numa grande árvore. Pode-se escolher um nó nesta
+árvore por meio de sua URL para adquirir todos os dados contidos na sub-árvore
+que contém este nó como raiz. A figura \ref{fig:dde-bts} apresenta o resultado
+de uma consulta ao plugin BTS pelo pacote \textit{gnome-subtitles}, por meio da
+url \url{http://dde.debian.net/dde/q/bts/bypackage/gnome-subtitles}.
+
+\begin{figure}[h!]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-dde}
+\caption{Exemplo consulta ao plugin BTS}
+\label{fig:dde-bts}
+\end{figure}
+\index{Debian!Bug Tracking System (BTS)}
+
+\subsection{Screenshots} \label{sec:screenshots}
+
+\index{Debian!screenshots.debian.net}
+O \textit{Screenshots}\footnote{\url{http://screenshots.debian.net/}} é um
+repositório público de capturas de tela de aplicativos da distribuição Debian
+GNU/Linux e derivadas. O serviço foi criado para permitir que os usuários
+conheçam a aparência dos programas antes de instalá-los em seu ambiente de
+trabalho. A submissão de imagens é aberta, podendo ser realizada por qualquer
+usuário, no entanto uma revisão humana é realizada antes que as imagens se
+tornem públicas.
+
+%[FIXME]
+%adicionar figura com screenshot da pagina
+%falar da forma de acessar os screenshots e programas q usam ele (appnr,
+%software center)
+%mencionar q esta no UDD
+
+\section{Decisões de projeto}
+
+\index{AppRecommender!desenvolvimento}
+Técnicas de busca foram selecionadas como base de implementação do
+\textit{AppRecommender} devido ao desempenho das soluções com a construção
+prévia de índices. O desenvolvimento dos componentes de indexação e busca
+baseou-se na biblioteca \textit{Xapian}.
+
+Ao ser instanciado, o recomendador recebe como parâmetros dois índices --
+neste contexto denominados \textit{repositórios} -- cujo conteúdo está
+descrito a seguir.
+
+\begin{enumerate}[(a)]
+  \item \textbf{Repositório de itens:} armazena todos os itens disponíveis para
+        recomendação juntamente com seus meta-dados. Fisicamente, é um índice
+        \textit{xapian} onde cada pacote é representado por um documento cujos
+        termos são os meta-dados relacionados ao pacote. O
+        \textit{Apt-xapian-index} pode ser utilizado como repositório de itens,
+        porém geralmente se utiliza um índice filtrado, dado que nem todos os
+        pacotes existentes deveriam ser considerados pelo recomendador.
+
+\index{Popcon}
+  \item \textbf{Repositório de usuários:} armazena escolhas anteriores de usuários,
+        representadas por relações to tipo \textit{usuário} $\rightarrow$
+        \textit{conjunto de itens}. Fisicamente, é um índice \textit{xapian}
+        onde cada sistema (usuário do recomendador) é representado por um
+        documento cujos termos são pacotes presentes em sua submissão ao
+        \textit{Popcon}. Além dos nomes, são indexadas também as \textit{tags}
+        de cada pacote, permitindo assim uma caracterização de conteúdo de cada
+        documento do índice.
+\end{enumerate}
+
+\index{Debian!Debian Data Export (DDE)}
+\index{Debian Data Export (DDE)}
+\index{Debian!Ultimate Debian Database (UDD)}
+\index{Ultimate Debian Database (UDD)}
+\index{Debian!screenshots.debian.net}
+\index{Debian!Xapian}
+\index{Xapian}
+Além dos índices \textit{Xapian}, a solução coleta informações do UDD por meio
+do DDE, utiliza captura de telas do \textit{Screenshots} e pode coletar também
+informações do APT local. A figura \ref{fig:diagrama_apprec} apresenta o fluxo
+de dados da solução proposta.
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{Figures/diagrama_apprec.png}
+\caption{Fluxo de dados no \textit{AppRecommender}}
 \label{fig:diagrama_apprec}
 \end{figure}
 
-\section{Coleta de dados}
+\index{Apriori}
+Foram realizados experimentos preliminares com algoritmos para mineração de
+regras de associação com base no \textit{Apriori}. No entanto, devido a alta
+complexidade computacional destes algoritmos, seria necessário um maior
+planejamento e estudo de técnicas mais avançadas para o desenvolvimento de
+soluções computacionalmente executável. Em virtude de esta estratégia já ter
+sido abordada anteriormente num trabalho correlato (seção \ref{sec:mineracao_popcon}),
+buscou-se o reaproveitamento das regras já produzidas de sorte a integrá-las no
+\textit{AppRecommender}. O autor demonstrou interesse neste sentido e pretende
+atualizar seu código, que apresenta-se inativo desde 2007
 
-Os dados estatísticos disponíveis publicamente no site do \textit{Popcon} não
-preservam os relacionamentos usuário-item, essenciais para a utilização de
-estratégias colaborativas. Por questões relativas à
-privacidade\footnote{\url{http://popcon.debian.org/FAQ}}, as listas de pacotes
-originais submetidas pelos usuários não são publicadas, apenas as estatísticas
-geradas e um resumo de todas as submissões são disponibilizados diariamente.
-No entanto, este trabalho é desenvolvido com o apoio de desenvolvedores
-oficiais Debian, o que possibilitará o acesso aos dados necessários.
+\index{Popcon}
+\index{K-medoides}
+Houve também uma tentativa de pré-processamento da base de dados do
+\textit{Popcon} através da técnica de agrupamento \textit{K-medoides}.
+Contudo, a solução também demandaria um aprofundamento nas técnicas para que
+fosse capaz de lidar com a base de dados completa do \textit{Popcon}. Diante da
+limitação de tempo para conclusão deste trabalho, optou-se focar apenas em
+técnicas de busca, deixando estes esforços como base para trabalhos futuros.
 
-No entanto, as bases de dados do \textit{UDD} e do \textit{Debtags} são
-públicas, não havendo impedimento algum para acessá-las. Por fim, perfis de
-usuários podem ser formados com base no preenchimento facultativo de um
-formulário antes da utilização do recomendador.
+\subsection{Seleção de atributos}
 
-\section{Seleção de atributos}
+A seguir são apresentadas peculiaridades do domínio de aplicativos que foram
+consideradas na modelagem dos procedimentos de seleção de atributos do
+\textit{AppRecommender}. Acredita-se que tal pré-processamento dos dados de
+entrada proporciona ganhos na eficiência do recomendador e qualidade
+das sugestões produzidas, na medida em que diminui o montante de dados a
+ser considerado e o ruído nos dados. A popular expressão
+``\textit{Garbage in, garbage out}'' pode ser utilizada neste contexto: se o
+sistema recebe ``lixo'' como entrada, independente da corretude do algoritmo,
+a saída provavelmente será inútil.
 
-A seleção de atributos geralmente proporciona ganhos na eficiência e qualidade
-das recomendações, na medida em que diminui o ruído e o montante de dados a
-ser considerado. Além da aplicação de métodos clássicos de seleção,
-apresentados na seção \ref{sec:selecao_atributos}, existem peculiaridades do
-domínio de componentes de software que podem ampliar tais benefícios se
-consideradas.
+%\subsection{Considerações acerca da necessidade dos usuários}
+%FIXME [Debtags para selecao de atributos]
 
-Seja qual for o sistema operacional ou distribuição GNU/Linux, existe um
-conjunto de componentes que fazem parte da instalação padrão, selecionados
-pela equipe de desenvolvimento. Considerando que os usuários do recomendador
-utilizam um sistema funcional, existem dois casos a considerar: (1) todo o
-conjunto de componentes da instalação padrão está instalado no sistema e (2)
-alguns componentes não estão presentes porque foram propositalmente removidos
-pelo usuário. Em ambos os casos a recomendação de tais pacotes certamente não
-interessaria ao usuário, portanto acredita-se que todos eles possam ser
-desconsiderados sem prejuízo para a recomendação.
+%[FIXME] falar sobre a diferenca de recomendador de musica pra aplicativo. vc
+%nao quer mais de um editor de texto, p.ex.
 
-Os dados coletados pelo \textit{Popcon} também possuem informações temporais.
-A data de instalação do pacote no sistema é obtida através do atributo
-\textit{ctime} do arquivo, que indica a data de sua criação no sistema de
-arquivos, enquanto a data de última utilização é indicada pelo \textit{atime},
-com a data do último acesso. Apesar destes dados não serem seguramente
-confiáveis\footnote{\url{http://popcon.debian.org/README}}, a possibilidade
-de uso dos mesmo será investigada. Seria interessante, por exemplo, atribuir
-pesos diferentes para pacotes que são usados com muita frequência pelo usuário
-em detrimento de outros que foram acessados pela última vez logo após serem
-instalados.
+\subsubsection*{Pacotes \textit{versus} aplicativos}
 
-\section{Estratégias implementadas}
+\index{empacotamento!pacotes vs. aplicativos}
+De acordo com o conceito de empacotamento apresentado no capítulo
+\ref{chapter:distribuicoes}, um pacote instalado num sistema GNU/Linux
+pode ou não representar um aplicativo. Existem pacotes no repositório que
+consistem apenas em documentação, dados complementares, ou ainda, bibliotecas
+que são requisitos para outros aplicativos.
 
-Optou-se por utilizar técnicas de busca como base das soluções, mesmo para
-estratégias herdadas de classificação, dado que a construção prévia de índices
-de busca otimiza o cálculo de dissimilaridades entre itens.
+\index{Debtags}
+\index{Debian!Debtags}
+Esta característica do pacote pode ser identificada por meio da faceta
+\texttt{XTrole} do \textit{debtags}, que pode assumir valores como \textit{program},
+\textit{data}, \textit{shared-lib}, \textit{examples}, entre outros. Para
+recomendador de aplicativos, apenas os pacotes marcados com a \textit{tag}
+\texttt{XTrole::program} são considerados como itens válidos.
 
-Ao final desta seção, na tabela \ref{}, será apresentado o conjunto de
-identificadores das diferentes estratégias adotadas, que a seguir são
-apresentadas em detalhes.
+\subsubsection*{Mapeamento das necessidades de um usuário}
+
+\label{sec:necessidades_usuarios}
+
+No caso de uso típico do recomendador de aplicativos, determinado usuário
+entrega ao sistema o conjunto de aplicativos que ele possui, e a função do
+recomendador é sugerir, dentre os que ele não conhece, os que melhor atendem a
+suas necessidades. Todavia, nem sempre aquilo que o usuário busca pode ser
+mapeado diretamente na instalação de pacotes específicos. Necessidades do
+usuário dizem respeito às funcionalidades que os aplicativos oferecem. Visto
+que aplicativos diferentes podem executar funções similares, o mais apropriado
+seria representar a necessidade ou desejo do usuário como um conjunto de
+funcionalidades, em vez de um conjunto de aplicativos ou pacotes.
+
+Atualmente o perfil do usuário pode ser composto por palavras extraídas das
+descrições de pacotes ou \textit{debtags}. O vocabulário de \textit{debtags}
+é composto por $621$ \textit{tags}, porém nem todas são úteis para fins de
+recomendação. Por exemplo, a linguagem em que o aplicativo foi implementada
+é irrelevante para a caracterização de suas funcionalidades. Portanto, todas
+as \textit{tags} da faceta \textit{implemented-in} foram desconsideradas.
+Após uma análise manual, o conjunto de \text{tags} válidas para o
+\textit{AppRecommender} foi reduzido para $276$.
+
+\subsubsection*{Aplicativos básicos}
+
+Para um sistema operacional ou distribuição GNU/Linux, quaisquer que sejam,
+necessariamente haverá um conjunto de componentes que fazem parte da instalação
+padrão, previamente selecionados pela equipe de desenvolvimento. Considerando
+que os usuários do recomendador utilizam um sistema funcional, existem dois
+casos a considerar: (1) todo o conjunto de componentes da instalação padrão
+está instalado no sistema e (2) alguns componentes não estão presentes porque
+foram propositalmente removidos pelo usuário. Em ambos os casos a recomendação
+de tais pacotes certamente não interessaria ao usuário, portanto todos eles
+podem ser desconsiderados sem prejuízo para a recomendação.
+
+%[FIXME] falar disso aí...
+%. Prioridade: required, important, standard, optional, extra\\
+%. Base system = required or important (muitos são marcados como essenciais)\\
+%. Essenciais: o gerenciador de pacotes se recusa a remover, a menos que seja forçado
+
+\subsubsection*{Aplicativos instalados automaticamente}
+
+\index{Debian!Advanced Packaging Tool}
+\index{APT}
+Uma característica peculiar da recomendação neste contexto é que,
+diferentemente de outros domínios nos quais os itens não se relacionam entre
+si, um aplicativo pode requisitar a presença (ou ausência) de outros
+aplicativos no sistema para que funcione adequadamente. Portanto, muitos
+programas são instalados automaticamente por serem dependências de outros, e
+não em decorrência de uma ação do administrador do sistema. A relevância de
+tais aplicativos para a composição de um perfil de usuário pode ser considerada
+de forma diferenciada dos outros, ou simplesmente desconsiderada.
+
+No caso em que o recomendador é executado localmente (o cliente é o próprio
+sistema no qual ele é executado), têm-se acesso à base local do \textit{APT}
+que guarda a informação de quais pacotes foram instalados automaticamente.
+Sendo assim, a seleção de atributos pode considerar apenas os que foram
+instalados voluntariamente.
+
+No entanto, para o caso em que o recomendador recebe apenas a lista de pacotes
+instalados sem informação adicional sobre auto-instalação, uma outra estratégia
+é adotada. Neste cenário, a seleção de atributos desconsidera todos os pacotes
+que fazem parte da lista de dependências de qualquer outro pacote do perfil
+original. O resultado é uma lista de pacotes minimal que representa aquele
+sistema. Apesar de ligeiramente diferente do anterior, esta foi a abordagem que
+produziu resultados mais próximos da eliminação de pacotes instalados
+automaticamente quando não se tem acesso à base do \textit{APT}.
+
+\subsubsection*{Frequência de uso dos aplicativos}
+
+\index{Popcon}
+As informações temporais coletadas pelo \textit{Popcon} (descritas na seção
+\ref{sec:popcon}) podem ser utilizadas para atribuição de pesos diferenciados
+para pacotes do perfil, de acordo com a frequência de utilização dos mesmos.
+Atualmente atribui-se peso $3$ para pacotes utilizados pela última vez a mais de
+30 dias, peso $8$ para os recentemente instalados e $10$ para os recentemente
+utilizados. Outra seleção razoável é a filtragem apenas pelos aplicativos
+utilizados no último mês, visto que este período representa a atividade recente
+do usuário, e geralmente há grandes chances de seus interesses ainda serem os
+mesmos.
+
+\subsection{Perfis demográficos}
+
+\index{AppRecommender!perfis demográficos}
+Uma característica peculiar do \textit{AppRecommender} é que o cliente
+deste recomendador é um sistema GNU/Linux com caráter multi-usuário. Seu uso
+é comumente compartilhado por diversas pessoas, possivelmente apresentando
+interesses conflitantes. O questionamento ao usuário sobre suas áreas de
+interesse pode não representar de fato os ``interesses'' do sistema cliente.
+Optou-se então por inferir automaticamente perfis básicos a partir da lista de
+aplicativos recebida como entrada, em vez de expressamente consultar o usuário.
+%[FIXME: inserir proporção de usuários por perfil na base do popcon]
+
+A seguir são descritos os perfis utilizados na implementação atual e o
+comportamento do \textit{AppRecommender} diante de cada um deles.
+
+\subsubsection*{Desktop}
+
+\index{AppStream}
+Em conformidade com as decisões no escopo do \textit{AppStream}, para os casos
+que o cliente do recomendador é um sistema utilizado como estação de trabalho,
+decidiu-se que a recomendação deve conter prioritariamente os pacotes que
+representam aplicativos \textit{desktop}. Definiu-se então o filtro ``desktop''
+para a identificação dos pacotes que possuem um arquivo \textit{.desktop} em seu
+conteúdo (padrão estabelecido pelo \text{FreeDesktop.org}).
+
+Testes realizados com sistemas minimais com interface gráfica, Debian e Ubuntu,
+apresentaram o perfil de \textit{desktop} com 16 pacotes. Portanto, assumiu-se a
+caracterização deste perfil para os casos em que o sistema possui ao menos 10
+aplicativos \textit{desktop} instalados, além do sistema de janelas
+\textit{X}\footnote{\textit{X Window System}, implementação de interface
+gráfica em sistemas GNU/Linux}.
+
+\subsubsection*{Desktop KDE/GNOME}
+
+\index{KDE}
+\index{GNOME}
+Sistemas gerenciadores de janelas evoluíram a tal ponto que atualmente alguns
+constituem ambiente \textit{desktop} completos, com uma série de aplicativos
+desenvolvidos especialmente para tais ambientes, como é o caso do
+\textit{KDE}\footnote{\url{http://www.kde.org/}} e
+\textit{GNOME}\footnote{\url{http://www.gnome.org/}}. Devido à popularidade de
+ambos os projetos, alguns programas são desenvolvidos em versões específicas
+para um ou outro -- baseados na biblioteca \textit{Qt}\footnote{\url{http://qt.nokia.com/}}
+ou \textit{GTK+}\footnote{\url{http://www.gtk.org/}} respectivamente.
+
+No caso em que o usuário do recomendador possui apenas um dos dois ambientes
+instalados, deve-se priorizar a sugestão do pacote específico para aquele
+gerenciador. O \textit{AppRecommender} considera como sinônimos pacotes
+distintos que são versões do mesmo aplicativo, variando apenas a biblioteca
+gráfica na qual é baseado. Por exemplo, suponha que o pacote
+\textit{autokey-gtk} faça parte da recomendação para determinado usuário. Caso
+apenas o \textit{KDE} esteja instalado naquele sistema, o recomendador irá
+alterar a sugestão para conter o pacote \textit{autokey-qt} em detrimento da
+versão para \textit{GTK+} que fazia parte da recomendação original.
+
+%http://xwinman.org/intro.php
+
+\subsubsection*{Servidor}
+
+Apesar de conceitualmente todo sistema GNU/Linux ser um servidor, esta foi a
+nomenclatura adotada para caracterizar sistemas cuja principal função é
+prover serviços, aparentemente não sendo utilizados como estações de trabalho.
+Neste caso, o filtro ``program'' é aplicado, considerando como pacotes válidos
+para recomendação todos aqueles marcados com a \textit{tag}
+``\texttt{XTrole::program}''.
+
+\subsubsection*{Arquitetura}
+
+Os pacotes binários do Debian são automaticamente compilados para as
+arquiteturas de \textit{hardware} indicadas pelo mantenedor do pacote. Se o
+pacote não está disponível para determinada arquitetura, muito provavelmente
+ele não tem utilidade para aquela categoria de \textit{hardware}, ou
+simplesmente não foi portado adequadamente para ser executado naquela
+arquitetura. Nestes casos, o pacote deve ser desconsiderado de possíveis
+recomendações.
+
+\index{Popcon}
+A arquitetura do cliente é um dado coletado pelo \textit{Popcon}, indicado
+na primeira linha do arquivo de submissão (figura \ref{fig:popcon}). Se o
+\textit{AppRecommender} recebe este arquivo como entrada, esta informação será
+considerada e apenas pacotes disponíveis para a referida arquitetura serão
+sugeridos. Se o formato da entrada é uma lista de pacotes simples, esta
+informação pode ainda ser coletada pela interface do recomendador. Caso
+contrário, todos os aplicativos são passíveis de recomendação, sem considerar a
+arquitetura de \textit{hardware}.
+
+\subsection{Bugs e popularidade}
+
+A quantidade de \textit{bugs} e popularidade do pacote foram fatores
+inicialmente considerados para compor a reputação dos itens, resultando
+numa implementação de recomendação em cascata (\ref{sec:estrategias_hibridas}).
+Esta estratégia foi anulada por ser considerada inadequada.
+
+Houve uma discussão recente entre desenvolvedores sobre a validade do uso dos
+dados do \textit{Popcon} para fins de comparação entre pacotes. Joey
+Hess defende que a popularidade não deveria ser utilizada como uma medida de
+competição entre pacotes porque pacotes de naturezas distintas não são
+comparáveis\footnote{\url{http://kitenet.net/~joey/blog/entry/the_popcon_problem/}}.
+Por exemplo, é um engano comparar um pacote popular como o
+\textit{gnome-terminal} com um de baixa popularidade como \textit{udhcpc}. O
+primeiro é instalado por padrão nos sistemas \textit{desktop}, apesar de
+muitos usuários de \textit{desktop} não fazerem uso do aplicativo. Por outro
+lado, o \textit{udhcpc} é instalado apenas em sistemas embarcados e mesmo que
+seja absurdamente popular não aparecerá como popular nas estatísticas do
+\textit{Popcon} visto que este tipo de sistema geralmente não participa do
+concurso de popularidade.
+
+Tratando-se de \textit{bugs}, pensava-se em recomendar prioritariamente pacotes
+com poucos \textit{bugs}, assumindo que estes recebiam atenção constante de seu
+mantenedor. Contudo notou-se que tal critério seria falho, uma vez que
+\textit{bugs} abertos podem também representar atividade no desenvolvimento e
+popularidade, tese corroborada por um estudo recente de \cite{Davies:10}.
+Optou-se então por não utilizar esta informação como base para composição de
+reputação do item.
+
+\subsection{Privacidade dos usuários}
+
+\index{privacidade}
+\index{AppRecommender!privacidade}
+O tópico privacidade no desenvolvimento do \textit{AppRecommender} foi
+cuidadosamente considerado. Dado que os usuários do recomendador não são
+pessoas e sim sistemas GNU/Linux, uma quebra de privacidade neste contexto pode
+significar o comprometimento da segurança destes sistemas. Por exemplo, se a
+partir de um conjunto de ferramentas sabidamente instalados em um sistema
+pode-se deduzir que um outro conjunto de ferramentas também está presente,
+vulnerabilidades das ferramentas descobertas podem ser exploradas num ataque.
+
+\index{Popcon}
+Aplicativos com poucas instalações reportadas pelo \textit{Popcon} oferecem um
+risco de segurança neste aspecto. Considere um pacote $a$ com apenas uma
+instalação reportada. Há grandes chances de uma consulta ao recomendador pelo
+aplicativo $a$ resultar numa lista de pacotes instalados na máquina do
+mantenedor do pacote. Outra vulnerabilidade é que o \textit{Popcon} exibe em
+suas estatísticas pacotes não-oficiais, muitos gerados pelo próprio usuário,
+inclusive revelando informações capazes de identificá-lo, como por exemplo o
+pacote ``mec-dp-joao.da.cruz.e.sousa''. Para evitar este tipo de vazamento de
+informações o \textit{AppRecommender} desconsidera pacotes considerados
+\textit{low-popcon}, ou seja, com menos de $20$ instalações.
+
+Vulnerabilidades referentes a mudanças nas recomendações ao longo do tempo,
+como mencionado na seção \ref{sec:privacidade} não afetam este trabalho em seu
+estágio atual, dado que os dados do \textit{Popcon} foram obtidos uma única vez
+para construção dos índices. No caso de um esquema de atualização desses dados,
+testes de vulnerabilidade deveriam ser implementados antes de o sistema ser
+disponibilizado ao público.
+
+\section{Estratégias de recomendação}
+
+As diferentes estratégias de recomendação implementadas no
+\textit{AppRecommender} são apresentadas a seguir e sumarizadas na tabela
+\ref{tab:estrategias_apprec}.
+
+\index{AppRecommender!estratégias de recomendação}
+\subsection{Baseadas em conteúdo} \label{sec:conteudo}
+
+O ponto chave das estratégias baseadas em conteúdo é a capacidade de percepção
+das características dos itens. Sua aplicação é bastante dificultada nos casos em
+que a representação de itens por conteúdo não pode ser realizada de forma
+automática.
+
+O processo de recomendação pode ser sumarizado da seguinte maneira: a partir da
+lista de aplicativos do usuário, é composto um \textit{perfil} em termos de
+conteúdo; é realizada então uma consulta no repositório de itens pelo conteúdo
+característico daquele usuário e os pacotes indicados como mais relevantes são
+recomendados (cada pacote é representado por um documento no repositório).
+
+Estratégias baseadas em conteúdo são parametrizáveis pelo tamanho do
+perfil do usuário. Quanto maior a quantidade de termos considerados no perfil,
+mais diversificado será o resultado da busca. Perfis menores tendem a ser mais
+especializados, porém, corre-se o risco de não representarem suficientemente
+bem as características de um usuário.
+
+As variações implementadas para a abordagem baseada em conteúdo diferem entre
+si em dois pontos: o tipo de conteúdo considerado e o método de composição do
+perfil.
+
+\subsubsection*{Tipo de conteúdo}
+
+No âmbito deste trabalho itens são aplicativos, que fisicamente são
+representados por pacotes. Por princípio, quaisquer informações relacionadas a
+pacotes poderiam ser utilizada como característica. Considerando as questões
+sobre as necessidades do usuário abordadas na seção
+\ref{sec:necessidades_usuarios}, a implementação atual faz uso das
+\textit{tags} e descrições dos pacotes para extração de atributos. As
+abordagens implementadas são apresentadas a seguir.
  
-\subsection{Repositórios de dados}
+\begin{enumerate}[(a)]
+    \item \textit{Tags}: restringe-se a termos com prefixo
+          \texttt{XT}, representa o conjunto de \textit{tags} mais relevantes
+          para determinado conjunto de pacotes.
 
-Os repositórios utilizados na implementação estão descritos na tabela abaixo.
-A tabela \ref{tab:repositorios_dados} apresenta a fonte de dados de cada índice
-de busca e faz um paralelo com uma coleção de documentos de texto compostos por
-termos ou palavras-chave, o que em cada cenário representa um documento e o que
-representam termos. O modelo de espaço vetorial em cada caso pode representado
-por uma matriz de documentos por termos.
+    \item \textit{Descrição}: restringe-se a termos com prefixo \texttt{Z}
+          ou em texto livre, além de descartar a lista de palavras comuns
+          \textit{stopwords}), retorna os termos mais frequentes em
+          descrições de seus pacotes.
 
-\begin{table}[h!]
-  \caption{Descrição de repositórios de dados utilizados}
-  \label{tab:repositorios_dados}
-  \centering
-  \newcommand\T{\rule{0pt}{2.8ex}}
-  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-  \begin{tabularx}{15cm}{| c | l | l | X |}
-    \hline
-    \textbf{Identificador} & \textbf{Fonte dos dados} & \textbf{Documento}
-                                                      & \textbf{Termos}  \T\B\\
-    \hline
-    axi & Pacote apt-xapian-index & pacote Debian & conjunto de metadados sobre
-                                                    o pacote (descrição,
-                                                    dependências etc) \T\B\\
-    \hline
-    txi & Base de Debtags & pacote Debian & tags \T\B\\
-    \hline
-    pxi & Popcon & submissão do popcon & pacotes instalados  \T\B\\
-    \hline
-  \end{tabularx}
-\end{table}
+    \item \textit{Misto}: composto por \textit{tags} e termos de descrição, sem
+          limitação na quantidade de cada um, os que tiverem maior peso são
+          retornados.
 
-\subsection{Baseadas em conteúdo}
+    \item \textit{Meio-a-meio}: resultado da combinação dos perfis de
+          \textit{tags} e termos de descrição de pacotes, limitando-se a um
+          número igual de cada tipo.
+\end{enumerate}
 
-As técnicas baseadas em conteúdo foram implementadas com o suporte da
-biblioteca Xapian, que utiliza a técnica \textit{BM25}, descrita na seção
-\ref{sec:bm25}. As recomendações podem ser produzidas com base na descrição dos
-pacotes já instalados pelo usuário ou por suas tags.
+\subsubsection*{Método de composição do perfil}
 
-%\hspace{1cm}A caracterização dos pacotes através de \textit{Debtags} é
-% essencial para a implementação de estratégias baseadas em conteúdo.
+Foram utilizados dois métodos de busca básicos para composição do
+perfil de um usuário, detalhados a seguir.
+
+\begin{enumerate}[(a)]
+    \item \textit{Expansão de \textit{query}}: é feita uma busca no repositório
+          de itens pela lista de pacotes do usuário; cada documento retornado é
+          marcado como relevante, e pede-se ao \textit{Xapian} que execute uma
+          expansão de query (\texttt{ESet}), obtendo termos representativos
+          para aquele conjunto de documentos relevantes.
+          
+    \item \textit{\tfidf sub-linear}: é feita uma busca no repositório de itens
+          pela lista de pacotes do usuário; percorre-se a lista de documentos
+          retornados acumulando todos os termos num único documento; calcula-se
+          a pontuação \tfidf sub linear para cada termo deste documento,
+          retornando os que obtiverem maior peso.
+\end{enumerate}
+
+%http://xapian.readthedocs.org/en/latest/intro_ir.tml
+%tf_idf implementado pra profiles
+%falar de detalhes e mencionar OP_ELITE_SET no texto
+%http://trac.xapian.org/wiki/FAQ/FindSimilar
+
+%[FIXME: Inserir exemplo de composição de perfil]
 
 \subsection{Colaborativas}
 
-O \textit{Popcon} é a fonte de dados disponível atualmente para soluções
-colaborativas de recomendação. Neste contexto, listas de pacotes representam a
-identidade do usuário, que receberá recomendações com base no que outros
-usuários com interesses semelhantes aos dele têm instalado em seus sistemas e
-ele não tem.
+Para esta categoria de estratégias, o perfil do usuário é composto pelos
+próprios nomes de pacotes instalados em seu sistema. As recomendações são
+baseadas no que outros usuários com interesses semelhantes aos dele têm
+instalado em seus sistemas e ele não tem.
 
-Como estratégias colaborativas, foram implementadas soluções baseadas nas
-técnicas \textit{K-NN} e agrupamento por \textit{k-medoid}. A composição da
-vizinhança do \textit{K-NN}, no entanto foi realizada a partir de uma busca no
-repositório \textit{pxi}. Já para a solução de agrupamento, foi necessário
-adotar medidas para aplicações em larga escala, dado que a base submissões do
-popcon ultrapassou a marca de 100.000 usuário, o que torna o processamento de
-todas as distância par-a-par extremamente custosa.
+O processo de recomendação pode ser sumarizado da seguinte maneira: a
+vizinhança é composta a partir de uma busca no repositório de usuários pela
+lista de pacotes do cliente da recomendação; a partir de análise das listas de
+pacotes dos vizinhos a recomendação é produzida.
+
+A maneira como a análise da vizinha é realizada produz recomendações
+diferenciadas. A seguir são descritos os três métodos implementados.
+
+\subsubsection*{Método de colaboração}
+
+\begin{enumerate}[(a)]
+    \item \textit{Expansão de \textit{query}}: cada documento da vizinhança é
+          marcado como relevante (cada vizinho é representado por um documento
+          do repositório de usuários); pede-se ao \textit{Xapian} que execute
+          uma de expansão de query (\texttt{ESet}), obtendo termos
+          representativos para aquele conjunto de documentos relevantes, que
+          neste caso são nomes de pacotes.
+    \item \textit{\tfidf sub-linear}: percorre-se a lista de vizinhos acumulando
+          todos os nomes de pacote num único documento; calcula-se a pontuação
+          \tfidf sub-linear para cada termo deste documento, retornando os que
+          obtiverem maior peso.
+    \item \textit{\tfidf ``plus''}: comportamento similar ao \tfidf sub-linear,
+          porém a função de peso considera a distância de cada vizinho ao
+          cliente da recomendação no momento de agregar todos os pacotes num só
+          documento; quanto mais próximo do usuário o vizinho estiver, mais
+          influência seus pacotes terão no cálculo geral.
+\end{enumerate}
+%[Inserir exemplo]
 
 \subsection{Híbridas}
 
-No sentido de refinar as recomendações produzidas através das estratégias
-colaborativas e baseadas em conteúdo, algumas implementações híbridas foram
-experimentadas. Além das listas de pacotes provenientes do \textit{Popcon} e
-informações do \textit{Debtags}, outros fatores foram considerados para
-composição das sugestões, alguns dos quais são descritos abaixo.
+A seguir são detalhadas as estratégias de recomendação híbridas disponíveis no
+\textit{AppRecommender}, de acordo com a taxonomia apresentada na seção
+\ref{sec:estrategias_hibridas}.
 
-\begin{itemize}
-  \item \textbf{Áreas de interesse do usuário:} a composição de um perfil de
-    usuário que indique suas áreas de interesse poderia refinar as sugestões e
-    diminuir a ocorrência de anomalias como, por exemplo, a indicação de
-    bibliotecas de desenvolvimento de software para um usuário que não é
-    programador;
-  \item \textbf{Popularidade dos pacotes:} aplicativos que figuram entre os mais
-    populares no \textit{Popcon} poderiam receber maior pontuação nos cálculos
-    de relevância, ainda que como critério de desempate;
-  \item \textbf{Bugs:} muitos relatórios de erro abertos para uma pacote são um
-    indicativo de problema, principalmente se forem \textit{bugs} graves.
-    Devido ao número reduzido de pacotes em cada recomendação, deve-se dar
-    prioridade à incluir aqueles que recebem atenção constante de seu
-    mantenedor.
-\end{itemize}
+\begin{enumerate}[(a)]
+    %\item \textit{Combinação de atributos}: knn sobre conteudo, produz perfil de
+    %tags e combina com perfil de conteudo do usuario.
 
-\hspace{1cm}A consideração de um perfil de usuário caracteriza a estratégia com
-base em dados demográficos, enquanto que popularidade e \textit{bugs} abertos
-podem ser entendidos como uma modelagem de reputação dos itens. Ambas as
-estratégias podem ser utilizadas para refinar os resultados obtidos com os
-recomendadores básicos, caracterizando uma hibridização em \textit{cascata}
-(ver seção \ref{sec:estrategias_hibrida}).
+    \item \textit{Acréscimo de atributo}: recomendações produzidas de forma
+          colaborativa com base em conteúdo. Após a composição da vizinhança,
+          os termos de conteúdo encontrados nos vizinhos são ordenados por
+          relevância (apenas \textit{tags} são indexadas juntamente com pacotes
+          no repositório de usuários) ; as \textit{tags} mais relevantes compõem
+          um perfil por conteúdo por (expansão de \textit{query} ou \tfidf
+          sub-linear), que é então submetido à estratégia baseada em conteúdo.
 
-\hspace{1cm}Neste contexto é possível também produzir recomendações de forma
-colaborativa com base em conteúdo, o que caracteriza um sistema híbrido
-\textit{meta-nível}. Em vez de a identidade dos usuários ser representada
-por uma lista de itens, seria representada pela caracterização destes itens. No caso dos pacotes, a estratégia colaborativa seria realizada a partir das
-\textit{tags} dos pacotes e não das listas de pacotes originais.
+    \item \textit{Revezamento}: de acordo com a inferência de dados
+          demográficos, se o sistema for caracterizado como \textit{desktop},
+          este filtro é aplicado a todos os repositórios (de itens e usuários)
+          e apenas aplicativos de \textit{desktop} podem ser recomendados. Se o
+          perfil for KDE ou GNOME, a lista de sinônimos é consultada e a
+          recomendação é atualizada caso necessário. Caso contrário, a
+          recomendação acontece normalmente, com os repositórios de aplicativos
+          integral;
 
-\hspace{1cm}Outra possibilidade seria a elaboração de estratégias para
-\textit{revezamento} entre os sistemas básicos, de acordo com o resultado do
-processo de seleção de atributos. O recomendador híbrido neste caso analisaria
-as características dos dados que seriam a entrada do algoritmo de recomendação
-e escolheria a técnica que melhor se adequaria a esta entrada.
+    \item \textit{Combinação}: apresentação em conjunto dos resultados de múltiplos
+          recomendadores básicos.
 
-\hspace{1cm}Por fim, a hibridização por \textit{combinação} teria implementação
-trivial dado que os recomendadores básicos já existissem, pois consiste
-basicamente na apresentação em conjunto dos resultados de múltiplos
-recomendadores. De certa forma, a combinação vai acontecer na apresentação do
-\textit{survey} para o usuário.
+\end{enumerate}
 
-%\begin{table}[h!]
-%  \caption{Descrição das estratégias de recomendação implementadas}
-%  \label{tab:modelos_recomendadores}
-%  \centering
-%  \newcommand\T{\rule{0pt}{2.8ex}}
-%  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-%  \begin{tabular}{| l | l |}
-%    \hline
-%    Identificador & Estratégia  \T\B\\
-%    \hline
-%    ct & baseada em conteúdo utilizando tags  \T\B\\
-%    \hline
-%    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
-%    \hline
-%    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
-%    \hline
-%    col & colaborativa nomes de pacotes como conteúdo \T\B\\
-%    \hline
-%    colct & colaborativa utilizando tags como conteúdo \T\B\\
-%    \hline
-%    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
-%    \hline
-%  \end{tabular}
-%\end{table}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{| c | c | c | c |}
+    \hline
+    \rowcolor[rgb]{0.8,0.8,0.8}
+    Estratégia & Classificação & Método & Conteúdo \\
+    \hline
+    cb & \multirow{8}{*}{Baseada em conteúdo} &
+         \multirow{4}{*}{\tfidf} & misto \\
+    \cline{1-1}\cline{4-4}
+    cbt & & & \textit{tags} \\
+    \cline{1-1}\cline{4-4}
+    cbd & & & descrição \\
+    \cline{1-1}\cline{4-4}
+    cbh & & & meio-a-meio \\
+    \cline{1-1}\cline{3-4}
+    cb\_eset & & \multirow{4}{*}{ESet} & misto \\
+    \cline{1-1}\cline{4-4}
+    cbt\_eset & & & tags \\
+    \cline{1-1}\cline{4-4}
+    cbd\_eset & && descrição \\
+    \cline{1-1}\cline{4-4}
+    cbh\_eset & && meio-a-meio \\
+    \hline
+    knn & \multirow{3}{*}{Colaborativa} & \tfidf & -- \\
+    \cline{1-1}\cline{3-4}
+    knn\_plus & & \tfidf ``plus''& -- \\
+    \cline{1-1}\cline{3-4}
+    knn\_eset & & ESet & -- \\
+    \hline
+    knnco & \multirow{2}{*}{Híbrida} & \tfidf & \textit{tags}\\
+    \cline{1-1}\cline{3-4}
+    knnco\_eset & & ESet & \textit{tags}\\
+    \hline
+  \end{tabular}
+  \caption{Descrição das estratégias de recomendação implementadas}
+  \label{tab:estrategias_apprec}
+\end{table}
 
-\section{Codificação}
+\section{Protótipo do AppRecommender}
 
-O desenvolvimento do \emph{AppRecommender} foi majoritariamente realizado na
-linguagem de programação \textit{Python}\footnote{\url{http://www.python.org/}},
-principalmente pela facilidade de integração com outras ferramentas do Debian
-também desenvolvidas nesta linguagem. Ademais, a vasta documentação e grande
-variedade de bibliotecas de utilidade para o trabalho, a exemplo da
-\textit{Python-cluster}\footnote{\url{http://python-cluster.sourceforge.net/}}
-e \textit{Xapian}\footnote{\url{http://xapian.org/}}, são fatores que
-contribuíram para esta escolha.
+\index{AppRecommender!acesso ao código-fonte}
+\index{AppRecommender!protótipo}
+\index{github}
+O protótipo do \textit{AppRecommender} pode ser obtido a partir do repositório
+do projeto no github\footnote{\url{http://github.com/tassia/AppRecommender}}.
+A ferramenta deve ser executada em um terminal, por meio do \textit{script}
+\textit{apprec.py}, como indicado na figura \ref{fig:apprec_exec}.
+Uma interface web para o recomendador foi desenvolvida utilizando o módulo
+\textit{python} \textit{webpy} e \textit{layout} inspirado no
+\textit{Screenshots} (seção \ref{sec:screenshots}).
 
-O código-fonte está licenciado pela GNU GPL e disponível em um repositório
-público\footnote{\url{http://github.com/tassia/AppRecommender}}. O
-desenvolvimento obedeceu ao guia de estilo para código em
-python\footnote{\url{http://www.python.org/dev/peps/pep-0008/}}, fez uso de
-testes automatizados e padrões de projeto. A documentação é automaticamente
-gerada pelo Doxygen\footnote{\url{http://www.stack.nl/~dimitri/doxygen/}} e
-pode ser acessada no apêndice A deste documento. O diagrama UML do sistema está
-representado na figura \ref{fig:uml_apprec}.
-% FIXME [incluir referência real da documentacao]
+\index{AppRecommender!exemplo de uso}
+\begin{figure}[h!]
+\LVerbatimInput[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]{Chapters/sample-apprec}
+\caption{Execução do recomendador para o sistema local}
+\label{fig:apprec_exec}
+\end{figure}
 
-%\begin{landscape}
-%\begin{figure}[ht]
-%\resizebox{\linewidth}{!}{
-%  \beginpgfgraphicnamed{app_rec}
-%  \input{Figures/uml_apprec.tex}
-%  \endpgfgraphicnamed
-%}
-%\caption{Diagrama UML do AppRecommender}
-%\label{fig:uml_apprec}
+%A figura \ref{fig:apprec_web}
+%apresenta uma captura de tela desta interface. 
+
+%\begin{figure}
+%\centering
+%[FIXME: inserir figura]
+%\caption{Captura de tela da interface web do \textit{AppRecommender}}
+%\label{fig:apprec_web}
 %\end{figure}
-%\end{landscape}
+
+Os parâmetros para instanciação do recomendador podem ser definidos por meio de
+opções na linha de comando ou por um arquivo de configuração. A tabela
+\ref{tab:parametros_apprec} traz a descrição dos parâmetros básicos.
+\index{AppRecommender!parâmetros de entrada}
+
+\begin{table}[h!]
+  \footnotesize
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabularx}{15cm}{| c | X |}
+    \hline
+    \rowcolor[rgb]{0.8,0.8,0.8}
+    \textbf{Parâmetro} & \textbf{Descrição} \\
+    \hline
+    Repositório de itens & Índice \textit{Xapian} contendo informações sobre os
+                           aplicativos \\
+    \hline
+    Repositório de usuários & Índice \textit{Xapian} que armazena escolhas
+                              anteriores de usuários \\
+    \hline
+    Estratégia & Método para composição da recomendação \\
+    \hline
+    Tamanho do perfil & Quantidade de termos (palavras, tags ou ambos) que
+                        caracterizam o usuário perante o recomendador \\
+    \hline
+    Tamanho da vizinhança & Quantidade de usuários mais próximos a considerar
+                            para estratégias colaborativas \\       
+    \hline
+%    Esquema de pesos & Método de pesos a ser utilizado pelo \textit{Xapian} \\
+%    \hline
+%    BM25 ($k_1,k_2,k_3,b,nl)$ & Parâmetros de ajuste do esquema BM25 \\
+%    \hline
+  \end{tabularx}
+  \caption{Descrição dos parâmetros ajustáveis do \textit{AppRecommender}}
+  \label{tab:parametros_apprec}
+\end{table}
+
+
+\subsection{Codificação}
+
+\index{Python}
+\index{AppRecommender!codificação}
+O desenvolvimento foi majoritariamente realizado na linguagem de programação
+\textit{Python}\footnote{\url{http://www.python.org/}}, principalmente pela
+facilidade de integração com outras ferramentas do Debian também desenvolvidas
+nesta linguagem.
+
+\index{AppRecommender!acesso ao código-fonte}
+O código-fonte está licenciado pela GNU GPL e disponível em um repositório
+público\footnote{\url{http://github.com/tassia/AppRecommender}}.
+%O conteúdo do
+%repositório está descrito na listagem de arquivos e diretórios apresentada no
+%apêndice \ref{app:listagem_repo} deste documento.
+
+O desenvolvimento obedeceu ao guia de estilo para código em
+\textit{python}\footnote{\url{http://www.python.org/dev/peps/pep-0008/}}, fez uso de
+testes automatizados e padrões de projeto. A documentação é automaticamente
+gerada pelo \textit{Doxygen}\footnote{\url{http://www.stack.nl/~dimitri/doxygen/}} e
+disponibilizada no repositório
+git\footnote{\url{http://www.ime.usp.br/~tassia/doc/html/index.html}}. 
+%O
+%diagrama de classes pode ser acessado no apêndice \ref{app:diagrama_classes}
+%deste documento.
+%[FIXME] consertar link da documentação
+

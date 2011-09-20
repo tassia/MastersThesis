@@ -1,253 +1,807 @@
 \chapter{Validação da proposta} \label{chapter:validacao}
 
-Este capítulo relata os procedimentos realizados com o intuito de validar a
-ferramenta desenvolvida, acompanhados pelos resultados obtidos em cada etapa.
-Os experimentos realizados tem caráter exploratório, no sentido de que não são
-realizados com o intuito de provar ou refutar uma hipótese, e sim de encontrar
-as soluções que mais se adequam ao domínio da aplicação e conjunto de dados
-utilizados como fontes de recomendação.
+Os experimentos que estão sendo realizados com o intuito de validar a ferramenta
+desenvolvida são descritos neste capítulo. Foram planejadas duas fases de
+testes: a primeira de caráter exploratório, com a variação de ajustes
+dos modelos, em busca da configuração mais adequada ao domínio de aplicação e
+conjunto de dados estudado; a segunda etapa é uma consulta pública, por meio da
+qual usuários reais podem avaliar a utilidade das recomendações produzidas por
+diferentes estratégias do \textit{AppRecommender}.
 
-Os procedimentos de teste aconteceram em dois momentos distintos, apresentados
-nas seções a seguir.
+Os resultados dos experimentos, o conjunto completo de gráficos gerados e outras
+atualizações podem ser acompanhados no \textit{website da
+pesquisa}\footurl{http://recommender.debian.net/experiments}.
 
-%p. 50: "é aceitável experimentar diversos algoritmos no mesmo conjunto de dados
-%porque análise de cluster é geralmente utilizada como ferramenta exploratória
-%ou descritiva, em contraste com testes estatísticos que são realizados para
-%fins de confirmação ou inferência. Ou seja, não queremos provar (ou disprovar)
-%uma hipótese pré-concebida; nós só queremos ver o que os dados estão tentando
-%nos dizer."
+\section{Experimentos \textit{offline}}
 
-\section{Seleção de modelo}
+Considerando cada configuração distinta do \textit{AppRecommender} como um
+modelo preditivo, a análise de desempenho foi pautada pelas métricas precisão,
+medida $F_{0.5}$, cobertura e curva ROC. O uso das métrica é justificado
+na descrição de cada experimento.
 
-Esta etapa tem como principal objetivo a comparação entre diferentes
-modelos de recomendador, caracterizados por uma determinada configuração de
-estratégias, técnicas e outros parâmetros, a exemplo do tamanho da vizinhança
-para estratégias colaborativas, esquema de pesos utilizado em buscas, e
-abordagens distintas para seleção de atributos.
+Os usuários dos experimentos são criados a partir de submissões do \textit{Popcon}
+selecionadas aleatoriamente para compor a amostra de testes. Notamos que o tamanho
+da lista de aplicativos instalados utilizada para compor o perfil primário dos
+usuários causava uma certa variação nos resultados, então para cada experimento
+consideramos apenas usuários cujo tamanho de perfil estivesse numa determinada
+faixa. A distribuição dos usuários na base do \textit{Popcon} com relação à
+quantidade de aplicativos no perfil está representada na figura
+\ref{fig:popcon-population}.
 
-O metodologia utilizada neste momento basea-se \textit{validação cruzada},
-comumente adotada para estimativa de acurácia de modelos preditivos. Dado que
-tais estimativas são utilizadas primordialmente para fins de comparação entre
-modelos de recomendadores, a acurácia absoluta de cada estratégia é considerada
-menos importante, admitindo-se resultados enviesados\footnote{o termo viés é
-utilizado em estatística para expressar erro sistemático ou tendenciosidade}
-de acordo com a hipótese de que o viés afeta todos os modelos de forma similar
-(por exemplo, todas as estimativas são pessimistas ou todas são otimistas)
-\cite{Kohavi:95}. % a comparação é feita através da variância obtida para cada modelo.
+\begin{figure}[h!]
+\centering
+  \includegraphics[scale=.5]{Figures/popcon_profile_population.png}
+\caption{Distribuição de submissões do \textit{Popcon} por tamanho de perfil}
+\label{fig:popcon-population}
+\end{figure}
 
-A ideia central da validação cruzada é o isolamento de uma porção aleatória dos
-dados cuja relevância é conhecida, treinamento do modelo com os demais dados e
-posterior submissão da porção reservada para testes. A acurácia dos resultados é
-medida por meio da comparação dos resultados obtidos com os esperados (medida
-estatística de variância). A validação em rodadas (\emph{k-fold
-cross-validation}) consiste basicamente nos seguintes passos:
+A eficácia de um modelo é mensurada a partir de validação cruzada com cada
+usuário da amostra. Em cada rodada é extraída uma porção de aplicativos do seu
+perfil para compor o conjunto de testes. Um usuário artificial é criado com a
+lista de aplicativos restantes, que é submetida ao recomendador. Considerando
+a porção de testes como o conjunto de itens relevantes (positivos reais) e a
+recomendação como o conjunto de itens supostamente relevantes (positivos
+preditos), uma matriz de contingência é criada e as métricas consideradas
+pertinentes são aplicadas. Ao final das iterações, as médias das estimativas
+são calculadas para sumarização dos resultados por usuário. Para avaliar os
+resultados na amostra, além da média consideramos o desvio padrão das medidas.
 
-\begin{enumerate}
-\item O conjunto de dados original é particionado em $k$ subconjuntos;
-\item Em cada uma das $k$ rodadas, apenas um dos subconjuntos é reservado para
-testar o modelo ao passo que todos os outros são usados como dados treinamento;
-\item Ao final dos testes, os resultados são combinados para produzir uma única
-estimativa.
+%Cada situação de recomendação executada foi registrada em um arquivo texto no
+%formato da figura \ref{fig:log-recomendacao}. Neste exemplo o recomendador
+%estava configurado com estratégia \texttt{knn\_eset} e tamanho de vizinhança
+%igual a $20$, e esta foi a $17^a$ iteração da validação cruzada (linha 2). A
+%linha 5 registra o tamanho do repositório de itens, seguido pelo tamanha do
+%perfil original e o tamanho da amostra.
+%
+%\begin{figure}[h!]
+%\begin{LVerbatim}[frame=single, rulecolor=\color{black}, numbers=left,
+%fontsize=\scriptsize, fontfamily=courier]
+%# strategy-knn-n
+%# knn_eset-k020-17
+%
+%# repository profile sample
+%1898 153 137
+%0
+%1
+%2
+%3
+%5
+%6
+%7
+%8
+%10
+%11
+%\end{LVerbatim}
+%\caption{Registro de recomendação dos experimentos}
+%\label{fig:log-recomendacao}
+%\end{figure}
+%
+
+\subsection{Avaliação por ação}
+
+Nesta etapa de experimentos variamos os parâmetros de configuração
+de cada modelo e analisamos como o desempenho do recomendador é afetado.
+Para as estratégias baseadas em conteúdo, o parâmetro investigado
+é o tamanho do perfil do usuário a ser considerado (\textit{profile size});
+para estratégias colaborativas, o tamanho da vizinhança (\textit{neighborhood
+size}); e para estratégias híbridas ambas as variações são estudadas.
+
+A escolha das métricas para esta primeira etapa de testes foi guiada pela
+\textit{ação} do recomendador em cada contexto de aplicação (ver seção
+\ref{sec:acoes}).
+
+No caso de uso típico de do \textit{AppRecommender}, em que o usuário
+explicitamente requisita sugestões de aplicativos, consideramos que a oferta de
+$10$ sugestões é razoável. A apresentação de muitos itens pode comprometer a
+usabilidade da interface, causando o indesejável excesso de opções para o
+usuário. Neste cenário deseja-se maximizar a taxa de acertos do recomendador
+com relação aos $10$ itens recomendados, que pode ser avaliada pela
+\textit{precisão} ($\frac{VP}{VP+FP}$). Outra característica analisada é a
+\textit{cobertura} representada pela proporção de itens do repositório que
+aparecem em alguma recomendação. Cobertura baixa revela recomendadores viciados
+numa faixa restrita do repositório. Consideramos esta medida como um indicativo
+da capacidade de produzir recomendações variadas, com a ressalva de que ela
+depende diretamente da variabilidade dos dados de entrada dos testes.
+
+Há situações, no entanto, em que o recomendador deve ser capaz de produzir
+uma maior quantidade de sugestões válidas. Por exemplo, o usuário pode
+solicitar mais recomendações do que o montante apresentado; ou ainda, no caso
+em que o recomendador é acoplado a um navegador de aplicativos que deve
+apresentar primeiramente as opções mais suscetíveis a aceitação. Neste cenário,
+além da cobertura, analisamos a variação da medida $F_{0.5}$ para recomendações
+de tamanho $100$. Consideramos que para sugestões mais amplas a recuperação
+também é uma métrica importante. A medida $F$ combina os dois conceitos, sendo
+que $F_{0.5}$ prioriza um pouco mais a precisão (ver seção \ref{sec:metricas}).
+
+\subsubsection*{Descrição dos testes}
+
+Os dados de entrada destes testes são a estratégia do recomendador e uma
+amostra de usuário. Neste momento utilizamos amostras de 50 usuários. Cada
+configuração da estratégia (diferentes tamanhos de perfil ou vizinhança) é
+testada para todos os usuários da amostra por meio de validação cruzada e
+os resultados são sumarizados em dois gráficos:
+
+\begin{enumerate}[(a)]
+\item \textit{Limiar 10}: referente à recomendação de $10$ aplicativos,
+com a representação de precisão média e cobertura, à medida que o tamanho do
+perfil ou vizinhança é variado;
+\item \textit{Limiar 100}: referente à recomendação de $100$ aplicativos,
+com a representação de $F_{0.5}$ médio e cobertura, à medida que os parâmetros
+são variados.
 \end{enumerate}
 
-Supondo que o conjunto de pacotes instalados em um sistema é relevante
-para o mesmo, em cada uma das rodadas foi selecionado aleatoriamente um
-subconjunto de pacotes para testar o recomendador. As métricas de avaliação
-foram então calculadas a partir das sugestões geradas em relação à relevância
-conhecida.
+As figuras \ref{fig:knn_eset-10} e \ref{fig:knn_eset-100} apresentam os
+gráficos gerados para a estratégia \texttt{knn\_eset}, aplicada à amostra de
+usuários com perfil entre $100$ e $150$ aplicativos.
 
-\subsection{Ambiente de testes}
+Para cada ponto $(x,y)$ das linhas de precisão ou $F_{0.5}$, a coordenada $y$
+é resultado da média dos valores obtidos para cada usuário da amostra, quando o
+recomendador é configurado com o parâmetro $x$. Por exemplo, o ponto $(20,0.71)$
+indica que a estratégia \texttt{knn\_eset} com tamanho de vizinhança $20$
+produziu na média uma precisão de $71\%$. O desvio padrão da medida é indicado
+no gráfico pela linha vertical, neste caso com valor $0.19$. Os detalhes de cada
+gráfico estão registrados em arquivo no formato da figura \ref{fig:log_knn_eset}
+e também disponibilizados no \textit{site}, na visão detalhada na
+figura\footurl{http://recommender.debian.net/graphs/metrics/collaborative/sample-045-050_50/sample-045-050_50-knn_eset-10.html}.
 
-Os experimentos de seleção de modelo foram realizados no servidor
-brucutu.ime.usp.br, acessível apenas a partir da rede interna do IME-USP.
-Detalhes de software e hardware estão descritos na tabela abaixo.
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/sample-045-050_50-knn_eset-10.png}
+\caption{Aplicação de métricas para recomendação de 10 itens}
+\label{fig:knn_eset-10}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/sample-045-050_50-knn_eset-10.png}
+\caption{Aplicação de métricas para recomendação de 100 itens}
+\label{fig:knn_eset-100}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{LVerbatim}[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]
+# sample sample-045-050_50
+# strategy knn_eset
+# threshold 10
+# iterations 20
+
+# neighborhood  mean_p_10   dev_p_10    c_10
+
+       3        0.5760      0.2088      0.4826
+       5        0.6267      0.2001      0.4120
+      10        0.6757      0.1897      0.3261
+      20        0.7103      0.1915      0.2497
+      30        0.7102      0.1897      0.2065
+      50        0.7068      0.1839      0.1865
+      70        0.7168      0.1856      0.1818
+     100        0.7194      0.1837      0.1702
+     150        0.7119      0.1826      0.1670
+     200        0.7183      0.1886      0.1596
+\end{LVerbatim}
+\caption{Registro de recomendação dos experimentos}
+\label{fig:log_knn_eset}
+\end{figure}
+
+\subsubsection*{Resultados}
+
+A cobertura é considerada métrica secundária na comparação de resultados. No
+entanto, nos casos em que a cobertura diminui à medida que a precisão ou
+$F_{0.5}$ aumenta, consideramos uma cobertura de $50\%$ como o limite aceitável.
+Nos casos em que a cobertura é sempre inferior a $50\%$, consideramos o exemplo
+com maior valor de cobertura, mesmo que não represente a melhor
+acurácia\footurl{http://recommender.debian.net/experiments/cap6-results.html}.
+
+As tabelas \ref{tab:resultados-10} e \ref{tab:resultados-100} apresentam os
+melhores resultados para a amostra de perfis entre $50$ e $100$ aplicativos,
+escolhida por ser a mais representativa da base do \textit{Popcon} ($58\%$
+dos usuários têm esse perfil). Para uma mesma configuração de recomendador,
+em geral não houve variação de comportamento entre as diferentes amostras
+testadas. No entanto, em termos absolutos, as amostras de usuário com perfil
+maior produziram melhores resultados.
+
+A seguir estão relacionados alguns comportamentos recorrentes identificados na
+análise dos gráficos.
+
+\begin{enumerate}[(a)]
+
+\item Tanto para estratégias baseadas em conteúdo quando para as híbridas, a
+precisão aumenta à medida que o tamanho do perfil do usuário aumenta. No
+entanto, dado que geralmente o aumento do perfil provoca queda na cobertura,
+nem sempre o maior valor de acurácia é aproveitável, visto que para melhor
+desempenho busca-se o equilíbrio entre estas duas
+medidas\footurl{http://recommender.debian.net/experiments/cap6-results-a.html}.
+
+\item Abordagens para composição de perfil baseadas puramente em \textit{tags}
+(\texttt{cbt} e \texttt{cbt\_eset}) resultam em cobertura muito baixa.
+Isto deve-se provavelmente ao fato de o conjunto de \textit{tags}
+válidas ser limitado e de nem todos os pacotes do repositório possuírem
+\textit{tags} associadas. O resultado é que as buscas no repositório
+aplicativos por estas consultas restritas não são capazes de retornar
+todos os itens
+disponíveis\footurl{http://recommender.debian.net/experiments/cap6-results-b.html}.
+
+\item O perfil das estratégias híbridas também é composto por \textit{tags},
+mas a cobertura atinge valores acima de $70\%$. Neste caso, a colaboração com
+outros usuários e contribui para a ocorrência de recomendações mais
+variadas\footurl{http://recommender.debian.net/experiments/cap6-results-c.html}.
+
+\item O desempenho das estratégias \texttt{cb} e \texttt{cbd} segue o mesmo
+padrão; o mesmo acontece para as estratégias
+\texttt{cb\_eset} e \texttt{cbd\_eset}, que apresentam resultados bastante
+similares. Notamos que, na prática, o perfil misto é
+praticamente dominado por termos de descrição dos aplicativos. Este tipo de
+perfil não impõe restrição alguma quanto à quantidade de \textit{tags} e termos
+que o perfil final deve conter, e geralmente os termos livres ganham a disputa.
+O conjunto de termos de descrição de pacotes é ilimitado e por isso tem mais
+poder de caraterização dos itens, enquanto o de \textit{tags} limita-se ao
+subconjunto de \textit{debtags} que o \textit{AppRecommender} considera como
+válidas. Sendo assim, é natural que não haja grandes variações entre as
+estratégias com perfil misto e composto exclusivamente por termos de descrição
+dos
+pacotes\footurl{http://recommender.debian.net/experiments/cap6-results-d.html}.
+
+\item Cobertura cai à medida que o tamanho do perfil aumenta para as
+estratégias \texttt{cb}, \textit{cb\_eset}, \textit{cbd}, e \textit{cbd\_eset}.
+ Estas são as abordagens de composição de
+perfil dominadas por termos livres. Perfis pequenos representam buscas
+especializadas e com alta variabilidade provocada pela processo de
+re-amostragem. Perfis grandes tendem a incluir grandes conjuntos de termos
+populares, que geralmente provocam recomendações dentro de um
+padrão\footurl{http://recommender.debian.net/experiments/cap6-results-e.html}.
+
+\item Em geral, estratégias baseadas em conteúdo com composição de perfil por
+\textit{eset} conseguem bom desempenho com perfis menores do que suas
+correspondentes por
+\tfidf\footurl{http://recommender.debian.net/experiments/cap6-results-f.html}.
+
+\item Recomendação baseada em conteúdo para limiar $100$ apresentou desempenho
+insatisfatório, com $F_{0.5}$ sempre abaixo de $0.2$ e quase não houve variação
+de acordo com o tamanho do perfil do
+usuário\footurl{http://recommender.debian.net/experiments/cap6-results-g.html}.
+
+\item Para a maioria das estratégias colaborativas, tanto para $10$ quanto
+para $100$ recomendações, o melhor desempenho é alcançado com menor tamanho de
+vizinhança (consideramos $3$ o menor
+tamanho)\footurl{http://recommender.debian.net/experiments/cap6-results-h.html}.
+
+\item A estratégia \texttt{knn\_eset} para $10$ recomendações apresentou um
+comportamento diferenciado das demais colaborativas. Neste caso houve aumento
+da precisão à medida que aumentamos o tamanho da vizinhança. No entanto, visto
+que a cobertura cai com o aumento da vizinhança, o melhor desempenho foi
+limitado ao tamanho $5$ para
+vizinhança\footurl{http://recommender.debian.net/experiments/cap6-results-i.html}.
+
+\end{enumerate}
+
+Para o limiar de 10 sugestões, a estratégia que se destacou nesta série de
+experimentos foi a colaborativa \texttt{knn\_eset}, que de fato foi a única que
+apresentou precisão superior a $50\%$. As demais estratégias obtiveram desempenho
+similar no melhor caso, com exceção de \texttt{cbt} e \texttt{cbt\_eset}, cuja
+cobertura comprometeu os resultados.
+
+Considerando o limiar de 100 recomendações, as três com melhores resultados
+foram \texttt{knn}, \texttt{knn\_plus} e \texttt{knnco}, que têm em comum a
+aplicação do \tfidf. As estratégias baseadas em conteúdo e a híbrida
+\texttt{knnco\_eset} produziram resultados insatisfatórios.
+
+O desvio padrão das medidas de acurácia foi relativamente alto, indicando que
+para alguns usuários os resultados foram muito bons e para outros muito ruins.
+Isto pode significar uma grande variância de características entre os usuários
+da amostra. Tal fato revela a necessidade de um estudo mais aprofundado
+buscando identificar grupos de usuários com características comuns.
 
 \begin{table}[h!]
-  \caption{Descrição de ambiente de testes}
-  \label{tab:modelos_recomendadores}
   \centering
+  \footnotesize
   \newcommand\T{\rule{0pt}{2.8ex}}
   \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-  \begin{tabular}{| l | l |}
+  \begin{tabular}{| l | c | c | c | c |}
     \hline
-    Nome & brucutu.ime.usp.br  \T\B\\
+    \rowcolor[rgb]{0.8,0.8,0.8}
+    \textbf{Estratégia} & \textbf{Perfil} & \textbf{Vizinhança} &
+    \textbf{Precisão} & \textbf{Cobertura}\\
     \hline
-    Sistema Operacional & Ubuntu GNU/Linux  \T\B\\
+    cb        & $100$  &  --   &  $0.2163 \pm 0.1383$  &  $0.5342$ \\
     \hline
-    Kernel & Linux 2.6.28-19  \T\B\\
+    cbt       &  $10$  &  --   &  $0.1818 \pm 0.0737$  &  $0.2460$\\
     \hline
-    Quantidade de processadores & 8  \T\B\\
+    cbd       & $100$  &  --   &  $0.2145 \pm 0.1312$  &  $0.5479$ \\
     \hline
-    Modelo & Intel(R) Xeon(R) CPU E5440  @ 2.83GHz (64 bits)\T\B\\
+    cbh       &  $10$  &  --   &  $0.1817 \pm 0.0939$  &  $0.5564$ \\
     \hline
-    Memória volátil & 32GB \T\B\\
+    cb\_eset  &  $60$  &  --   &  $0.2306 \pm 0.1282$  &  $0.5358$\\
+    \hline
+    cbt\_eset &  $10$  &  --   &  $0.2039 \pm 0.0858$  &  $0.2529$ \\
+    \hline
+    cbd\_eset &  $60$  &  --   &  $0.2384 \pm 0.1420$  &  $0.5479$ \\
+    \hline
+    cbh\_eset &  $10$  &  --   &  $0.2096 \pm 0.0898$  &  $0.4800$ \\
+    \hline
+    knn       &   --   &  $3$  &  $0.2338 \pm 0.1701$  &  $0.7524$ \\
+    \hline
+    knn\_plus &   --   &  $3$  &  $0.2086 \pm 0.1766$  &  $0.7692$ \\
+    \hline
+    knn\_eset &   --   &  $5$  &  $0.6451 \pm 0.2070$  &  $0.5169$ \\
+    \hline
+    knnco     &  $10$  &  $3$  &  $0.2233 \pm 0.1721$  &  $0.7619$ \\
+    \hline
+    knnco\_eset & $10$ & $100$ &  $0.2689 \pm 0.0796$  &  $0.2329$\\
     \hline
   \end{tabular}
+  \caption{Melhores desempenhos para 10 sugestões}
+  \label{tab:resultados-10}
 \end{table}
 
-\section{Experimentos realizados}
+\begin{table}[h!]
+  \centering
+  \footnotesize
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabular}{| l | c | c | c | c |}
+    \hline
+    \rowcolor[rgb]{0.8,0.8,0.8}
+    \textbf{Estratégia} & \textbf{Perfil} & \textbf{Vizinhança} &
+    \textbf{$F_{0.5}$} & \textbf{Cobertura}\\
+    \hline
+    cb          & $240$  &   --  &  $0.0848 \pm 0.0236$  &  $0.8488$ \\
+    \hline
+    cbt         & $100$  &   --  &  $0.1095 \pm 0.0232$  &  $0.6017$ \\
+    \hline
+    cbd         & $240$  &   --  &  $0.0722 \pm 0.0236$  &  $0.8109$ \\
+    \hline
+    cbh         &  $40$  &   --  &  $0.1105 \pm 0.0237$  &  $0.8793$ \\
+    \hline
+    cb\_eset    &  $10$  &   --  &  $0.0920 \pm 0.0286$  &  $0.9557$ \\
+    \hline
+    cbt\_eset   &  $20$  &   --  &  $0.1099 \pm 0.0245$  &  $0.6091$ \\
+    \hline
+    cbd\_eset   &  $60$  &   --  &  $0.0788 \pm 0.0333$  &  $0.9515$ \\
+    \hline
+    cbh\_eset   &  $60$  &   --  &  $0.1211 \pm 0.0254$  &  $0.8936$ \\
+    \hline
+    knn         &   --   &  $3$  &  $0.5014 \pm 0.1806$  &  $0.8841$ \\
+    \hline
+    knn\_plus   &   --   &  $3$  &  $0.5024 \pm 0.1894$  &  $0.8836$ \\
+    \hline
+    knn\_eset   &   --   &  $3$  &  $0.4142 \pm 0.1524$  &  $0.8820$ \\
+    \hline
+    knnco       & $240$  &  $3$  &  $0.5240 \pm 0.1534$  &  $0.8246$ \\
+    \hline
+    knnco\_eset &  $10$  & $100$ &  $0.1188 \pm 0.0196$  &  $0.6264$ \\
+    \hline
+  \end{tabular}
+  \caption{Melhores desempenhos para 100 sugestões}
+  \label{tab:resultados-100}
+\end{table}
 
-%\subsection{Pré-processamento dos dados}
+\subsection{Comparação entre modelos}
+
+\index{curva ROC}
+\index{Receiver Operating Characteristic (ROC)}
+Os experimentos apresentados até o momento nos permitem ter uma visão ampla da
+interferência da variação de parâmetro em cada modelo, mas a comparação entre
+os diversos modelos não é uma tarefa fácil de ser conduzida de maneira objetiva.
+Decidimos então realizar novos testes para analisar o comportamento dos modelos
+preditivos independentemente do tamanho da recomendação produzida, utilizando
+como suporte a plotagem de curvas ROC.
+
+\subsubsection*{Descrição dos experimentos}
+
+Os dados de entrada desta série são novamente a estratégia do recomendador
+e uma amostra de usuário. Reduzimos as amostras para 20 usuários em virtude do
+alto poder de processamento demandado para a execução destes experimentos.
+
+Considerando a quantidade de aplicativos recomendados como o ponto de corte de
+um recomendador, foram produzidas curvas ROC que variam este limiar e
+facilitam a percepção de quais modelos apresentam melhor poder preditivo.
+
+Cada modelo é testado em cada ponto de corte para todos os usuários da amostra
+por meio de validação cruzada. As taxas de falso negativo (\textit{fpr}) e
+verdadeiro positivo (\textit{tpr}) são registradas para produção da curva ROC.
+As diferentes curvas produzidas são condensadas a partir das médias de \textit{fpr} e
+\textit{tpr} para cada ponto de corte, conforme descrito em \cite{Fawcet:07}.
+
+Uma característica das curvas produzidas é que, pelo fato de o
+\textit{AppRecommender} se basear em técnicas de busca, a ordenação dos
+aplicativos por relevância não engloba todos os programas do repositório, mas
+apenas aqueles incluídos no resultado da busca. Portanto, para possibilitar a
+comparação entre os modelos pelo cálculo da área sob a curva, estendemos cada
+curva ROC com uma linha ligando seu ponto mais à direita ao ponto $(1,1)$.
+Estamos assim considerando que após apresentar todos os pacotes retornados pela
+busca, o recomendador apresenta os pacotes restantes de forma aleatória, até
+que todos os itens tenham sido contemplados.
+
+Produzimos dois gráficos por modelo, o primeiro com a representação da curva
+ROC média, que facilita a interpretação da curva nos moldes tradicionais. O
+segundo desenha os mesmos pontos médios, registrando também os desvios padrão
+para cada ponto, nas duas dimensões. As figuras \ref{fig:roc-mean} e
+\ref{fig:roc} apresentam dois destes gráficos, produzidos para a estratégia de
+recomendação \texttt{cbt}. Os detalhes dos gráfico estão registrados em arquivo
+no formato da figura \ref{fig:log_roc}.
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/cbt_eset-profile050-roc-mean.png}
+\caption{Curva ROC média de um recomendador \texttt{cbt}}
+\label{fig:roc-mean}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/cbt_eset-profile050-roc.png}
+\caption{Curva ROC com desvios de um recomendador \texttt{cbt}}
+\label{fig:roc}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{LVerbatim}[frame=single, rulecolor=\color{black}, numbers=left,
+fontsize=\scriptsize, fontfamily=courier]
+# strategy-profile
+# cbt_eset-profile050
+
+# roc AUC
+0.6412
+
+# threshold mean_fpr    dev_fpr     mean_tpr    dev_tpr     coverage
+   1        0.0004      0.0003      0.0054      0.0078      0.0274
+   10       0.0044      0.0009      0.0323      0.0258      0.1428
+   20       0.0090      0.0011      0.0558      0.0328      0.2197
+   30       0.0139      0.0012      0.0748      0.0347      0.2729
+   40       0.0187      0.0013      0.0920      0.0385      0.3135
+   50       0.0237      0.0015      0.1069      0.0422      0.3519
+   60       0.0287      0.0015      0.1206      0.0438      0.3878
+\end{LVerbatim}
+\caption{Registro de desenho da curva ROC}
+\label{fig:log_roc}
+\end{figure}
+
+\subsubsection*{Resultados}
+
+A análise gráfica das curvas ROC produzidas nos permite inferir acerca do
+desempenho do modelo, que é considerado mais satisfatório quando a curva se
+aproxima do eixo das ordenadas. A diagonal ascendente representa o
+comportamento de um modelo aleatório \ref{sec:metricas}). Para uma análise
+mais objetiva, utilizamos como parâmetro a área sob a curva, e novamente a
+cobertura como medida secundária.
+
+A tabela \ref{tab:resultados-roc} sumariza os resultados dos experimentos,
+indicando os melhores desempenhos obtidos para cada modelo.
+
+\begin{table}[h!]
+  \centering
+  \footnotesize
+  \newcommand\T{\rule{0pt}{2.8ex}}
+  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
+  \begin{tabular}{| l | c | c | c | c |}
+    \hline
+    \rowcolor[rgb]{0.8,0.8,0.8}
+    \textbf{Estratégia} & \textbf{Perfil} & \textbf{Vizinhança} &
+    \textbf{AUC} & \textbf{Cobertura}\\
+    \hline
+    cb          & $100$  &   --  &  $0.5642$  &  $0.9557$ \\
+    \hline
+    cbt         &  $20$  &   --  &  $0.6401$  &  $0.7339$ \\
+    \hline
+    cbd         & $100$  &   --  &  $0.5377$  &  $0.9557$ \\
+    \hline
+    cbh         &  $50$  &   --  &  $0.6357$  &  $0.9531$ \\
+    \hline
+    cb\_eset    &  $50$  &   --  &  $0.5674$  &  $0.9557$ \\
+    \hline
+    cbt\_eset   &  $50$  &   --  &  $0.6412$  &  $0.7345$ \\
+    \hline
+    cbd\_eset   &  $10$  &   --  &  $0.5489$  &  $0.9557$ \\
+    \hline
+    cbh\_eset   &  $50$  &   --  &  $0.6118$  &  $0.9557$ \\
+    \hline
+    knn         &   --   & $10$  &  $0.8042$  &  $0.9173$ \\
+    \hline
+    knn\_plus   &   --   & $10$  &  $0.8037$  &  $0.9189$ \\
+    \hline
+    knn\_eset   &   --   & $100$ &  $0.7206$  &  $0.9557$ \\
+    \hline
+    knnco       & $200$  &  $3$  &  $0.7544$  &  $0.8161$ \\
+    \hline
+    knnco\_eset &  $50$  &  $50$ &  $0.6653$  &  $0.7540$ \\
+    \hline
+  \end{tabular}
+  \caption{Melhores desempenhos analisados por curvas ROC}
+  \label{tab:resultados-roc}
+\end{table}
+
+A análise gráfica das curvas indica que as estratégias \texttt{knn} e
+\texttt{kmm\_plus} com vizinhança $10$ (figuras \ref{fig:roc-knn},
+\ref{fig:roc-knn-mean}, \ref{fig:roc-knnp} e \ref{fig:roc-knnp-mean}) e
+\texttt{knnco} com vizinhança $3$ e perfil entre $50$ e $200$
+(\ref{fig:roc-knnco} e \ref{fig:roc-knnco-mean}) são as que produzem os
+melhores modelos preditivos. Esta análise confirma os valores de área sob
+a curva calculados analiticamente (tabela \ref{tab:resultados-roc}).
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/knn-k010-roc-mean.png}
+\caption{Curva ROC média para estratégia \texttt{knn}}
+\label{fig:roc-knn-mean}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/knn-k010-roc.png}
+\caption{Curva ROC com desvios para estratégia \texttt{knn}}
+\label{fig:roc-knn}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/knn_plus-k010-roc-mean.png}
+\caption{Curva ROC média para estratégia \texttt{knn\_plus}}
+\label{fig:roc-knnp-mean}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/knn_plus-k010-roc.png}
+\caption{Curva ROC com desvios para estratégia \texttt{knn\_plus}}
+\label{fig:roc-knnp}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/knnco-k003-profile200-roc-mean.png}
+\caption{Curva ROC média para estratégia \texttt{knnco}}
+\label{fig:roc-knnco-mean}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.8\textwidth]{Figures/knnco-k003-profile200-roc.png}
+\caption{Curva ROC com desvios para estratégia \texttt{knnco}}
+\label{fig:roc-knnco}
+\end{figure}
+
+Este experimento também possibilitou o descarte de modelos inválidos, nos casos em
+que o desempenho era pior do que o de um modelo aleatório. Por exemplo, a
+implementação inicial da estratégia \textit{knn\_plus} não considerava nenhuma
+normalização dos pesos dos vizinhos, o que provocava um comportamento anômalo
+do recomendador. Percebemos o problema por meio da análise das curvas ROC e
+evoluímos a implementação conforme orientação de \cite{Hechenbichler:06},
+obtendo assim melhores resultados.
+
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{Figures/knn_plus-k500-roc.pdf}
+\caption{Curva ROC de modelo anômalo}
+\label{fig:roc-anomalia}
+\end{figure}
+
+%conclusao: ver quais sao os modelos que dao bons resultados, merecem mais 
+%investigacao
+
+%1) avaliação de modelos
+%selecao aleatoria de usuarios no popcon.
+%para cada usuario, considerar como um modelo cada permutacao de parametros
+%plotar curva roc com variacao do limiar, que nesse caso é a quantidade de aplicativos
+%recomendados.
+%apresentar alguns exemplos de grafico
+%sumarizar resultados
+%descarte de alguns modelos
+%definicao de intervalos validos
+
+
+%Dado que as estimativas são utilizadas primordialmente para fins de comparação
+%entre modelos de recomendadores, a acurácia absoluta de cada estratégia é
+%considerada menos importante, admitindo-se resultados enviesados\footnote{o
+%termo viés é utilizado em estatística para expressar erro sistemático ou
+%tendenciosidade} de acordo com a hipótese de que o viés afeta todos os modelos
+%de forma similar (por exemplo, todas as estimativas são pessimistas ou todas
+%são otimistas) \cite{Kohavi:95}.
+
+
+%----
+%extração de uma amostra de testes do popcon, 100 submissoes por tamanho de
+%perfil (3 amostras).
 %
-%Os modelos testados estão descritos na tabela \ref{tab:modelos_recomendadores} e
-%a validação cruzada foi realizada em 10 rodadas ($k=10$).
+%perfil do usuarios no popcon
 %
-%\begin{table}[h!]
-%  \caption{Descrição de modelos de recomendadores}
-%  \label{tab:modelos_recomendadores}
-%  \centering
-%  \newcommand\T{\rule{0pt}{2.8ex}}
-%  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-%  \begin{tabular}{| l | l |}
-%    \hline
-%    Identificador & Estratégia  \T\B\\
-%    \hline
-%    ct & baseada em conteúdo utilizando tags  \T\B\\
-%    \hline
-%    cta & baseada em conteúdo utilizando tags via apt-xapian-index  \T\B\\
-%    \hline
-%    cp & baseada em conteúdo utilizando descrição de pacotes  \T\B\\
-%    \hline
-%    col & colaborativa \T\B\\
-%    \hline
-%    colct & colaborativa utilizando tags como conteúdo \T\B\\
-%    \hline
-%    colcp & colaborativa utilizando descrição de pacotes como conteúdo\T\B\\
-%    \hline
-%  \end{tabular}
-%\end{table}
-
-%\subsection{Análise dos resultados}
-\section{Resultados}
-
-%Apresentação e análise dos resultados.
+%2) definicao de parametros
+%fazer testes para cada amostra
+%para cada modelo, definir um limiar especifico (consideramos o tam de
+%recomendacao 50)
+%plotar o roc para cada usuario da amostra.
+%tabela com auc, cobertura e p\_20 para cada amostra e modelo
+%
+%knn\_eset:
+%quanto maior a vizinhança, menor a cobertura, porque?
+%se a vizinhanca é pequena, as especificidades daquele grupo se sobressaem,
+%trazendo recomendacoes mais variadas em cada rodada da validacao cruzada.
+%com vizinhancas grandes, pacotes populares acabam dominando a recomendacao.
+%consequentemente, a cobertura diminui e a precisao tende a aumentar, já que os
+%pacotes mais populares tb tem mais probabilidade de estar no perfil do usuario,
+%portanto, na porcao reservada para testes da validacao cruzada.
+%
+%
+%3) consulta publica
+%----
+%% com validacao cruzada a gente ve a taxa, proporcao de precisao
+%% com taxa de recuperacao a gente ve pacote a pacote e depois faz a taxa
+%% novos testes: precisao para 20 recomendacoes e taxa de recuperacao de 1 em um
+%
+%
+%%\subsection{Seleção de modelos} \label{sec:selecao_modelo}
+%%
+%%O principal objetivo deste conjunto de testes automatizados é a experimentação
+%%exaustiva de diferentes configurações do recomendador a fim de selecionar as
+%%que apresentarem melhores resultados. Cada configuração distinta é considerada
+%%um modelo preditivo, dado que o sistema se propõe a prever um conjunto de
+%%aplicativos que o usuário teria interesse e no momento não possui.
+%
+%
+%\subsection{Experimentos realizados}
+%
+%Cada propriedade parametrizável do \textit{AppRecommender} foi experimentada
+%em permutação com as demais, cobrindo uma série de 2840 configurações possíveis.
+%A variação dos parâmetros é apresentada na tabela
+%\ref{tab:parametros_experimentos}. O parâmetro \textit{proporção da amostra} se
+%refere ao percentual do perfil do usuário a ser considerado como amostra da
+%validação cruzada.
+%
+%%variar k_1 entre 1.2(trec7) e 2.0(trec3)
+%%
+%%http://lists.tartarus.org/pipermail/xapian-discuss/2004-November/000584.html
+%%Maybe we should consider changing the BM25Weight default from (1, 0, 1, .5)
+%%to (1.2, 0, 7, 0.75).  I'm fairly sure the current defaults were just
+%%arbitrary choices.
+%%http://xapian.org/docs/sourcedoc/html/weight_8h_source.html
+%%00407     BM25Weight()
+%%00408         : param_k1(1), param_k2(0), param_k3(1), param_b(0.5),
+%%00409           param_min_normlen(0.5)
+%
+%
+%
+%Outra possibilidade é que as
+%métricas escolhidas para comparação entre os modelos não tenham sido adequadas,
+%e isto ficará claro ao final da segunda etapa de validação.
 
 \section{Consulta pública}
 
-Dado que não existem avaliações prévias realizadas por usuários reais acerca da
-utilidade dos itens, os resultados da análise \textit{offline} ficam, senão
-prejudicados, ao menos limitados. O conceito de utilidade de um item é subjetivo
-e apenas um indivíduo dotado de subjetividade é capaz fazer esta avaliação.
-Métricas como novidade e surpresa são dificilmente mensuráveis por meio de
-validação cruzada. Uma consulta pública amplamente divulgada seria uma forma de
-complementar os resultados daquela análise.
+Os resultados dos experimentos \textit{offline} não são conclusivos. As
+estratégias colaborativas em geral produzem resultados melhores, porém bastante
+variados a depender da situação de testes. E mesmo as estratégias baseadas em
+conteúdo, merecem ser mais investigadas, em face de sua facilidade de
+implementação.
 
-Algumas ferramentas foram avaliadas para a construção do \textit{survey}, entre
-as quais o \textit{LimeSurvey}\footnote{\url{http://www.limesurvey.org/}}. No
-entanto, uma avaliação de acurácia da recomendação requer que a construção do
-questionário aconteça de forma dinâmica, com questões específicas para cada
-conjunto de aplicativos sugeridos para o usuário em questão, o que não foi
-possível realizar com este tipo de ferramenta. Sendo assim, foi desenvolvida
-uma interface web para o \emph{AppRecommender}, com um módulo de avaliação
-integrado.
+Os experimentos \textit{offline} não dependem de agentes externos à pesquisa,
+visto que baseiam-se em processamento automatizado de dados. No entanto, esta
+classe de testes não assegura um nível de confiabilidade como pode-se obter
+em experimentos realizados com usuários reais. Ademais, o conceito de utilidade
+de um aplicativo é subjetivo e apenas um indivíduo dotado de subjetividade é
+capaz fazer esta avaliação. Métricas como a novidade promovida por uma
+recomendação dificilmente seria mensurável por meio de validação cruzada.
 
-A consulta é guiada através dos seguintes passos:
-\begin{enumerate}
-  \item O usuário é convidado a experimentar o recomendador de aplicativos por
-    meio do envio de um envia uma lista de pacotes como representação de sua
-    identidade. Esta lista pode ser indicada por um arquivo enviado ao servidor
-    ou pelo preenchimento de um campo de texto no formulário.
-  \item A configuração do recomendador é completamente parametrizável, desde a
-    escolha da estratégia de recomendação, até o tamanho do perfil e outros
-    ajustes específicos de cada estratégia, a exemplo do tamanho da vizinhança
-    (usuários considerados próximos). O usuário tem ainda a possibilidade de
-    optar por uma configuração escolhida aleatoriamente dentre as disponíveis.
-  \item O sistema realiza a computação necessária para gerar recomendações de
-    acordo com a configuração escolhida para o recomendador.
-  \item As sugestões são apresentadas ao usuário juntamente com informações
-    detalhadas de cada item.
-  \item Se o usuário concordar com os termos da pesquisa, a validação da
-    recomendação tem prosseguimento. Neste contexto, \textit{-1} indica que a
-    sugestão não foi útil, \textit{0} é uma avaliação neutra e \textit{1}
-    indica que o usuário aprova a recomendação.
+Tais fatos motivaram a implementação de uma consulta
+pública \textit{online}\footurl{http://recommender.debian.net/survey}
+que busca integrar avaliações de caráter subjetivo aos resultados até então
+obtidos pelos testes \textit{offline}. Esta consulta é conduzida pelos
+seguintes passos:
+
+\begin{enumerate}[(1)]
+  \item O participante envia a lista de pacotes instalados em seu sistema.
+  \item O \textit{AppRecommender} utiliza como estratégia primária a
+    recomendação híbrida por revezamento a partir da análise do perfil do
+    usuário e escolhe aleatoriamente entre um conjunto de estratégias
+    disponíveis para aquele tipo de usuário.
+  \item A computação da recomendação é realizada.
+  \item As sugestões são apresentadas individualmente. Para cada aplicativo
+   recomendado são exibidos: uma descrição curta, uma descrição longa, o
+   \textit{website} do \textit{upstream}, o mantenedor do pacote e uma captura de
+   tela. É também apresentado um quadro de avaliação, onde o usuário deve
+   classificar a recomendação entre \textit{surpresa boa}, \textit{útil} ou
+   \textit{ruim}.
+  \item O usuário seleciona uma das opções e segue para avaliar o próximo item.
+  \item Ao final de 10 avaliações, o resultado é enviado ao servidor e o
+    usuário pode escolher se deseja realizar uma nova rodada de avaliações
+    (uma nova estratégia será sorteada) ou finalizar o experimento.
+  \item Se decidir continuar com o experimento, o passo 3 é retomado.
+  \item Quando o usuário decidir finalizar sua participação, ele recebe uma
+  mensagem de agradecimento e um formulário de preenchimento facultativo com
+  identificação.
   \item Os resultados da validação são armazenados no servidor para posterior
     análise.
 \end{enumerate}
 
-\subsection{Princípios}
+A figura \ref{fig:survey} apresenta a interface web desenvolvida para
+realização da consulta pública.
 
-\begin{description}
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{Figures/survey.jpg}
+\caption{Interface da consulta pública}
+\label{fig:survey}
+\end{figure}
 
-\item[Possibilidade de anonimato] Dado que a consulta pública foi
-instrumentalizada por meio de formulário online, o usuário podia escolher entre
-respondê-lo de forma completamente anônima ou fornecer dados de identificação.
-No caso de pesquisas realizadas por meio de mensagem eletrônica, as respostas
-dos usuários carregam seu email, o que pode causando desconforto no quesito privacidade.
-
-\item[Amostra irrestrita] A pesquisa foi disponibilizada na Internet e
-comunicada à populacao alvo e todas as respostas recebidas foram consideradas.
-Dado que a caracterização Dado que a consulta foi realizada em seguida a uma
-recomendação, todos os usuários foram convidados sem que houvesse o privilégio
-de um perfil especifico de usuário. Em pesquisas de cunho social, por exemplo,
-que pretende alcancar a população em geral, o uso de surveys online privilegia
-o acesso a usuários numa determinada faixa etaria e com interesses específicos,
-tornando os resultados da pesquisa não representativos.
-
-\item[Minimização de dados inválidos] O formulário de envio da avaliação é
-dotado de mecanismos de validação dos dados, evitando assim que sejam enviadas
-respostas que precisem ser inutilizadas posteriormente. Outro ponto neste
-quesito é que múltiplas respostas de um mesmo usuário não comprometem o
-resultado pesquisa, dado que são referentes a validações de múltiplos
-resultados de recomendação. Apenas a múltiplo envio de uma mesma avaliação é
-inutilizado (por exemplo, quando o usuário clica mais de uma vez no botão
-``enviar'').
-
-\item[Simplicidade e objetividade] Questionários simples evitam baixas taxas de
-participação e erros de medida (decorrente do usuário não entender o que está
-sendo perguntado). Por outro lado, a objetividade é um sinal de respeito ao
-tempo do usuário.
-
-\item[Incentivos à participação] A presente pesquisa ofereceu como incentivo a
-portunidade de o participante ser listado numa página de agradecimentos
-referenciada no texto da dissertação, além da aquisição de conhecimento
-acerca do tópico da pesquisa (todos os procedimentos são detalhadamente
-explicados no website.)
-
-\item[Independência cultural] Internacionalização/localização do survey.
-
-\end{description}
-
-%[FIXME] Inserir figura do formulário.
+%\subsection{Princípios}
+%
+%\begin{description}
+%
+%\item[Possibilidade de anonimato] Dado que a consulta pública foi
+%instrumentalizada por meio de formulário online, o usuário podia escolher entre
+%respondê-lo de forma completamente anônima ou fornecer dados de identificação.
+%No caso de pesquisas realizadas por meio de mensagem eletrônica, as respostas
+%dos usuários carregam seu \textit{e-mail}, o que pode causar certo desconforto no
+%quesito privacidade.
+%
+%\item[Amostra irrestrita] A pesquisa foi disponibilizada na Internet e
+%comunicada à população alvo e todas as respostas recebidas foram consideradas.
+%Dado que a caracterização Dado que a consulta foi realizada em seguida a uma
+%recomendação, todos os usuários foram convidados sem que houvesse o privilégio
+%de um perfil especifico de usuário. Em pesquisas de cunho social, por exemplo,
+%que pretende alcançar a população em geral, o uso de pesquisas online privilegia
+%o acesso a usuários numa determinada faixa etária e com interesses específicos,
+%tornando os resultados da pesquisa não representativos.
+%
+%\item[Minimização de dados inválidos] O formulário de envio da avaliação é
+%dotado de mecanismos de validação dos dados, evitando assim que sejam enviadas
+%respostas que precisem ser inutilizadas posteriormente. Outro ponto neste
+%quesito é que múltiplas respostas de um mesmo usuário não comprometem o
+%resultado pesquisa, dado que são referentes a validações de múltiplos
+%resultados de recomendação. Apenas a múltiplo envio de uma mesma avaliação é
+%inutilizado (por exemplo, quando o usuário clica mais de uma vez no botão
+%``enviar'').
+%
+%\item[Simplicidade e objetividade] Questionários simples evitam baixas taxas de
+%participação e erros de medida (decorrente do usuário não entender o que está
+%sendo perguntado). Por outro lado, a objetividade é um sinal de respeito ao
+%tempo do usuário.
+%
+%\item[Incentivos à participação] A presente pesquisa ofereceu como incentivo a
+%oportunidade de o participante ser listado numa página de agradecimentos
+%referenciada no texto da dissertação, além da aquisição de conhecimento
+%acerca do tópico da pesquisa (todos os procedimentos são detalhadamente
+%explicados na página web.)
+%
+%\item[Independência cultural] Internacionalização/localização do \textit{survey}.
+%
+%\end{description}
 
 \subsection{Métricas}
 
-\begin{description}
+As métricas selecionadas para avaliar os modelos nesta fase de experimentos
+foram as seguintes:
 
-\item[Acurácia da recomendação] de acordo com a seção \ref{sec:metricas}
+\begin{enumerate}[(a)]
+\item \textit{Precisão ($\frac{VP}{VP+FP}$)}: das métricas de acurácia
+clássicas apresentadas na seção \ref{sec:metricas}, a precisão é a única que
+pode ser calculada de forma objetiva após a avaliação do usuário, pois depende
+apenas da sua apreciação sobre os itens recomendados (preditos
+positivos). Outras métricas, como recuperação e medidas $F_\beta$, dependeriam
+da avaliação do usuário de todos os itens do repositório para que o conjunto
+de itens positivos (reais positivos) fosse conhecido.
 
-\item[Taxa de resposta] não há meios de saber quantos usuários tiveram acesso ao
-questionário (ou seu link) e decidiram não participar. Apenas o número de
-surveys completos é conhecido, não o numero de recusas. contadores das paginas
-podem dar uma estimativa, ainda que não confiaveis.
+\item \textit{Novidade}: esta é uma métrica que só pode ser mensurada com a
+participação de usuários reais e foi a grande motivadora para a realização do
+\textit{survey}. Será mensurada de forma semelhante à precisão, como a
+proporção de itens marcados como \textit{novidade} do conjunto de itens
+recomendados ($\frac{N}{(VP+FP)}$).
 
-\item[Tempo de avaliação] Tempo decorrido entre a geração de uma recomendação e
-a respectiva validação por parte do usuário.
+\item \textit{Cobertura}: a cobertura será computada ao final da fase de
+coleta, indicando para cada modelo a proporção do repositório de itens que
+fizeram parte de alguma recomendação ao longo de todo o período de experimentos.
+\end{enumerate}
 
-\item[Tempo de resposta] Registo da distribuição de resposta ao longo do tempo
-em que a pesquisa foi disponibilizada.
-
-\end{description}
-
-\subsection{Ambiente de teste}
-
-Esta etapa de experimentos foi desenvolvida no
-Alioth\footnote{http://alioth.debian.org}, o servidor \emph{forge} do projeto
-Debian, que provê uma infraestrutura de apoio ao desenvolvimento colaborativo
-de software, principalmente que tem alguma relação com o Debian.
-
-\subsection{Experimentos realizados}
-
-O \emph{survey} foi disponibilizado no dia 30 de junho de 2011 e após 30 dias
-de consulta, XX usuários participaram da pesquisa.
-
-%\subsection{Análise dos resultados}
 \subsection{Resultados}
 
-Apresentação e análise dos resultados.
+Um piloto\footurl{http://recommender.debian.net/survey} do
+\textit{survey} foi lançado por meio do envio de convites para cerca de
+$20$ usuários selecionados. No momento da escrita deste texto os últimos ajustes
+estão sendo realizados para que a divulgação massiva do experimento seja
+efetivada. Após a coleta de um número significativo de submissões para a
+realização de uma análise estatística, os resultados parciais do experimento
+serão publicados no site da
+pesquisa\footurl{http://recommender.debian.net/experiments}.
 
-%Ao término do período de aplicação do \textit{survey}, os dados de avaliações
-%individuais serão compilados numa análise de esfera global. Os gráficos
-%e considerações resultantes serão apresentados na versão final deste trabalho.
+%Os experimentos realizados tem caráter exploratório, no sentido de que não são
+%realizados com o intuito de provar ou refutar uma hipótese, mas sim de encontrar
+%as soluções que mais se adequam ao domínio da aplicação e conjunto de dados
+%utilizados como fontes de recomendação.
 
-\section{Conclusão}
-% \section{Comparação com trabalhos correlatos} -- dificuldade de comparação, no previous results

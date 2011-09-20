@@ -1,47 +1,109 @@
 \documentclass{thesis}
-
-\title{AppRecommender: um recomendador \\de aplicativos GNU/Linux}
-\author{Tássia Camões Araújo}
-\email{tassia@gmail.com}
-\date{\today}
-\location{São Paulo}
-\blurb{
-  Instituto de Matemática e Estatística \\
-  Universidade de São Paulo \\[1em]
-  Dissertação apresentada ao Programa de Pós-graduação \\
-  em Ciência da Computação para obtenção do \\
-  título de mestre em ciências \\[1em]
-  Orientador: Prof. Dr. Arnaldo Mandel
-}
-
+\makeindex
+%\title{AppRecommender: um recomendador \\de aplicativos GNU/Linux}
+%\author{Tássia Camões Araújo}
+%\email{tassia@gmail.com}
+%\date{\today}
+%\location{São Paulo}
+%\blurb{
+%  Instituto de Matemática e Estatística \\
+%  Universidade de São Paulo \\[1em]
+%  Dissertação apresentada ao Programa de Pós-graduação \\
+%  em Ciência da Computação para obtenção do \\
+%  título de Mestre em Ciências \\[1em]
+%  Orientador: Prof. Dr. Arnaldo Mandel
+%}
+%
 \begin{document}
-\maketitle
+%\maketitle
 \frontmatter
+
+\thispagestyle{empty}
+\begin{center}
+    \vspace*{2.3cm}
+    \textbf{\Large{AppRecommender: um recomendador\\
+                   de aplicativos GNU/Linux}}\\
+    
+    \vspace*{1.2cm}
+    \Large{Tássia Camões Araújo}
+    
+    \vskip 2cm
+    \textsc{
+    Dissertação apresentada\\[-0.15cm] 
+    ao\\[-0.15cm]
+    Instituto de Matemática e Estatística\\[-0.15cm]
+    da\\[-0.15cm]
+    Universidade de São Paulo\\[-0.15cm]
+    para\\[-0.15cm]
+    obtenção do título\\[-0.15cm]
+    de\\[-0.15cm]
+    Mestre em Ciências}
+    
+    \vskip 1.5cm
+    Programa: Ciência da Computação\\
+    Orientador: Prof. Dr. Arnaldo Mandel\\
+
+   	\vskip 1cm
+    \normalsize{Durante o desenvolvimento deste trabalho a autora recebeu auxílio
+    financeiro do CNPq}
+    
+    \vskip 0.5cm
+    \normalsize{São Paulo, setembro de 2011}
+\end{center}
+
+% ---------------------------------------------------------------------------- %
+% Página de rosto (SÓ PARA A VERSÃO DEPOSITADA - ANTES DA DEFESA)
+% Resolução CoPGr 5890 (20/12/2010)
+%
+% Nota: O título para as teses/dissertações do IME-USP devem caber em um 
+% orifício de 10,7cm de largura x 6,0cm de altura que há na capa fornecida pela SPG.
+\newpage
+\thispagestyle{empty}
+    \begin{center}
+        \vspace*{2.3 cm}
+        \textbf{\Large{AppRecommender: um recomendador\\
+                       de aplicativos GNU/Linux}}\\
+        %\vspace*{2 cm}
+    \end{center}
+
+    \vspace{-25cm}
+%    \vskip 2cm
+
+    \begin{flushright}
+	Esta dissertação trata-se da versão original\\
+	da aluna (Tássia Camões Araújo).
+    \end{flushright}
+
+\pagebreak
+
+
 \begin{abstract}
 A crescente oferta de programas de código aberto na rede mundial de
 computadores expõe potenciais usuários a inúmeras possibilidades de
 escolha.\ Em face da pluralidade de interesses destes indivíduos, mecanismos
 eficientes que os aproximem daquilo que buscam trazem benefícios para eles
-próprios, assim como para os desenvolvedores dos programas.\ O
-\emph{AppRecommender} é um recomendador de aplicativos GNU/Linux que realiza
-uma filtragem no conjunto de programas disponíveis e oferece sugestões
-individualizadas para os usuários. Tal feito é alcançado por meio da análise de
-perfis e descoberta de padrões de comportamento na população estudada, de sorte
-que apenas os aplicativos considerados mais suscetíveis a aceitação sejam
-oferecidos aos usuários. \keywords{Sistemas de recomendação, distribuições
-GNU/Linux}.  \end{abstract}
+próprios, assim como para os desenvolvedores dos programas. Este trabalho
+apresenta o \emph{AppRecommender}, um recomendador de aplicativos GNU/Linux que
+realiza uma filtragem no conjunto de programas disponíveis e oferece sugestões
+individualizadas para os usuários.\ Tal feito é alcançado por meio da análise
+de perfis e descoberta de padrões de comportamento na população estudada, de
+sorte que apenas os aplicativos considerados mais suscetíveis a aceitação sejam
+oferecidos aos usuários. \keywords{Sistemas de recomendação, aplicativos,
+pacotes Debian, filtragem colaborativa, distribuições GNU/Linux,
+Debian GNU/Linux}.  \end{abstract}
 \selectlanguage{english}
 \begin{abstract}
 The increasing availability of open source software on the World Wide Web
 exposes potential users to a wide range of choices.\ Given the individuals
 plurality of interests, mechanisms that get them close to what they are
-looking for would benefit themselves and the software developers as well.
-\emph{AppRecommender} is a recommender system for GNU/Linux applications
-which performs a filtering on the set of available software and individually
-offers suggestions to users. This is achieved by analyzing profiles and
-discovering patterns of behavior of the studied population, in a way that
-only those applications considered most prone to acceptance are presented to
-users. \keywords{Recommender systems, GNU/Linux distributions}.
+looking for would benefit users and software developers.\ This
+work presents \emph{AppRecommender}, a recommender system for GNU/Linux
+applications which performs a filtering on the set of available software and
+individually offers suggestions to users. This is achieved by analyzing
+profiles and discovering patterns of behavior of the studied population, in a
+way that only those applications considered most prone to acceptance are
+presented to users. \keywords{Recommender systems, applications, Debian
+packages, collaborative filtering, GNU/Linux distributions, Debian GNU/Linux}.
 \end{abstract}
 
 \selectlanguage{brazilian}
@@ -56,13 +118,14 @@ users. \keywords{Recommender systems, GNU/Linux distributions}.
 \mainmatter
 \input{Chapters/01-introducao}
 \input{Chapters/02-distribuicoes}
-\input{Chapters/03-sistemas-recomendadores}
+\input{Chapters/03-sistemas-recomendacao}
 \input{Chapters/04-trabalhos-correlatos}
 \input{Chapters/05-app-recommender}
 \input{Chapters/06-validacao}
 \input{Chapters/07-consideracoes-finais}
+\input{Chapters/08-apendices}
 
 \bibliographystyle{sbc}
 \bibliography{thesis-tassia}
-
+\printindex
 \end{document}

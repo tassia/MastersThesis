@@ -1,38 +1,149 @@
 \chapter{Introdução} \label{chapter:introducao}
 
-O universo de programas livres e de código aberto oferece aos usuários uma
-grande amplitude e diversidade de opções no que diz respeito a aplicativos
-para complementar seus sistemas. No entanto, muitas dessas alternativas
-permanecem em relativa obscuridade, pois o caráter majoritariamente não
-comercial desses sistemas se reflete na ausência de propaganda e outras formas
-de divulgação ostensiva. Desta forma, a descoberta de programas úteis para um
-determinado usuário por vezes empaca no excesso de informações disponíveis e
-organização inadequada. É costume referir-se a esse fenômeno (p. ex.,
+%comentarios de arnaldo sobre a introducao
+%user eh um sistema
+%(o usuario nao entrega nenhuma info alem de sua lista de pacotes)
+%introducao tem muita coisa generica, fala pouco do apprec
+%precisa ter mais claro, meia pagina ou mais explicando o que eh
+%o que vc consegue dizer sem ter definido os conceitos?
+%que deixe claro que isso eh a maior contribuicao: concepcao e desenvolvimento do apprecommender
+%
+
+A facilidade de comunicação proporcionada pela Internet tem estimulado cada vez
+mais as formas de trabalho colaborativas. No âmbito do desenvolvimento de
+programas de computador, verificamos na prática o que muitos autores consideram
+como o maior exemplo deste fenômeno: \textit{o movimento do software livre}; a
+construção coletiva de uma ampla gama de softwares de qualidade, em constante
+atualização e evolução \cite{Simon:08}. Outro ponto defendido é que a qualidade
+do esforço coletivo aumentou ao longo do tempo devido à diversidade dos
+colaboradores envolvidos. Esta diversidade é refletida claramente na variedade
+de projetos disponíveis na grande rede, compondo um \emph{ecossistema} que
+reúne os interessados por meio de fóruns na Web, listas de discussão, canais
+IRC, sistemas para notificação de falhas, conferências etc.
+
+\index{SourceForge}
+O \textit{SourceForge}\footnote{\url{http://www.sourceforge.net}}, popular
+repositório de progamas na Internet, possui hoje mais de 300.000 projetos
+cadastrados\footnote{Em 2 de setembro de 2011 o \textit{SourceForge} registra
+308.307 projetos, sendo que 180.127 estão sob licenciamento aprovado pela
+\index{Open Source Initiave}\textit{Open Source Initiave}, que tratam das licenças de software livre e
+código aberto mais populares.}, superando a marca de 2 milhões de usuários
+registrados. Os benefícios deste fenômeno para o público são muitos, uma vez
+que, além de contar com programas de alta qualidade técnica, licenciamento
+livre e uso gratuito, os interessados podem também ter participação direta no
+processo de desenvolvimento.
+
+Esta abundância de projetos, que por um lado oferece inúmeros benefícios, pode
+também implicar num fator complicador para os próprios usuários. O excessivo
+montante de informação pode prejudicar o processo de escolha, enredando o
+usuário num labirinto de resultados inesperados, possivelmente distantes
+do que seria sua real preferência. É comum referir-se a esse fenômeno (p. ex.,
 \cite{Iyengar:10}) como ``mais é menos'', no sentido de que o aumento da
 disponibilidade de escolhas pode confundir o usuário e diminuir sua satisfação.
 
-Neste contexto de muitas possibilidades onde poucas são de fato atrativas, um
-sistema capaz de recomendar aplicativos que presumidamente são objeto de
-interesse de usuários exerceria um papel importante. Desenvolvedores se
-beneficiariam por meio de um consequente aumento na utilização de seus
-programas que, por serem experimentados por mais usuários, certamente
-receberiam mais relatórios de erro (\textit{bug reports}), sugestões e
-contribuições diversas. Para os usuários o benefício seria alcançado de forma
-mais direta, dado que poupariam tempo e recursos outrora dedicados a buscas
-e filtragens manuais para encontrar os aplicativos mais adequados a seu
-ambiente de trabalho.
+A título de exemplo, uma pesquisa pelo termo \texttt{webserver} no
+\textit{SourceForge} retorna 620 projetos cadastrados. O usuário então define
+seus critérios para continuar uma análise mais apurada, eliminando nesta
+primeira etapa o que certamente não se adequada ao seu ambiente. O
+administrador de um sistema crítico, por exemplo, investigaria o histórico de
+falhas de segurança do \textit{software}; para um \textit{hardware} modesto,
+como por exemplo vê-se nos \textit{netbooks} e \textit{smartphones}, daria-se
+preferência a aplicativos de baixo custo computacional; já um usuário de
+\textit{desktop} usualmente tem interesse em aplicativos atualizados, o que
+demanda uma comunidade de desenvolvimento ativa; uma empresa necessita de
+programas com termos de licenciamento claros, de modo a evitar eventuais
+conflitos jurídicos; programas com alto índice de popularidade --- tipicamente
+mensurados pela quantidade de downloads --- destacam-se na preferência dos
+usuários de uma maneira geral.
 
-Tais benefícios motivaram a concepção do \textit{AppRecommender}, um
-recomendador de aplicativos GNU/Linux desenvolvido no âmbito de um trabalho de
-mestrado, cujo objetivo principal é a experimentação de diferentes estratégias
-para recomendação no contexto de componentes de software.
+Notamos portanto uma infinita gama de possibilidades no que diz respeito aos
+critérios para seleção de um \textit{software}. Há também uma variedade de
+fontes a se consultar com o objetivo de colocar lado a lado aqueles requisitos
+e o que o programa de fato oferece, com o objetivo de continuar o processo de
+filtragem. Pode-se consultar estatísticas de \emph{commits} de código,
+atividades em listas de e-mail, \emph{bugs} não resolvidos nos sistemas de
+notificação de falhas (\textit{bug tracking systems}), histórico de falhas nos
+boletins de segurança, últimas novidades nos \textit{blogs} dos projetos etc.
+Algumas destas informações são apresentadas como opções de filtragem nos
+próprios repositórios, como ocorre no \textit{SourceForge}. No entanto, após uma
+série de filtragens de caráter manual, como a leitura das descrições daquilo
+que ainda não foi filtrado, comumente o usuário ainda encara uma quantidade
+razoável de opções, das quais muitas são inadequadas para suas necessidades e
+demandam análises ainda mais minuciosas.
 
-O presente trabalho está organizado da seguinte forma: os capítulos
-\ref{chapter:distribuicoes} e \ref{chapter:recomendadores} trazem uma breve
-introdução sobre distribuições GNU/Linux e sistemas de recomendação. No
-capítulo \ref{chapter:trab-correlatos} trabalhos correlatos são apresentados
-e o \ref{chapter:app-rec} apresenta o AppRecommender como uma nova solução
-para o problema exposto. Em seguida são apresentados os experimentos realizados no
-capítulo \ref{chapter:validacao} e, por fim, o capítulo
-\ref{chapter:conclusoes} traz considerações finais sobre o presente trabalho e
-perspectivas de trabalhos futuros.
+Até este ponto relatamos o que tipicamente ocorre com usuários dotados de
+certa habilidade técnica, que sabem onde e como realizar as buscas, além de
+serem capazes de definir seus critérios embasados em conhecimento de caráter
+técnico. Temos por outro lado o usuário regular de \textit{desktop},
+que utiliza programas de computador como meio para outras atividades, não tem
+conhecimentos técnicos aprofundados e muitas vezes é limitado pela barreira
+do idioma. Neste contexto, repositórios como o \textit{SourceForge} não
+são de grande utilidade. Estes usuários requerem um sistema simples, no seu
+idioma e de preferência presente no seu ambiente doméstico de trabalho, que os
+auxiliem a fazer escolhas acerca de quais aplicativos instalar.
+
+\index{AppRecommender!motivação}
+A inexistência de um sistema livre capaz de oferecer tais recomendações motivaram
+a concepção e desenvolvimento do \textit{AppRecommender}. Um recomendador de
+aplicativos exerceria papel relevante em ambos os contextos ilustrados, pois
+independente da habilidade ou conhecimento do usuário, o excesso de
+possibilidades traz dificuldades ao processo de escolha. Ao recorrer a tal
+sistema os usuários poupariam tempo e recursos outrora dedicados a buscas e
+filtragens manuais para encontrar os aplicativos mais adequados a seu ambiente
+de trabalho. Em contrapartida, a comunidade de desenvolvedores tiraria proveito
+de um consequente aumento na utilização de seus programas que, por serem
+experimentados por mais usuários, certamente receberiam mais relatórios de
+erro, sugestões e contribuições diversas.
+
+\index{AppRecommender!funcionamento básico}
+No caso de uso típico do \textit{AppRecommender}, o usuário submete a lista
+de aplicativos instalados em seu sistema e o recomendador lhe sugere
+outros programas que ele não possui, mas provavelmente seriam de seu interesse.
+No âmbito deste trabalho foram desenvolvidas uma interface em modo texto e um serviço
+\text{Web}\footnote{\url{http://recommender.debian.net}} para este fim. O
+recomendador pode ainda ser facilmente integrado a outros sistemas, como
+os gerenciamento de aplicativos.
+% ou a uma interface do repositório de
+%programas, proporcionando uma navegação orientada aos interesses do usuário.
+
+A recomendação oferecida é personalizada, fundamentada nas características
+específicas do usuário, em alternativa a recomendações generalistas, como as
+baseadas em popularidade dos aplicativos. Sugestões individualizadas requerem
+a identificação de atributos que diferenciem o usuário do restante da população.
+Este é um dos grandes desafios do recomendador, que utiliza conceitos
+específicos do domínio de aplicação na extração de atributos para composição de
+um perfil, como as relações de dependência entre os programas.
+
+A filtragem do repositório de aplicativos para um determinado usuário ocorre
+por meio de buscas, fundamentando-se em técnicas de recuperação da informação.
+Os parâmetros das consultas variam de acordo com a estratégia escolhida, podendo
+considerar as escolhas prévias do próprio usuário, caracterizando desta forma
+um perfil de características de aplicativos; as escolhas de usuários com
+características similares às dele, referenciados como \textit{vizinhos} neste
+contexto; ou uma abordagem mista. Diferentes estratégias para composição de
+recomendações foram implementadas, visando uma posterior análise de desempenho,
+que nos auxiliaria a escolher a estratégia a ser adotada pelo serviço.
+
+Experimentos preliminares foram realizados e uma consulta pública está em
+curso para coletar avaliações de usuários reais sobre as recomendações
+produzidas. O presente texto relata as decisões de projeto que embasaram o
+desenvolvimento do protótipo disponível atualmente, além dos procedimentos
+realizados para validar o sistema.
+
+O desenvolvimento deste trabalho foi realizado em colaboração com
+desenvolvedores e usuários da comunidade Debian. Diversos serviços já providos
+pela distribuição foram integrados na solução, apresentando-se portanto como
+uma vitrine para estas iniciativas, algumas das quais desconhecidas pelo
+público.
+
+Esta dissertação está organizada da seguinte forma: os capítulos
+\ref{chapter:distribuicoes} e \ref{chapter:sistemas_recomendacao} trazem uma
+breve introdução sobre distribuições GNU/Linux e sistemas de recomendação; no
+capítulo \ref{chapter:trab-correlatos} trabalhos correlatos são apresentados,
+enquanto o \ref{chapter:app-rec} propõe o \textit{AppRecommender} como uma
+solução para o problema exposto. Os experimentos realizados para validar a
+proposta são analisados no capítulo \ref{chapter:validacao}. Por fim, no
+capítulo \ref{chapter:conclusoes} relatamos algumas considerações que julgamos
+relevantes em respeito aos resultados obtidos e às perspectivas de trabalhos
+futuros.
+

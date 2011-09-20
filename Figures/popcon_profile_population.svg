@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xml:space="preserve"
+   onload="Gc913L(evt)"
+   viewBox="0 0 600 463"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   width="100%"
+   height="100%"
+   sodipodi:docname="popcon_profile_population.svg"
+   inkscape:export-filename="/home/tassia/MastersThesis/Figures/popcon_profile_population.png"
+   inkscape:export-xdpi="101"
+   inkscape:export-ydpi="101"><metadata
+   id="metadata141"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs139" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1024"
+   inkscape:window-height="552"
+   id="namedview137"
+   showgrid="false"
+   inkscape:zoom="0.98"
+   inkscape:cx="300"
+   inkscape:cy="261.72582"
+   inkscape:window-x="-2"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg2" />
+<script
+   type="text/ecmascript"
+   id="script4">
+var Gc913sd;
+Gc913RA = [&quot;r0&quot;];
+function Gc913L(evt) { Gc913sd = evt.getCurrentNode().getOwnerDocument();}
+function Gc913M(O, V){
+var ss,so;for(i = 0;i &lt; Gc913RA.length; i++){
+so = Gc913sd.getElementById(O + Gc913RA[i]);
+if (so != null){
+ss = so.getStyle();
+if (V == 1) ss.setProperty ('visibility', 'visible');
+else ss.setProperty ('visibility', 'hidden');}}
+return true; }
+</script>
+<path
+   d="M 0.0 0.0 L 600.0 0.0 L 600.0 463.0 L 0.0 463.0 L 0.0 0.0 z"
+   style="fill:#ffffff;stroke:none;pointer-events:none"
+   id="path6" />
+<path
+   d="M 253.0 73.0 C 244.97464 73.0 236.95593 73.37157 228.98372 74.112854 L 228.98372 109.112854 C 236.95593 108.37157 244.97464 108.0 253.0 108.0 z"
+   style="fill:#474700;stroke:none;pointer-events:none"
+   id="path8" />
+<path
+   d="M 228.98372 74.112854 L 253.0 241.0 L 253.0 276.0 L 228.98372 109.112854 z"
+   style="fill:#474700;stroke:none;pointer-events:none"
+   id="path10" />
+<g
+   id="Gc913R0"
+   onmouseover="Gc913M('Gc913R0',1)"
+   onmouseout="Gc913M('Gc913R0',0)">
+<path
+   d="M 253.0 73.0 C 244.97464 73.0 236.95593 73.37157 228.98372 74.112854 L 253.0 241.0 z"
+   style="fill:#666600;stroke:none;pointer-events:none"
+   id="path13" />
+</g>
+<path
+   d="M 228.98372 74.112854 C 214.01018 75.50516 199.26796 78.19546 185.01434 82.13681 L 185.01436 117.1368 C 199.26797 113.19546 214.0102 110.50516 228.98373 109.112854 z"
+   style="fill:#15159a;stroke:none;pointer-events:none"
+   id="path15" />
+<path
+   d="M 253.0 241.0 L 228.98372 74.112854 L 228.98372 109.112854 L 253.0 276.0 z"
+   style="fill:#15159a;stroke:none;pointer-events:none"
+   id="path17" />
+<path
+   d="M 185.01434 82.13681 L 253.0 241.0 L 253.0 276.0 L 185.01434 117.13681 z"
+   style="fill:#15159a;stroke:none;pointer-events:none"
+   id="path19" />
+<g
+   id="Gc913R1"
+   onmouseover="Gc913M('Gc913R1',1)"
+   onmouseout="Gc913M('Gc913R1',0)">
+<path
+   d="M 228.98372 74.112854 C 214.01018 75.50516 199.26796 78.19546 185.01434 82.13681 L 253.0 241.0 z"
+   style="fill:#1e1edc;stroke:none;pointer-events:none"
+   id="path22" />
+</g>
+<path
+   d="M 185.01436 82.1368 C 163.99039 87.950264 144.25505 96.42303 126.55264 107.23556 L 126.55264 142.23557 C 144.25505 131.42303 163.99039 122.950264 185.01436 117.1368 z"
+   style="fill:#6b2323;stroke:none;pointer-events:none"
+   id="path24" />
+<path
+   d="M 253.0 241.0 L 185.01436 82.1368 L 185.01436 117.1368 L 253.0 276.0 z"
+   style="fill:#6b2323;stroke:none;pointer-events:none"
+   id="path26" />
+<path
+   d="M 126.55264 107.23556 L 253.0 241.0 L 253.0 276.0 L 126.55264 142.23557 z"
+   style="fill:#6b2323;stroke:none;pointer-events:none"
+   id="path28" />
+<g
+   id="Gc913R2"
+   onmouseover="Gc913M('Gc913R2',1)"
+   onmouseout="Gc913M('Gc913R2',0)">
+<path
+   d="M 185.01436 82.1368 C 163.99039 87.950264 144.25505 96.42303 126.55264 107.23556 L 253.0 241.0 z"
+   style="fill:#993333;stroke:none;pointer-events:none"
+   id="path31" />
+</g>
+<path
+   d="M 126.55264 107.23556 C 82.15907 134.3509 53.084316 174.60068 45.794212 219.03384 L 45.794212 254.03384 C 53.08431 209.60068 82.159065 169.35092 126.552635 142.23557 z"
+   style="fill:#b26b00;stroke:none;pointer-events:none"
+   id="path33" />
+<path
+   d="M 253.0 241.0 L 126.55264 107.23556 L 126.55264 142.23557 L 253.0 276.0 z"
+   style="fill:#b26b00;stroke:none;pointer-events:none"
+   id="path35" />
+<path
+   d="M 45.794212 219.03384 L 253.0 241.0 L 253.0 276.0 L 45.794212 254.03384 z"
+   style="fill:#b26b00;stroke:none;pointer-events:none"
+   id="path37" />
+<g
+   id="Gc913R3"
+   onmouseover="Gc913M('Gc913R3',1)"
+   onmouseout="Gc913M('Gc913R3',0)">
+<path
+   d="M 126.55264 107.23556 C 82.15907 134.3509 53.084316 174.60068 45.794212 219.03384 L 253.0 241.0 z"
+   style="fill:#ff9900;stroke:none;pointer-events:none"
+   id="path40" />
+</g>
+<path
+   d="M 253.0 241.0 L 445.45477 175.4885 L 445.45477 210.4885 L 253.0 276.0 z"
+   style="fill:#006b23;stroke:none;pointer-events:none"
+   id="path42" />
+<path
+   d="M 445.45477 175.4885 C 412.72488 113.36133 336.9337 73.00001 253.00003 73.0 L 253.0 108.0 C 336.93365 108.0 412.72488 148.36131 445.45477 210.48846 z"
+   style="fill:#006b23;stroke:none;pointer-events:none"
+   id="path44" />
+<g
+   id="Gc913R4"
+   onmouseover="Gc913M('Gc913R4',1)"
+   onmouseout="Gc913M('Gc913R4',0)">
+<path
+   d="M 445.45477 175.4885 C 412.72488 113.36133 336.9337 73.00001 253.00003 73.0 L 253.0 241.0 z"
+   style="fill:#009933;stroke:none;pointer-events:none"
+   id="path47" />
+</g>
+<path
+   d="M 45.794212 219.03384 C 44.599358 226.3165 44.0 233.6543 44.0 241.0 L 44.0 276.0 C 44.0 268.6543 44.599358 261.3165 45.794212 254.03384 z"
+   style="fill:#6b008e;stroke:none;pointer-events:none"
+   id="path49" />
+<path
+   d="M 462.0 241.0 C 462.0 218.49242 456.37357 196.2143 445.45477 175.4885 L 445.45477 210.4885 C 456.37357 231.2143 462.0 253.49242 462.0 276.0 z"
+   style="fill:#6b008e;stroke:none;pointer-events:none"
+   id="path51" />
+<path
+   d="M 445.45477 175.4885 L 253.0 241.0 L 253.0 276.0 L 445.45477 210.4885 z"
+   style="fill:#6b008e;stroke:none;pointer-events:none"
+   id="path53" />
+<path
+   d="M 253.0 241.0 L 45.794212 219.03384 L 45.794212 254.03384 L 253.0 276.0 z"
+   style="fill:#6b008e;stroke:none;pointer-events:none"
+   id="path55" />
+<path
+   d="M 44.0 241.0 C 44.0 333.78384 137.5725 409.0 253.0 409.0 C 368.42752 409.0 462.0 333.78384 462.0 241.0 L 462.0 276.0 C 462.0 368.78384 368.42752 444.0 253.0 444.0 C 137.5725 444.0 44.0 368.78384 44.0 276.0 z"
+   style="fill:#6b008e;stroke:none;pointer-events:none"
+   id="path57" />
+<g
+   id="Gc913R5"
+   onmouseover="Gc913M('Gc913R5',1)"
+   onmouseout="Gc913M('Gc913R5',0)">
+<path
+   d="M 45.794212 219.03384 C 34.278954 289.2194 78.733986 357.67615 156.95363 390.20935 C 235.17326 422.74255 330.37073 412.3702 394.99408 364.27344 C 459.6174 316.17667 479.7977 240.6775 445.45477 175.4885 L 253.0 241.0 z"
+   style="fill:#9900cc;stroke:none;pointer-events:none"
+   id="path60" />
+</g>
+<g
+   id="g62"
+   onmouseover="Gc913M('Gc913R0',1)"
+   onmouseout="Gc913M('Gc913R0',0)"
+   transform="matrix(1.1096292,0,0,1.1096292,3.5208749,-12.030415)">
+<text
+   x="199"
+   y="63"
+   style="font-size:14px;font-weight:bold;fill:#000000;font-family:CF Helvetica Bold"
+   id="text64">1.83%</text>
+
+</g>
+<g
+   id="g66"
+   onmouseover="Gc913M('Gc913R1',1)"
+   onmouseout="Gc913M('Gc913R1',0)"
+   transform="matrix(1.1513906,0,0,1.1513906,-23.809916,-10.173183)">
+<text
+   x="162"
+   y="67"
+   style="font-size:14px;font-weight:bold;fill:#000000;font-family:CF Helvetica Bold"
+   id="text68">3.44%</text>
+
+</g>
+<g
+   id="g70"
+   onmouseover="Gc913M('Gc913R2',1)"
+   onmouseout="Gc913M('Gc913R2',0)"
+   transform="matrix(1.1084662,0,0,1.1084662,-17.042005,-9.0241943)">
+<text
+   x="109"
+   y="83"
+   style="font-size:14px;font-weight:bold;fill:#000000;font-family:CF Helvetica Bold"
+   id="text72">5.07%</text>
+
+</g>
+<g
+   id="g74"
+   onmouseover="Gc913M('Gc913R3',1)"
+   onmouseout="Gc913M('Gc913R3',0)"
+   transform="matrix(1.1087982,0,0,1.1087982,-7.9262255,-16.232501)">
+<text
+   x="15"
+   y="149"
+   style="font-size:14px;font-weight:bold;fill:#000000;font-family:CF Helvetica Bold"
+   id="text76">12.57%</text>
+
+</g>
+<g
+   id="g78"
+   onmouseover="Gc913M('Gc913R4',1)"
+   onmouseout="Gc913M('Gc913R4',0)"
+   transform="matrix(1.1087982,0,0,1.1087982,-41.079928,-10.031003)">
+<text
+   x="376"
+   y="92"
+   style="font-size:14px;font-weight:bold;fill:#000000;font-family:CF Helvetica Bold"
+   id="text80">18.62%</text>
+
+</g>
+<g
+   id="g82"
+   onmouseover="Gc913M('Gc913R5',1)"
+   onmouseout="Gc913M('Gc913R5',0)"
+   transform="matrix(1.1258155,0,0,1.1258155,-265.95586,-55.748172)">
+<text
+   x="286"
+   y="427"
+   style="font-size:14px;font-weight:bold;fill:#000000;font-family:CF Helvetica Bold"
+   id="text84">58.46%</text>
+
+</g>
+<g
+   id="g86"
+   onmouseover="Gc913M('Gc913R4',1)"
+   onmouseout="Gc913M('Gc913R4',0)">
+<path
+   d="M 488.0 168.0 L 502.0 168.0 L 502.0 182.0 L 488.0 182.0 L 488.0 168.0 z"
+   style="fill:#009933;stroke:none;pointer-events:none"
+   id="path88" />
+</g>
+<g
+   id="g90"
+   onmouseover="Gc913M('Gc913R5',1)"
+   onmouseout="Gc913M('Gc913R5',0)">
+<path
+   d="M 488.0 192.0 L 502.0 192.0 L 502.0 206.0 L 488.0 206.0 L 488.0 192.0 z"
+   style="fill:#9900cc;stroke:none;pointer-events:none"
+   id="path92" />
+</g>
+<g
+   id="g94"
+   onmouseover="Gc913M('Gc913R3',1)"
+   onmouseout="Gc913M('Gc913R3',0)">
+<path
+   d="M 488.0 216.0 L 502.0 216.0 L 502.0 230.0 L 488.0 230.0 L 488.0 216.0 z"
+   style="fill:#ff9900;stroke:none;pointer-events:none"
+   id="path96" />
+</g>
+<g
+   id="g98"
+   onmouseover="Gc913M('Gc913R2',1)"
+   onmouseout="Gc913M('Gc913R2',0)">
+<path
+   d="M 488.0 239.0 L 502.0 239.0 L 502.0 253.0 L 488.0 253.0 L 488.0 239.0 z"
+   style="fill:#993333;stroke:none;pointer-events:none"
+   id="path100" />
+</g>
+<g
+   id="g102"
+   onmouseover="Gc913M('Gc913R1',1)"
+   onmouseout="Gc913M('Gc913R1',0)">
+<path
+   d="M 488.0 263.0 L 502.0 263.0 L 502.0 277.0 L 488.0 277.0 L 488.0 263.0 z"
+   style="fill:#1e1edc;stroke:none;pointer-events:none"
+   id="path104" />
+</g>
+<g
+   id="g106"
+   onmouseover="Gc913M('Gc913R0',1)"
+   onmouseout="Gc913M('Gc913R0',0)">
+<path
+   d="M 488.0 287.0 L 502.0 287.0 L 502.0 301.0 L 488.0 301.0 L 488.0 287.0 z"
+   style="fill:#666600;stroke:none;pointer-events:none"
+   id="path108" />
+</g>
+<g
+   id="g110"
+   onmouseover="Gc913M('Gc913R4',1)"
+   onmouseout="Gc913M('Gc913R4',0)">
+<text
+   x="509.0"
+   y="181.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text112">&lt;50</text>
+
+</g>
+<g
+   id="g114"
+   onmouseover="Gc913M('Gc913R5',1)"
+   onmouseout="Gc913M('Gc913R5',0)">
+<text
+   x="509.0"
+   y="205.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text116">50-100</text>
+
+</g>
+<g
+   id="g118"
+   onmouseover="Gc913M('Gc913R3',1)"
+   onmouseout="Gc913M('Gc913R3',0)">
+<text
+   x="509.0"
+   y="229.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text120">100-150</text>
+
+</g>
+<g
+   id="g122"
+   onmouseover="Gc913M('Gc913R2',1)"
+   onmouseout="Gc913M('Gc913R2',0)">
+<text
+   x="509.0"
+   y="252.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text124">150-200</text>
+
+</g>
+<g
+   id="g126"
+   onmouseover="Gc913M('Gc913R1',1)"
+   onmouseout="Gc913M('Gc913R1',0)">
+<text
+   x="509.0"
+   y="276.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text128">200-250</text>
+
+</g>
+<g
+   id="g130"
+   onmouseover="Gc913M('Gc913R0',1)"
+   onmouseout="Gc913M('Gc913R0',0)">
+<text
+   x="509.0"
+   y="300.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text132">&gt;250</text>
+
+</g>
+<g
+   id="Gc913R6"
+   onmouseover="Gc913M('Gc913R6',1)"
+   onmouseout="Gc913M('Gc913R6',0)">
+<text
+   x="184.0"
+   y="23.0"
+   style="font-family:'CF Helvetica';font-size:14.0;fill:#000000;pointer-events:none"
+   id="text135">Population distribution per profile size</text>
+
+</g>
+</svg>

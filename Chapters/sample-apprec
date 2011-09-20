@@ -1,0 +1,33 @@
+$ git clone http://github.com/tassia/AppRecommender 
+$ cd AppRecommender/src/bin 
+$ ./apprec.py -s knn
+INFO: Set up logger
+INFO: Basic config
+INFO: Loading recommender filters
+INFO: Setting recommender strategy to 'knn'
+INFO: Computation started at 2011-09-03 07:21:09.264660
+INFO: Recommending applications for user local-2011-09-03 07:21:09.473482
+
+ 0: yate-qt4        - YATE-based universal telephony client
+ 1: gtkwhiteboard   - GTK+ Wiimote Whiteboard
+ 2: gravitywars     - clone of Gravity Force
+ 3: conduit         - synchronization tool for GNOME
+ 4: jokosher        - simple and easy to use audio multi-tracker
+ 5: xjump           - A jumping game for X
+ 6: gweled          - A "Diamond Mine" puzzle game
+ 7: gmpc            - Gnome Music Player Client (graphical interface to MPD)
+ 8: homebank        - Manage your personal accounts at home
+ 9: aranym          - Atari Running on Any Machine
+10: gameconqueror   - GUI for scanmem, a game hacking tool
+11: gwc             - Audio file denoiser
+12: gquilt          - graphical wrapper for quilt and/or mercurial queues
+13: xiphos          - environment for Bible reading, study, and research
+14: hatari          - Emulator for the Atari ST, STE, TT, and Falcon computers
+15: tecnoballz      - breaking block game ported from the Amiga platform
+16: dates           - a calendar optimised for embedded devices
+17: sylpheed        - Light weight e-mail client with GTK+
+18: klavaro         - Flexible touch typing tutor
+19: fofix           - rhythm game in the style of Rock Band(tm) and Guitar Hero(tm)
+
+INFO: Computation completed at 2011-09-03 07:21:42.529051
+INFO: Time elapsed: 10 seconds.

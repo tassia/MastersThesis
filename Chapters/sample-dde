@@ -1,0 +1,40 @@
+Show bugs for package gnome-subtitles
+
+Value:
+
+{596845: {'affects': u'',
+          'archived': False,
+          'blockedby': u'',
+          'blocks': u'',
+          'bug_num': 596845,
+          'date': 1284474065,
+          'done': False,
+          'fixed': None,
+          'fixed_date': [],
+          'fixed_versions': [],
+          'forwarded': u'',
+          'found': None,
+          'found_date': [],
+          'found_versions': [u'gnome-subtitles/0.7.2-1lenny1'],
+          'location': u'db-h',
+          'log_modified': 1284474068,
+          'mergedwith': '',
+          'msgid': u'<2fltylsif06.fsf@login1.uio.no>',
+          'originator': u'Petter Reinholdtsen ',
+          'owner': u'',
+          'package': u'gnome-subtitles',
+          'pending': u'pending',
+          'severity': u'normal',
+          'source': u'gnome-subtitles',
+          'subject': u'gnome-subtitles: Unable to find list of supported video\
+                       formats',
+          'summary': u'',
+          'tags': [],
+          'unarchived': False}}
+
+1 children:
+
+596845 - Details of bug #596845
+
+Go up one level
+

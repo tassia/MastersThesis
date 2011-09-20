@@ -1,0 +1,14 @@
+acx100-source: admin::kernel, implemented-in::c, role::source, use::driver
+
+adduser: admin::user-management, implemented-in::perl, interface::commandline,
+role::program, scope::utility
+
+apache2: implemented-in::c, interface::daemon, network::server, network::service,
+protocol::http, protocol::ipv6, role::metapackage, role::program, suite::apache,
+web::server, works-with-format::html, works-with::text
+
+apbs: field::chemistry, implemented-in::c, interface::commandline, role::program,
+scope::utility
+
+apcalc: field::mathematics, interface::shell, interface::text-mode, role::program,
+scope::utility

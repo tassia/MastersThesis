@@ -1,380 +1,95 @@
 \chapter{Trabalhos correlatos} \label{chapter:trab-correlatos}
 
-No presente capítulo serão apresentadas iniciativas de desenvolvimento por
-parte da comunidade FOSS e trabalhos acadêmicos que se relacionam com a
-proposta deste trabalho. Algumas dessas iniciativas foram utilizadas como base
-de desenvolvimento, principalmente as relativas ao projeto Debian, enquanto
-outras serviram como fontes de referências e inspiração.
-%FIXME [questionamento aos desenvolvedores sobre razao da descontinuidade]
+\index{AppRecommender!trabalhos correlatos}
+Nos últimos anos foram publicados, em âmbito nacional e internacional, inúmeros
+trabalhos acadêmicos nas áreas de mineração de dados e recuperação da informação
+aplicadas aos mais diversos domínios. Neste capítulo nos limitamos a apresentar
+trabalhos correlatos que tratam especificamente do problema de recomendação
+desenvolvidos no contexto de aplicativos. São também mencionados a seguir
+projetos desenvolvidas de maneira independente que, mesmo sem o rigor
+acadêmico, serviram como fontes de inspiração e referências.
 
-\section{Iniciativas FOSS}
-% FIXME [Pesquisar sobre contexto em outras distros]
+%[FIXME] Fazer relato da debconf
 
-\subsection{Dados sobre pacotes Debian}
+\section{Anapop/Popsuggest} \label{sec:anapop}
 
-O projeto Debian tem se destacado no universo das distribuições por suas
-iniciativas pioneiras no campo de gerenciamento de aplicações \cite{Zini:11}.
-Diante da complexa e crescente estrutura do projeto, observa-se um esforço por
-parte dos desenvolvedores, principalmente da equipe responsável pelo controle
-de qualidade\footnote{\url{http://qa.debian.org}}, de reunir, organizar e
-disponibilizar as informações ou meta-dados concernentes a esta estrutura
-\cite{Nussbaum:10}.
+\index{Anapop}
+\index{Popsuggest}
+Esta solução foi disponibilizada em 2007 pelo desenvolvedor Debian Enrico
+Zini\footnote{\url{http://www.enricozini.org/2007/debtags/popcon-play/}}
+como uma ilustração das possibilidades de uso dos dados coletados pelo
+\textit{Popcon} -- concurso de popularidade de pacotes Debian, apresentado
+na seção \ref{sec:popcon}.
 
-A seguir serão detalhadas algumas destas iniciativas, que curiosamente foram
-desenvolvidas inicialmente num contexto extra-oficial e, ao passo que se
-mostraram úteis e eficientes, foram absorvidas pela comunidade de usuários e
-desenvolvedores.
+A ferramenta \textit{anapop} indexava previamente a base de dados integral do
+\textit{Popcon}. Diante de uma lista de pacotes de determinado usuário, por meio
+de buscas no índice previamente criado, o \textit{popsuggest} sugeria pacotes
+que usuários de perfil similar tinham instalados. Este é um exemplo de
+aplicação de estratégia de recomendação colaborativa, implementado de forma
+ingênua uma vez que nenhuma seleção de atributos era realizada.
 
-%screenshots.debian.net: web service providing app screenshot
+O serviço foi disponibilizado na Web por alguns meses, porém, segundo
+depoimento do autor durante a
+Debconf11\footnote{\url{http://penta.debconf.org/dc11_schedule/events/773.en.html)}},
+foi descontinuado por falta de colaboradores interessados em evoluir o
+protótipo.
 
-\subsubsection{Debtags}
+\section{Debommender} \label{sec:debommender}
 
-\textit{Debtags} é um esquema de classificação idealizado pelo desenvolvedor
-Debian Enrico Zini como uma maneira de categorizar pacotes alternativa às
-seções \cite{Zini:05}. A principal motivação desta iniciativa foi a
-impossibilidade de relacionar pacotes a múltiplas seções. Um navegador web, por
-exemplo, não poderia ser categorizado como \textit{network} e \textit{web}
-simultaneamente. O uso de \textit{tags} (em português, rótulos) possibilitaria
-a criação de uma coleção estruturada de metadados que poderia ser utilizada
-para implementar métodos mais avançados do que os existentes para apresentação,
-busca e manutenção do repositório de pacotes Debian.
+\index{Debommender}
+O \textit{Debommender} é um sistema de recomendação para pacotes GNU/Linux
+desenvolvido no âmbito de um trabalho final de graduação, apresentado em 2007 na
+Universidade Federal do Rio Grande do Sul \cite{Pereira:07}. Segundo o autor, a
+ferramenta foi desenvolvida como prova de conceito, não sendo portanto integrada
+aos serviços da distribuição.
 
-O proposta foi apresentada na Debconf5 e foi paulatinamente sendo adotada por
-desenvolvedores em suas atividades, sendo atualmente utilizada como base de
-inúmeras ferramentas no Debian, tendo atingido a marca de $45\%$ de pacotes
-categorizados\footnote{Consulta realizada em junho de 2011}.
-%[FIXME] checar sobre os 45% na lista
+Foram realizados experimentos com cerca de 30 usuários para avaliar a eficácia
+as soluções implementadas. O modelo que obteve melhores resultados utilizava
+uma estratégia híbrida por ponderação, onde os resultados de um componente
+baseado em conteúdo e outro colaborativo eram combinados de acordo com pesos
+estabelecidos.
 
-Utilizando \textit{Debtags}, os pacotes podem ser caracterizados por múltiplos
-atributos, que são (propositalmente) definidos num momento posterior à
-concepção do pacote. Dado que a base de tags é mantida de forma independente ao
-repositório, as modificações ao longo do tempo não trazem impacto algum ao
-desenvolvimento de pacotes. A atribuição de tags a pacotes é realizada por
-colaboradores através do website do projeto\footnote{\url{http://debtags.alioth.debian.org/todo.html}} e revisada manualmente antes de ser incorporada à base
-de dados.
+A fonte de dados utilizada pelo recomendador para estratégias colaborativas era
+o conjunto de dados de entrada fornecidos pelos usuários participantes dos
+experimentos (suas listas de pacotes). Talvez por este motivo, as estratégias
+baseadas em conteúdo obtiveram melhor cobertura (proporção de itens disponíveis
+passíveis de recomendação) do que as colaborativas, pois, devido ao número
+reduzido de usuários, muitos pacotes disponíveis não estavam presentes em
+nenhum perfil e portanto não podiam aparecer nas recomendações produzidas.
 
-A base de dados é armazenada num arquivo texto no formato da figura
-\ref{fig:debtags}. O conjunto de tags disponível faz parte de um vocabulário
-controlado\footnote{\url{http://debtags.alioth.debian.org/vocabulary/}}, que
-também recebe contribuições de colaboradores. O esquema é estruturado para
-permitir a classificação por diferentes pontos de vista, que caracterizam as
-facetas.
+%tags versus descrisao, desc ganha
 
-\begin{figure}
-\label{fig:debtags}
-\begin{verbatim}
-acx100-source: admin::kernel, implemented-in::c, role::source,
-use::driver
+\section{Mineração de dados do Popcon}
+\label{sec:mineracao_popcon}
 
-adduser: admin::user-management, implemented-in::perl,
-interface::commandline, role::program, scope::utility
+\index{mineração de dados}
+Trabalho de mestrado que experimentou a implementação de técnicas de
+mineração de dados na base do \textit{popcon} para produção de regras de
+associação. A dissertação com título \textit{``Projeto e criação de um sistema
+para produção de sugestões personalizadas para o Instalador
+Debian''}\footnote{Tradução do título original do trabalho no idioma alemão.}
+foi defendida em agosto de 2007 na Universität Paderborn, na Alemanha
+\cite{Schroeder:07}.
 
-apache2: implemented-in::c, interface::daemon, network::server,
-network::service, protocol::http, protocol::ipv6, role::metapackage,
-role::program, suite::apache, web::server, works-with-format::html,
-works-with::text
+\index{DebConf}
+O trabalho foi apresentado na conferência anual de Desenvolvedores
+Debian (DebConf7\footnote{\url{https://penta.debconf.org/~joerg/events/83.en.html}}),
+ainda em fase de desenvolvimento. Segundo relato do autor durante a DebConf11,
+a geração de regras de associação se mostrou bastante custosa e, diante do
+crescimento do repositório de pacotes desde 2007, talvez a solução tenha se
+tornado impraticável.
 
-apbs: field::chemistry, implemented-in::c, interface::commandline,
-role::program, scope::utility
-
-apcalc: field::mathematics, interface::shell, interface::text-mode,
-role::program, scope::utility
-\end{verbatim}
-\caption{Excerto da base do Debtags}
-\end{figure}
-
-Ao indicar novas tags para um pacote, o usuário é surpreendido com sugestões de
-outras tags que geralmente são aplicadas em conjunto com as já selecionadas.
-Esta é uma aplicação de recomendação com base em regras de associação
-descobertas a partir de análise da base de dados de tags. O algoritmo utilizado
-para produção das regras é o Apriori, descrito na seção \ref{sec:apriori}.
-
-O \textit{Debtags} é uma poderosa ferramenta para a construção de estratégias
-de recomendação de pacotes baseadas em conteúdo. É fato que o conteúdo acerca
-de pacotes pode ser expresso em termos de atributos extraídos dos próprios
-pacotes, porém, a caracterização por meio de tags já fornece uma caracterização
-possível de ser utilizada e a custo baixo.
-
-\subsubsection{Apt-Xapian-Index}
-
-\subsubsection{Popcon} \label{sec:popcon}
-
-O \textit{Popcon (Popularity Contest)} é o concurso de popularidade entre
-pacotes Debian, criado pelo desenvolvedor Avery Pennarun em 1998 com o
-propósito inicial de auxiliar a escolha dos pacotes que fazem parte do primeiro
-CD de instalação\footnote{\url{http://lists.debian.org/debian-devel-announce/2004/03/msg00009.html}} (os mais populares são selecionados). Atualmente o
-repositório de pacotes Debian pode ser obtido em 52 imagens de CDs ou 8 de DVD.
-Dado que comumente obtem-se apenas a primeira imagem por \textit{download}, a
-A priorização de pacotes populares na primeira imagem tende a contribuir para a
-satisfação dos usuários, dado que geralmente apenas este é obtida por
-\textit{download} e os demais pacotes são obtido diretamente do repositório
-por meio de uma conexão de rede.
-
-Na instalação de um sistema Debian o usuário é convidado a participar do
-concurso. Se aceitar, o software cliente do \textit{popcon} é instalado e envia
-periodicamente a lista de pacotes daquele sistema para um servidor central,
-indicando também quais deles foram utilizados recentemente. A figura
-\ref{fig:popcon} apresenta um exemplo de submissão do popcon. A primeira linha
-contém um hash que identifica um sistema unicamente no concurso (submissões
-consecutivas de um mesmo usuários são sobrescritas). Cada linha seguinte
-representa um pacote instalado no sistema, no formato
-\verb!<atime> <ctime> <package-name> <mru-program> <tag>!, detalhado na tabela
-\ref{tab:popcon}. Os campos relativos a tempo são indicados no formato
-\textit{Unix time\_t}\footnote{Quantidade de segundos desde meia-noite de
-primeiro de janeiro de 1970 no horário GMT.}.
-
-\begin{figure}[h!]
-\begin{verbatim}
-
-
-POPULARITY-CONTEST-0 TIME:914183330 ID:b92a5fc1809d8a95a12eb3a3c84166dd
-914183333 909868335 grep /bin/fgrep
-914183333 909868280 findutils /usr/bin/find
-914183330 909885698 dpkg-awk /usr/bin/dpkg-awk
-914183330 909868577 gawk /usr/bin/gawk
-[...]
-[...]
-[...]
-END-POPULARITY-CONTEST-0 TIME:914183335
-\end{verbatim}
-\caption{Exemplo de submissão do popcon}
-\label{fig:popcon}
-\end{figure}
-
-\begin{table}[h!]
-  \centering
-  \newcommand\T{\rule{0pt}{2.8ex}}
-  \newcommand\B{\rule[-1.8ex]{0pt}{0pt}}
-  \begin{tabularx}{15cm}{| l | X |}
-    \hline
-    \textbf{Campo} & \textbf{Descrição} \\
-    \hline
-    <package-name> & nome do pacote Debian que contém <mru-program>\\
-    \hline
-    <mru-program> & Programa, biblioteca ou cabeçalho contido no pacote
-                    que foi utilizado mais recentemente.\\
-    \hline
-    <atime> & Tempo de acesso do <mru-program> no disco, atualizado pelo
-                     kernel cada vez que o arquivo é aberto.\\
-    \hline
-    <ctime> & Tempo de criação do <mru-program> no disco, definido no
-                     momento de instalação do pacote.\\
-    \hline
-    <tag> & RECENT-CTIME: indica que <atime> é muito próximo de <ctime>,
-            geralmente quando o pacote foi recentemente instalado ou
-            atualizado; OLD: <atime> é anterior a um mês atrás, portanto o
-            pacote não foi usado no último mês; NOFILES: o pacote não contém
-            programas, portanto <atime>, <ctime> e <mru-program> são
-            inválidos.\\
-    \hline
-  \end{tabularx}
-  \caption{Descrição do formato de uma submissão popcon}
-  \label{tab:popcon}
-\end{table}
-
-As submissões recebidas são processadas diariamente e as estatísticas geradas
-são disponibilizadas no website do projeto\footnote{\url{http://popcon.debian.org}}.
-Os dados ``crus'' (listas de pacotes antes de serem processadas) já foram
-utilizados anteriormente para fins de mineração de dados, como descrito nas
-seções \ref{sec:anapop} e \ref{sec:mining_popcon}, porém ambos os trabalhos
-foram descontinuados.
-
-A informação sobre o uso dos pacotes também tem sido utilizada como guia para o
-time de qualidade acerca de quais pacotes merecem atenção especial. Os times de
-trandução igualmente têm considerado estes dados para ordenar a lista de
-prioridades de acordo com a popularidade. Por outro lado, pacotes
-``problemáticos'' (p. ex. pacotes com muitos \textit{bugs RC}, órfãos ou com
-mantenedor em MIA) que apresentam baixa popularidade tendem a perder a simpatia
-dos desenvolvedores, sendo esta um dos parâmetros para a decisão de remover um
-pacote do repositório (\textit{low-popcon}).
-
-Essa abordagem, no entanto, tem sido duramente criticada. Segundo Joey
-Hess\footnote{\url{http://kitenet.net/~joey/blog/entry/the_popcon_problem/}},
-uma vantagem do Debian é justamente que não apenas programas populares são
-empacotados, mas os incomuns e específicos de um nicho de usuário também
-costumam estar disponíveis em pacotes. E de fato o \textit{popcon} não mede o
-benefício de pacotes poucos usados estarem disponíveis no repositório, prontos
-para serem usados. Enquanto que ao remover pacotes que aparentemente não são
-populares, corre-se o risco de transformar o Debian numa distribuição
-homogênea, submetida à ``tirania da maioria''.
-
-Existem ainda questões relativas a (1) representatividade desses dados, visto
-que alguns perfis de usuários dificilmente participam do concurso (p. ex.
-sistemas embarcados); e (2) acurácia de informações temporais, dado que
-\verb!<atime>! e \verb!<ctime>! podem ser inconsistentes caso o sistema de
-arquivos tenha sido montado com a opção \verb!noatime!.
-
-Todas essas ressalvas devem ser consideradas quando pretende-se utilizar os
-dados do \textit{popcon}. No entanto, desde que as informações sejam manejadas
-de forma consciente e responsável, acredita-se que valiosas correlações possam
-ser reveladas após uma série de análises.
-
-\subsubsection{UDD}
-
-Acrônimo para \textit{Ultimate Debian Database}, o
-UDD\footnote{\url{http://udd.debian.org}} é uma iniciativa recente do time de
-qualidade criada com o intuito de reunir informações de diversos aspectos do
-Debian numa base de dados única \cite{Nussbaum:10}.
-
-O fluxo de dados do UDD é apresentado na figura \ref{fig:udd}. Existe um
-coletor para cada tipo de fonte de dados (p. ex. o sistema de acompanhamento de
-bugs\footnote{\url{http://bugs.debian.org}} que implementa uma interface comum e
-esconde a complexidade e especificidade de acessar cada fonte de dados. Existe
-um processo central no UDD que invoca os coletores periodicamente, provocando a
-inserção dos dados na base única.
-
-\begin{figure}[h!]
-\centering
-  \includegraphics{Figures/udd.pdf}
-\caption{Fluxo de dados no UDD \cite{Nussbaum:10}}
-\label{fig:udd}
-\end{figure}
-
-A pricipal motivação para o desenvolvimento do UDD foi auxiliar o time de QA em
-suas atividades, além de facilitar a colaboração com distribuições derivadas do
-Debian. Apesar de ser possível, dificilmente usuários consultariam esta base
-para tomar decisões acerca de que pacotes utilizar, visto que os dados
-armazenados no UDD geralmente são acessíveis por outros meios. No entanto, para
-fins de mineração de dados ou para o desenvolvimento de um recomendador
-automático, a possibilidade de acesso a dados de tamanha heterogeneidade numa
-fonte de dados única é uma grande vantagem.
-
-%\subsection{DDE}
+%\section{Recomendação por agrupamento}
 %
-%Acrônimo para \textit{Debian Data Export},
-%DDE\footnote{\url{http://wiki.debian.org/DDE}}
-
-
-\subsection{Dados sobre pacotes \textit{rpm}}
-
-Apesar de não estarem diretamente relacionadas com o desenvolvimento deste
-trabalho, a seguir são descritos alguns esforços recentes para coleta de dados
-sobre pacotes \textit{rpm}.
-
-\subsubsection{Sophie}
-
-Ferramenta web\footnote{\url{http://sophie.zarb.org/}} que permite a busca e
-análise do conteúdo de pacotes rpms de múltiplas distribuições. Provê também
-uma interface XML-RPC que possibilita a criação de outras ferramentas
-utilizando Sophie como base.
-
-\subsubsection{mageia-app-db}
-
-Base de dados de aplicativos idealizada pelos desenvolvedores da distribuição
-Mageia\footnote{\url{http://mageia-app-db.tuxette.fr/projects/mageia-app-db/wiki}},
-que atualmente também reúne esforços de colaboradores do openSUSE, Mandriva e
-Fedora. Ainda em fase de desenvolvimento, a ferramenta tem como principal
-objetivo facilitar a interação entre usuários, testadores e empacotadores de
-software. Além de acessar a coleção de aplicativos disponíveis na distribuição,
-o usuário será capaz de requisitar funcionalidades ou correções aos
-responsáveis pelos pacotes, além de acompanhar seus pedidos e receber
-notificações automáticas. Produção de recomendações de pacotes também estão
-previstas como funcionalidades do sistema.
-
-%\subsection{openSUSE Software Portal}
-%
-%Ferramenta web dedicada a aplicativos do openSUSE em desenvolvimento desde o
-%ano de 2007. Legado???
-
-\subsection{Servidor para avaliação de aplicativos}
-
-Em inglês, \textit{Ratings and Reviews
-Server}\footnote{\url{http://launchpad.net/rnr-server}}, é um serviço em
-desenvolvimento baseado em \textit{django}\footnote{\url{https://www.djangoproject.com/}} para armazenar avaliações de usuários sobre
-aplicativos, com pontuação e comentários. Quando estiver em produção será uma
-poderosa base de dados para a produção de recomendações sobre aplicativos,
-alternativa à base do popcon, que não foi projetada para fins de recomendação e
-se restringe a dados binários (um usuário possue um pacote instalado ou não).
-
-%not following the open-collaboration-spec yet, but there is interesst about
-%this from the devs
-
-\subsection{Open Collaboration Service}
-
-Especificação aberta projetada para dar suporte a colaboração entre serviços
-web, permitindo o armazendamento de avaliações de usuários e outras informações
-do domínio de aplicação.
-
-\subsection{AppStream}
-
-Grande parte das distribuições GNU/Linux têm investido no desenvolvimento de
-interfaces para facilitar o gerenciamento de aplicativos e a forma como se obtém
-informações sobre os mesmos. Entre os dias 18 e 21 de janeiro 2011 aconteceu a
-primeira reunião sobre a temática com a presença de desenvolvedores de
-distribuições variadas (\textit{Cross-distribution Meeting on Application
-Installer}). O encontro teve como principais objetivos a definição de padrões
-entre os diferentes projetos no que diz respeito a: procedimentos de instalação
-de aplicações; metadados associados aos pacotes; o modo como tais informações
-devem ser geradas e armazenadas; protocolo para manutenção de metadados
-dinâmicos; e a definição de quais metadados devem ser compartilhados entre as
-distribuições, em detrimento de outros considerados específicos de cada projeto
-\cite{Freedesktop:11}.
-
-% FIXME [Desenvolver texto sobre esforços inter-distribuições]
-% http://distributions.freedesktop.org/wiki/Meetings/AppInstaller2011
-%app-install: UI focused on applications + code to generate metadata
-
-\subsection{Anapop/PopSuggest} \label{sec:anapop}
-
-O Anapop ou Popsuggest foi desenvolvido em 2007 por Enrico Zini\textit{PopSuggest}\footnote{\url{http://www.enricozini.org/2007/debtags/popcon-play/}}
-como uma ilustração das possibilidades de uso dos dados coletados pelo popcon.
-A ferramenta utilizava técnicas de recuperação da informação sobre a base de
-submissões do popcon para inferir quais pacotes diferenciavam determinado
-usuário dos demais, além de sugerir pacotes que usuários similares àquele
-tinham instalados.
-% Fonte: http://wiki.yobi.be/wiki/Debian_Tricks
-
-\section{Trabalhos acadêmicos}
-
-Nos últimos anos foram publicados, no Brasil e no exterior, inúmeros trabalhos
-nas áreas de mineração de dados e recuperação da informação aplicadas aos mais
-diversos domínios de aplicação. Nesta seção nos restringimos a comentar alguns
-deles que foram utilizados como referência, por tratarem especificamente do
-problema de recomendação, no domínio de aplicativos ou não.
-
-\subsection{\textnormal{\textit{``Uma aplicação em sistemas de recomendação:
-sistema de recomendação para pacotes GNU/Linux''}}}
-
-Trabalho final de graduação apresentado em junho de 2007 na Universidade
-Federal do Rio Grande do Sul \cite{Pereira:07}. A ferramenta foi desenvolvida
-como prova de conceito, não sendo porém integrado aos serviços da distribuição.
-Foram realizados experimentos de eficácia com cerca de 30 usuários, por meio do
-qual as diversas técnicas implementadas foram comparadas.
-%a estratégia de recomendação com melhores resultados foi uma estratégia
-%híbrida
-%que combinava recomendação baseada em conteúdo (a partir das descrições dos
-%pacotes) e recomendação colaborativa (algoritmo K-NN).
-
-\subsection{\textnormal{\textit{``Projeto e criação de um sistema para produção
-de sugestões personalizadas para o Instalador Debian''}}}
-
-Dissertação de mestrado\footnote{Tradução do título original do trabalho no
-idioma alemão.} defendida em agosto de 2007 na Universität Paderborn,
-na Alemanha \cite{Schroeder:07}. O trabalho foi apresentado na Conferência
-Internacional de Desenvolvedores Debian
-(Denconf7\footnote{\url{https://penta.debconf.org/~joerg/events/83.en.html}}),
-ainda em fase de desenvolvimento. A implementação era focada em técnicas de
-mineração de dados na base do popcon para produção de regras de associação.
-%O texto foi escrito em alemão, o que dificultou o aproveitamento dos resultados.
-
-\subsection{\textnormal{\textit{``Uma plataforma de serviços de recomendação
-para bibliotecas digitais''}}}
-
-Dissertação de mestrado defendida em Março de 2008 na Universidade Estadual de
-Campinas \cite{Pedronette:08}. O trabalho propõe uma plataforma de à produção
-de recomendações dirigida a serviços de bibliotecas digitais. Os experimentos
-realizados tiveram enfoque na interoperabilidade dos serviços, não havendo
-porém comparações entre estratégias diferenciadas de recomendação.
-
-\subsection{\textnormal{\textit{``Arcabouço genérico baseado em técnicas de
-agrupamento para sistemas de recomendação''}}}
-
-Dissertação de mestrado defendida em outubro 2010 na Universidade Estadual de
-Campinas que propõe um modelo genérico baseado em técnicas de agrupamento de
-dados para a construção de sistemas de recomendação \cite{Panaggio:10}. Um
-protótipo de recomendador foi implementado para validação da proposta e diversos
-experimentos foram realizados para fins de comparação de eficácia e eficiência
-entre técnicas de agrupamento distintas.
+%Dissertação de mestrado defendida em outubro 2010 na Universidade Estadual de
+%Campinas com título \textit{``Arcabouço genérico baseado em técnicas de
+%agrupamento para sistemas de recomendação''} \cite{Panaggio:10}. O trabalho
+%propõe um modelo genérico baseado em técnicas de agrupamento de dados para a
+%construção de recomendadores. Um protótipo foi implementado para validação da
+%proposta e diversos experimentos foram realizados para fins de comparação de
+%eficácia e eficiência entre técnicas de agrupamento distintas, dentre as quais
+%\textit{Floresta de Caminhos Ótimos} (OPF)\cite{Papa:07} apresentou os melhores
+%resultados.
 
 % Referências para implementação do opf:
 % http://www.ic.unicamp.br/~afalcao/libopf/node1.html
@@ -384,14 +99,159 @@ entre técnicas de agrupamento distintas.
 % http://www.slideshare.net/standel/python-bindings-overview
 % http://docs.python.org/c-api/index.html
 
-\subsection{\textnormal{\textit{``Uma arquitetura de personalização de conteúdo
-baseada em anotações do usuário''}}}
+\section{AppStream} \label{sec:app_stream}
 
-Tese de doutorado defendida em Março de 2011 no Instituto de Ciências
-Matemáticas e de Computação da Universidade de São Paulo (ICMC-USP)
-\cite{Manzato:11}. O trabalho propõe uma arquitetura para serviços de
-personalização por meio da indexação automatizada de metadados extraídos de
-anotações colaborativas de usuários de um sistema multimídia. Como prova de
-conceito foram implementados dois sistemas recomendadores de vídeos que foram
-comparados por meio de métricas propostas na literatura.
+\index{AppStream}
+\index{Cross-distribution Meeting on Application Installer}
+Grande parte das distribuições GNU/Linux têm investido no desenvolvimento de
+interfaces para facilitar o gerenciamento de aplicativos e a forma como se obtém
+informações sobre os mesmos. Entre os dias 18 e 21 de janeiro 2011 aconteceu a
+primeira reunião acerca desta temática com a presença de desenvolvedores de
+distribuições variadas (\textit{Cross-distribution Meeting on Application
+Installer}). O encontro teve como principais objetivos a definição de padrões
+entre os diferentes projetos no que diz respeito a: procedimentos de instalação
+de aplicações; metadados associados aos pacotes; o modo como tais informações
+devem ser geradas e armazenadas; protocolo para manutenção de metadados
+dinâmicos; e a definição de quais metadados devem ser compartilhados entre as
+distribuições, em detrimento de outros considerados específicos de cada projeto
+\cite{Freedesktop:11}.
+
+\index{Open Collaboration Service (OCS)}
+Decidiu-se que a colaboração entre os diversos serviços seria guiada pela
+especificação OCS (\textit{Open Collaboration Service}), um padrão aberto
+projetado para dar suporte à colaboração entre serviços web, permitindo
+o armazenamento de avaliações de usuários e outras informações do domínio de
+aplicação.
+
+\index{Software Center}
+\index{Canonical}
+\index{Ubuntu}
+Apesar de o \textit{Software Center} não estar em conformidade com a
+especificação OCS, esta foi a ferramenta escolhida como plataforma base de
+desenvolvimento do \textit{AppStream}, dado que há interesse por parte dos
+desenvolvedores de adequá-lo ao padrão. A única pendência com relação à adoção
+deste \textit{software} é a exigência por parte da Canonical -- empresa
+responsável pelo desenvolvimento do Ubuntu -- de que todos os colaboradores do
+projeto assinem um termo de atribuição de \textit{copyright}\index{Canonical
+Contributor License Agreement} (\textit{Canonical Contributor License
+Agreement})\footnote{\url{http://www.canonical.com/contributors}}. Esta
+exigência, além causar antipatia de alguns membros da comunidade que se recusam
+a assinar o termo por entenderem que ele vai de encontro com a sua liberdade,
+de fato impossibilita a participação no projeto de desenvolvedores que são
+contratados por outras empresas as quais não permitem a assinatura de tal
+termo com terceiros. O impasse ainda não foi resolvido e atualmente o
+andamento dos trabalhos está
+suspenso\footnote{\url{http://lists.freedesktop.org/archives/distributions/2011-May/000583.html}}
+
+\section{\textit{Ratings and Reviews}}
+
+\index{Canonical}
+\index{Ubuntu Ratings and Reviews Server}
+\index{Debian!Popularity Contest (Popcon)}
+A Canonical mantém um servidor para armazenar avaliações de usuários sobre
+aplicativos, com pontuação e comentários (\textit{Ubuntu Ratings and
+Reviews Server}\footnote{\url{http://launchpad.net/rnr-server}}). Esta pode vir
+a ser uma poderosa fonte de dados para a produção de recomendações sobre
+aplicativos, alternativa à base do \textit{popcon}, que não foi projetada para
+fins de recomendação. No entanto, os detalhes de implementação do servidor não
+são públicos e ao que tudo indica a Canonical deve manter este esforço como uma
+iniciativa própria.
+
+\index{FreeDesktop.org}
+Embora já faça parte da pauta de discussões no contexto do
+\textit{FreeDesktop.org} um esquema global de armazenamento de avaliações sobre
+aplicativos enviadas por usuários de múltiplas distribuições, ainda não há
+previsão para tal solução de ser implementada \cite{Freedesktop:11}.
+
+% FIXME [Desenvolver texto sobre esforços inter-distribuições]
+% http://distributions.freedesktop.org/wiki/Meetings/AppInstaller2011
+%app-install: UI focused on applications + code to generate metadata
+
+\section{Recomendadores para dispositivos móveis}
+
+A explosão no uso de dispositivos móveis na última década naturalmente
+refletiu-se no desenvolvimento em larga escala de aplicativos para estes
+dispositivos. A maioria destes programas não é livre e a documentação
+geralmente é escassa, portanto o conhecimento em detalhes das estratégias de
+recomendação adotadas é prejudica. Abaixo estão listados alguns recomendadores
+de aplicativos para os dispositivos \textit{iPhone, iPod} e \textit{iPad},
+desenvolvidos pela \textit{Apple}, e \textit{Android}, desenvolvido pela
+\textit{Google}.
+
+\subsubsection*{Genius}
+
+\index{recomendadores!exemplos!Apple Genius}
+\index{Apple App Store}
+\index{Genius}
+Sistema de recomendação desenvolvido pela \textit{Apple}, inicialmente para ser
+acoplado ao \textit{iTunes} e oferecer sugestões de músicas para os usuários. A
+partir do iOS 3.1, o recomendador pode ser utilizado para sugerir aplicativos
+da loja da \textit{Apple} (\textit{App Store}) com base nos programas já
+instalados no dispositivo. Para compor recomendações, o \textit{Genius} envia
+periodicamente à \textit{Apple} informações sobre os aplicativos instalados. O
+histórico de compras do usuário na \textit{App Store} e informações fornecidas
+por outros clientes também são utilizados para deduzir recomendações mais
+relevantes\footnote{\url{http://support.apple.com/kb/HT2978}}.
+
+\subsubsection*{Appolicious}
+
+\index{recomendadores!exemplos!Appolicious}
+Serviço que permite a navegação por categorias de aplicativos, busca simultânea em
+repositórios de aplicativos para \textit{Android} e \textit{iPhone}, além de
+fornecer listas do tipo ``os 10 mais''\footnote{\url{http://www.androidapps.com/}}.
+
+\subsubsection*{Heyzap}
+
+\index{recomendadores!exemplos!Heyzap}
+\index{recomendadores!para Android e iPhone}
+Recomendador para \textit{Android} e \textit{iPhone} especializado em jogos que
+utiliza estratégia colaborativa para composição de sugestões
+personalizadas\footnote{\url{http://www.heyzap.com/}}.
+
+\subsubsection*{Explor}
+
+\index{recomendadores!exemplos!Explor}
+Produz recomendações personalizadas para \textit{iPhone} com compartilhamento de
+favoritos com rede de amigos\footnote{\url{http://explorapp.com/}}.
+
+\subsubsection*{Apptitude}
+
+\index{recomendadores!exemplos!Apptitude}
+\index{Facebook}
+Sistema de recomendação de aplicativos para \textit{iPhone} que faz interface
+com o \textit{Facebook}\footnote{http://www.facebook.com} para obtenção da rede
+de amigos do usuário. Para inferir a lista de aplicativos dos amigos, o sistema
+analisa as publicações no mural dos usuários da rede social, além de itens
+marcados como interessantes (``curtir''), portanto não exige que os amigos
+também sejam usuários cadastrados\footnote{\url{http://www.apptitu.de/}}.
+
+\subsubsection*{Applause}
+
+\index{recomendadores!exemplos!Applause}
+Recomendador para \textit{Android} baseado em informações de contexto, como
+localização do usuário, passatempo favorito, idade e compromissos agendados. O
+sistema ainda está em fase de desenvolvimento, no entanto o Departamento de
+Informática (ICS) da universidade UC Irvine já disponibilizou um
+\textit{survey} para avaliar os métodos de aquisição de informações de
+contexto\footnote{\url{http://ucistudy.ics.uci.edu/android/}}.
+
+%\subsection{\textnormal{\textit{``Uma plataforma de serviços de recomendação
+%para bibliotecas digitais''}}}
+%
+%Dissertação de mestrado defendida em Março de 2008 na Universidade Estadual de
+%Campinas \cite{Pedronette:08}. O trabalho propõe uma plataforma de à produção
+%de recomendações dirigida a serviços de bibliotecas digitais. Os experimentos
+%realizados tiveram enfoque na interoperabilidade dos serviços, não havendo
+%porém comparações entre estratégias diferenciadas de recomendação.
+%
+%\subsection{\textnormal{\textit{``Uma arquitetura de personalização de conteúdo
+%baseada em anotações do usuário''}}}
+%
+%Tese de doutorado defendida em Março de 2011 no Instituto de Ciências
+%Matemáticas e de Computação da Universidade de São Paulo (ICMC-USP)
+%\cite{Manzato:11}. O trabalho propõe uma arquitetura para serviços de
+%personalização por meio da indexação automatizada de metadados extraídos de
+%anotações colaborativas de usuários de um sistema multimídia. Como prova de
+%conceito foram implementados dois sistemas recomendadores de vídeos que foram
+%comparados por meio de métricas propostas na literatura.
 

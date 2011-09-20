@@ -1,0 +1,26 @@
+$ apt-cache show apt
+Package: apt
+Status: install ok installed
+Priority: important
+Section: admin
+Installed-Size: 6168
+Maintainer: APT Development Team <deity@lists.debian.org>
+Architecture: i386
+Version: 0.8.15.2
+Replaces: manpages-pl (<< 20060617-3~)
+Provides: libapt-pkg4.10
+Depends: debian-archive-keyring, gnupg
+Pre-Depends: libc6 (>= 2.3.4), libgcc1 (>= 1:4.1.1), libstdc++6 (>= 4.6), zlib1g
+Suggests: aptitude | synaptic | wajig, dpkg-dev, apt-doc, bzip2, lzma, python-apt
+Conflicts: python-apt (<< 0.7.93.2~)
+Conffiles:
+ /etc/apt/apt.conf.d/01autoremove b9bbfaa2954b0499576b8d00c37d6a34
+ /etc/cron.daily/apt b2f73cd2b7d6cb5a087aba504ea9f507
+ /etc/logrotate.d/apt 179f2ed4f85cbaca12fa3d69c2a4a1c3
+Description: Advanced front-end for dpkg
+ This is Debian's next generation front-end for the dpkg package manager.
+ It provides the apt-get utility and APT dselect method that provides a
+ simpler, safer way to install and upgrade packages.
+ .
+ APT features complete installation ordering, multiple source capability
+ and several other unique features, see the Users Guide in apt-doc.
